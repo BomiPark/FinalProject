@@ -1,4 +1,4 @@
-package project.boostcamp.final_project.Activity;
+package project.boostcamp.final_project.View;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -27,8 +27,6 @@ public class RetrofitActivity extends AppCompatActivity {
 
         naverService = ServiceAdapter.getService();
 
-        getList("스타벅스");
-
     }
 
     public void getList(String query) {
@@ -40,7 +38,7 @@ public class RetrofitActivity extends AppCompatActivity {
 
                     Item item = response.body().getItem().get(0);
                     item.setTitle(stripHtml(item.getTitle()));
-                    Log.d("html 처리 ", "  " + item.getTitle());
+                    Log.d("Retrofit", " html 처리 확인 " + item.getTitle());
 
 
                 }else {

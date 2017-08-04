@@ -16,7 +16,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class NaverManager { // 현재 사용 x
 
-    public List<Item> getList(String query) {
+    public ArrayList<Item> getList(String query) {
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("https://openapi.naver.com/v1/search/")
                 .addConverterFactory(GsonConverterFactory.create())
@@ -24,7 +24,7 @@ public class NaverManager { // 현재 사용 x
 
         NaverService naverService = retrofit.create(NaverService.class);
 
-        List<Item> list = new ArrayList<>();
+        ArrayList<Item> list = new ArrayList<>();
 
         Call<ItemList> call = naverService.getSearchList(query, 20);
 

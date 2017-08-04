@@ -1,5 +1,13 @@
 <resources>
     <string name="app_name">Final-Project</string>
-    <string name="client_id">3bTkhilxgbGNPHkoDbpA</string>
-    <string name="client_secret">6Gs3s_UGH_</string>
+    <string name="title">title</string>
+    <string name="address">address</string>
+    <string name="to_map_setting">매장검색</string>
+    <string name="to_api_setting">현재위치</string>
+    <string name="setting_location">위치설정</string>
+    <string name="new_list">NEW\nTODO LIST</string>
+    <string name="folder">폴더</string>
+    <string name="setting_push">푸시알림</string>
+    <string name="on">On</string>
+    <string name="off">Off</string>
 </resources>
