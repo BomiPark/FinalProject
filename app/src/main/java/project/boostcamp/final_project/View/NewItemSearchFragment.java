@@ -1,8 +1,6 @@
 package project.boostcamp.final_project.View;
 
-import android.app.Activity;
 import android.content.Context;
-import android.media.Image;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -16,16 +14,14 @@ import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import project.boostcamp.final_project.Adapter.SearchItemAdapter;
 import project.boostcamp.final_project.Interface.FragmentChangeListener;
-import project.boostcamp.final_project.Model.Item;
-import project.boostcamp.final_project.Model.ItemList;
+import project.boostcamp.final_project.Model.SearchItem;
+import project.boostcamp.final_project.Model.SearchItemList;
 import project.boostcamp.final_project.R;
 import project.boostcamp.final_project.Retrofit.NaverService;
 import project.boostcamp.final_project.Retrofit.ServiceAdapter;
@@ -38,7 +34,7 @@ public class NewItemSearchFragment  extends Fragment {
     static View view;
     EditText editSearch;
     ImageView searchIcon;
-    ArrayList<Item> itemList;
+    ArrayList<SearchItem> searchItemList;
 
     RecyclerView recyclerView;
     LinearLayoutManager linearLayoutManager;
@@ -61,8 +57,8 @@ public class NewItemSearchFragment  extends Fragment {
 
         naverService = ServiceAdapter.getService();
 
-        itemList = new ArrayList<>();
-        adapter = new SearchItemAdapter(getContext(),itemList, R.layout.search_item);
+        searchItemList = new ArrayList<>();
+        adapter = new SearchItemAdapter(getContext(), searchItemList, R.layout.search_item);
         recyclerView.setAdapter(adapter);
 
         return view;
@@ -111,25 +107,25 @@ public class NewItemSearchFragment  extends Fragment {
     }
 
     public void getList(String query) {
-        naverService.getSearchList(query, 20).enqueue(new Callback<ItemList>() {
+        naverService.getSearchList(query, 20).enqueue(new Callback<SearchItemList>() {
             @Override
-            public void onResponse(Call<ItemList> call, Response<ItemList> response) {
+            public void onResponse(Call<SearchItemList> call, Response<SearchItemList> response) {
                 if(response.isSuccessful()) {
 
                     int itemCount = response.body().getItem().size();
 
                     if(itemCount != 0){
-                        itemList = (ArrayList<Item>) response.body().getItem();
+                        searchItemList = (ArrayList<SearchItem>) response.body().getItem();
 
-                        for(Item item : itemList){
-                            item.setTitle(stripHtml(item.getTitle()));
+                        for(SearchItem searchItem : searchItemList){
+                            searchItem.setTitle(stripHtml(searchItem.getTitle()));
                         }
-                        adapter.setItemList(itemList);
+                        adapter.setSearchItemList(searchItemList);
                         adapter.notifyDataSetChanged();
                     }
 
                     else{
-                        Toast.makeText(getActivity(), "검색 결과가 업습니다." , Toast.LENGTH_LONG).show();
+                        Toast.makeText(getActivity(), "검색 결과가 없습니다." , Toast.LENGTH_LONG).show(); //todo 토스티로
                     }
 
                 }else {
@@ -138,7 +134,7 @@ public class NewItemSearchFragment  extends Fragment {
             }
 
             @Override
-            public void onFailure(Call<ItemList> call, Throwable t) {
+            public void onFailure(Call<SearchItemList> call, Throwable t) {
                 Log.d("NewItemSearch", "error loading from API");
 
             }

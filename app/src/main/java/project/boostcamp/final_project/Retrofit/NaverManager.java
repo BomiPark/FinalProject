@@ -5,8 +5,8 @@ import android.util.Log;
 import java.util.ArrayList;
 import java.util.List;
 
-import project.boostcamp.final_project.Model.ItemList;
-import project.boostcamp.final_project.Model.Item;
+import project.boostcamp.final_project.Model.SearchItemList;
+import project.boostcamp.final_project.Model.SearchItem;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -16,7 +16,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class NaverManager { // 현재 사용 x
 
-    public ArrayList<Item> getList(String query) {
+    public ArrayList<SearchItem> getList(String query) {
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("https://openapi.naver.com/v1/search/")
                 .addConverterFactory(GsonConverterFactory.create())
@@ -24,22 +24,22 @@ public class NaverManager { // 현재 사용 x
 
         NaverService naverService = retrofit.create(NaverService.class);
 
-        ArrayList<Item> list = new ArrayList<>();
+        ArrayList<SearchItem> list = new ArrayList<>();
 
-        Call<ItemList> call = naverService.getSearchList(query, 20);
+        Call<SearchItemList> call = naverService.getSearchList(query, 20);
 
-        call.enqueue(new Callback<ItemList>() {
+        call.enqueue(new Callback<SearchItemList>() {
             @Override
-            public void onResponse(Call<ItemList> call, Response<ItemList> response) {
+            public void onResponse(Call<SearchItemList> call, Response<SearchItemList> response) {
                 if(response.isSuccessful()) {
-                    List<Item> list = new ArrayList<>();
+                    List<SearchItem> list = new ArrayList<>();
                     list = response.body().getItem();
                 }
             else
                 Log.e("NaverManager", "response fail");}
 
             @Override
-            public void onFailure(Call<ItemList> call, Throwable t) {
+            public void onFailure(Call<SearchItemList> call, Throwable t) {
 
                 Log.e("fail", " ");
             }

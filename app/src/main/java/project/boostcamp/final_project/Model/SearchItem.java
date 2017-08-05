@@ -6,7 +6,7 @@ import com.google.gson.annotations.Expose;
  * Created by qkrqh on 2017-08-02.
  */
 
-public class Item {
+public class SearchItem {
 
     String title;
     String address;

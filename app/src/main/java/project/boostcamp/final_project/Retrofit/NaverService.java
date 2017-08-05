@@ -1,6 +1,6 @@
 package project.boostcamp.final_project.Retrofit;
 
-import project.boostcamp.final_project.Model.ItemList;
+import project.boostcamp.final_project.Model.SearchItemList;
 import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Headers;
@@ -13,5 +13,5 @@ public interface NaverService {
             "X-Naver-Client-Secret:pqPTYVFL17"
     })
     @GET("local.json")
-    Call<ItemList> getSearchList(@Query("query") String query, @Query("display") int display);
+    Call<SearchItemList> getSearchList(@Query("query") String query, @Query("display") int display);
 }
