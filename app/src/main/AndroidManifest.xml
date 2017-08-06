@@ -20,6 +20,8 @@
             android:screenOrientation="portrait"> <!-- 화면 세로 고정 -->
         </activity>
         <activity android:name=".View.PermissionActivity">
+        </activity>
+        <activity android:name=".View.SettingActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />

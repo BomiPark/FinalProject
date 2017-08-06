@@ -2,6 +2,7 @@ package project.boostcamp.final_project.View;
 
 import android.Manifest;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.provider.Settings;
@@ -12,6 +13,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 import project.boostcamp.final_project.BuildConfig;
 import project.boostcamp.final_project.R;
@@ -22,11 +24,24 @@ public class PermissionActivity extends AppCompatActivity { //TODO sharedPrefere
 
     private static final String TAG = "PermissionActivity";
     private static final int REQUEST_PERMISSIONS_REQUEST_CODE = 34;
+    public static final String SETTING = "setting";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_permission);
+
+        SharedPreferences settings = getSharedPreferences(SETTING, MODE_PRIVATE);
+        boolean isSetting = settings.getBoolean(SETTING, false);
+
+        if(isSetting == false){ //todo true면 바로 다른 액티비티 호출로 바꾸기
+            SharedPreferences.Editor editor = settings.edit();
+            editor.putBoolean(SETTING, true);
+
+            editor.commit();
+            isSetting = settings.getBoolean(SETTING, true);
+        }
+
     }
 
     @Override
@@ -90,7 +105,7 @@ public class PermissionActivity extends AppCompatActivity { //TODO sharedPrefere
         if (requestCode == REQUEST_PERMISSIONS_REQUEST_CODE) {
             if (grantResults.length <= 0) {
                 Log.i(TAG, "User interaction was cancelled.");
-            } else if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            } else if (grantResults[0] == PackageManager.PERMISSION_GRANTED) { //todo 여기서 지오펜싱 서비스 시작하기!
                 Log.i(TAG, "Permission granted.");
             } else {
 

@@ -1,5 +1,7 @@
 <resources>
     <string name="app_name">Final-Project</string>
+
+    <!-- 새로운 아이템 입력 xml에서 사용하는 string -->
     <string name="title">title</string>
     <string name="address">address</string>
     <string name="to_map_setting">매장검색</string>
@@ -10,7 +12,18 @@
     <string name="setting_push">푸시알림</string>
     <string name="on">On</string>
     <string name="off">Off</string>
+
+    <!-- 퍼미션 관련 -->
     <string name="permission_rationale">어플리케이션 기능 상 위치 정보 접근이 필요합니다.</string>
     <string name="settings">Settings</string>
     <string name="permission_denied_explanation">어플리케이션 기능 상 위치 정보 접근이 필수적입니다. 설정해주세요  </string>
+
+    <!-- 지오펜스 서비스에서 사용 -->
+    <string name="geofence_transition_entered">Entered</string>
+    <string name="geofence_transition_exited">Exited</string>
+    <string name="unknown_geofence_transition">Unknown Transition</string>
+    <string name="geofence_transition_notification_text">
+        TODO List를 수행해주세요! 누르면 앱으로 돌아갑니다!
+    </string>
+
 </resources>
