@@ -48,7 +48,7 @@ public class NewItemDetailFragment extends Fragment {
 
                     break;
                 case R.id.to_search :
-                    listener.changeFragment(Constant.DETAIL, Constant.SEARCH);
+                    listener.changeFragment(Constant.DETAIL, Constant.SEARCH, null);
             }
         }
     };

@@ -20,6 +20,7 @@ import java.util.ArrayList;
 
 import project.boostcamp.final_project.Adapter.SearchItemAdapter;
 import project.boostcamp.final_project.Interface.FragmentChangeListener;
+import project.boostcamp.final_project.Model.Constant;
 import project.boostcamp.final_project.Model.SearchItem;
 import project.boostcamp.final_project.Model.SearchItemList;
 import project.boostcamp.final_project.R;
@@ -91,10 +92,17 @@ public class NewItemSearchFragment  extends Fragment {
     };
 
     void setSearch(){
-        getSearchList(editSearch.getText().toString());
 
-        InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.hideSoftInputFromWindow( editSearch.getWindowToken(), 0);    //hide keyboard
+        String query = editSearch.getText().toString();
+
+        if(query.length() >= 1) {
+            getSearchList(query);
+            Log.e(" " , adapter.getSelectItem().getTitle());
+            InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(editSearch.getWindowToken(), 0);    //hide keyboard
+        }
+        else
+            Toast.makeText(getActivity(), "검색어를 입력해주새요", Toast.LENGTH_LONG).show();
     }
 
     void getSearchList(String query){
@@ -143,5 +151,11 @@ public class NewItemSearchFragment  extends Fragment {
 
     public String stripHtml(String html){
         return Html.fromHtml(html).toString();
+    }
+
+    void see(){  // 클릭한 아이템 이런 식으로 전달
+        SearchItem item = new SearchItem();
+        item.setTitle("test");
+        listener.changeFragment(Constant.SEARCH, Constant.DETAIL, item);
     }
 }

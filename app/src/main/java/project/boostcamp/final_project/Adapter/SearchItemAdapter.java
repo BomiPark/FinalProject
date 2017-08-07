@@ -1,14 +1,18 @@
 package project.boostcamp.final_project.Adapter;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
+
 import java.util.ArrayList;
 import java.util.List;
 import project.boostcamp.final_project.Model.SearchItem;
+import project.boostcamp.final_project.R;
 
 public class SearchItemAdapter extends RecyclerView.Adapter<SearchItemViewHolder>{
 
@@ -30,13 +34,17 @@ public class SearchItemAdapter extends RecyclerView.Adapter<SearchItemViewHolder
 
         view = LayoutInflater.from(parent.getContext()).inflate(item_layout, parent, false);
         viewHolder = new SearchItemViewHolder(view);
-
         return viewHolder;
     }
 
     @Override
     public void onBindViewHolder(SearchItemViewHolder holder, int position) {
-        ((SearchItemViewHolder) holder).bind(searchItemList.get(position));
+        if(SearchItemViewHolder.checkPosition == position)
+            ((SearchItemViewHolder) holder).bind(searchItemList.get(position));
+        else {
+            ((SearchItemViewHolder) holder).bind(searchItemList.get(position));
+            holder.background.setBackgroundColor(Color.parseColor("#dddddd"));
+        }
     }
 
     @Override
@@ -45,7 +53,16 @@ public class SearchItemAdapter extends RecyclerView.Adapter<SearchItemViewHolder
     }
 
     public void setSearchItemList(ArrayList<SearchItem> searchItemList){
-        Log.e("d", "dd" + searchItemList.get(0).getTitle());
         this.searchItemList = searchItemList;
+    }
+
+    public SearchItem getSelectItem() {
+        SearchItem item = new SearchItem();
+        item.setTitle("dd");
+        return item;
+    }
+
+    public static void setLayout(){
+
     }
 }

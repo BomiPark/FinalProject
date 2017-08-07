@@ -29,5 +29,7 @@
     <string name="geofences_added"> Geofence add </string>
     <string name="geofences_removed"> Geofence remove </string>
 
+    <string name="license1">https://github.com/googlesamples/android-play-location/tree/master/Geofencing </string>
+
 
 </resources>
