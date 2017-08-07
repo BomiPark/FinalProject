@@ -11,9 +11,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
-import android.widget.Toast;
 
 import project.boostcamp.final_project.BuildConfig;
 import project.boostcamp.final_project.R;
@@ -39,7 +37,6 @@ public class PermissionActivity extends AppCompatActivity { //TODO sharedPrefere
             editor.putBoolean(SETTING, true);
 
             editor.commit();
-            isSetting = settings.getBoolean(SETTING, true);
         }
 
     }
@@ -63,8 +60,7 @@ public class PermissionActivity extends AppCompatActivity { //TODO sharedPrefere
                 ActivityCompat.shouldShowRequestPermissionRationale(this,
                         Manifest.permission.ACCESS_FINE_LOCATION);
 
-        if (shouldProvideRationale) { // 거절+ 다시물어보지말라고했을때뜬다
-            Log.i(TAG, "Displaying permission rationale to provide additional context.");
+        if (shouldProvideRationale) { // 거절+ 다시물어보지말라고했을때
             showSnackbar(R.string.permission_rationale, android.R.string.ok,
                     new View.OnClickListener() {
                         @Override
@@ -75,7 +71,6 @@ public class PermissionActivity extends AppCompatActivity { //TODO sharedPrefere
                         }
                     });
         } else {
-            Log.i(TAG, "Requesting permission");
             ActivityCompat.requestPermissions(PermissionActivity.this,
                     new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
                     REQUEST_PERMISSIONS_REQUEST_CODE);
@@ -101,14 +96,10 @@ public class PermissionActivity extends AppCompatActivity { //TODO sharedPrefere
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, // 퍼미션 요청 끝나고 반응
                                            @NonNull int[] grantResults) {
-        Log.i(TAG, "onRequestPermissionResult");
         if (requestCode == REQUEST_PERMISSIONS_REQUEST_CODE) {
             if (grantResults.length <= 0) {
-                Log.i(TAG, "User interaction was cancelled.");
             } else if (grantResults[0] == PackageManager.PERMISSION_GRANTED) { //todo 여기서 지오펜싱 서비스 시작하기!
-                Log.i(TAG, "Permission granted.");
             } else {
-
                 showSnackbar(R.string.permission_denied_explanation, R.string.settings,  // 퍼미션 요청 거절한 경우 스낵바를 통해 꼭 필요한 기능임을 알려주고 누르면 세팅창으로 갈 수 있다
                         new View.OnClickListener() {
                             @Override

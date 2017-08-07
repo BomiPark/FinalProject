@@ -27,6 +27,10 @@ public class GeofenceService extends IntentService {
 
     public final static String TAG = "GeofenceService";
 
+    public GeofenceService(){
+        super(TAG);
+    }
+
     public GeofenceService(String name) {
         super(name);
     }
@@ -40,20 +44,16 @@ public class GeofenceService extends IntentService {
         if (geofenceTransition == Geofence.GEOFENCE_TRANSITION_ENTER ||
                 geofenceTransition == Geofence.GEOFENCE_TRANSITION_EXIT) {
 
-            // Get the geofences that were triggered. A single event can trigger multiple geofences.
-            List<Geofence> triggeringGeofences = geofencingEvent.getTriggeringGeofences();
+            List<Geofence> triggeringGeofences = geofencingEvent.getTriggeringGeofences(); // 이벤트 발생한 지오펜스 획득. 하나의 이벤트가 여러개의 지오펜스와 관련되어있을 수도 있다
 
-            // Get the transition details as a String.
-            String geofenceTransitionDetails = getGeofenceTransitionDetails(geofenceTransition,
-                    triggeringGeofences);
+            String geofenceTransitionDetails = getGeofenceTransitionDetails(geofenceTransition, triggeringGeofences); // 상태 하나의 문자열로 변환
 
-            // Send notification and log the transition details.
             sendNotification(geofenceTransitionDetails);
             Log.i(TAG, geofenceTransitionDetails);
         }
     }
 
-    private String getGeofenceTransitionDetails( //transition details formatted as String.
+    private String getGeofenceTransitionDetails( // 이벤트 발생 상태 하나의 문자열로 변환
             int geofenceTransition, // 지오펜스 전환 타입
             List<Geofence> triggeringGeofences) { //발생된 지오펜스
 
@@ -70,7 +70,7 @@ public class GeofenceService extends IntentService {
     }
 
     private void sendNotification(String notificationDetails) {
-        // Create an explicit content Intent that starts the main Activity.
+
         Intent notificationIntent = new Intent(getApplicationContext(), SettingActivity.class);
 
         // Construct a task stack.
@@ -90,18 +90,17 @@ public class GeofenceService extends IntentService {
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this);
 
         builder.setSmallIcon(R.drawable.search)   //노티 세팅
-                // In a real app, you may want to use a library like Volley todo 찾아봐
-                // to decode the Bitmap.
+
                 .setLargeIcon(BitmapFactory.decodeResource(getResources(),
                         R.drawable.search))
                 .setColor(Color.RED)
                 .setContentTitle(notificationDetails)
-                .setContentText(getString(R.string.geofence_transition_notification_text)) //앱으로 돌아가려면 선택해
+                .setContentText(getString(R.string.geofence_transition_notification_text))
                 .setContentIntent(notificationPendingIntent);
 
         builder.setAutoCancel(true);            // Dismiss notification once the user touches it.
 
-        NotificationManager mNotificationManager =   //노티 매니저 게챠
+        NotificationManager mNotificationManager =   //노티 매니저
                 (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
         mNotificationManager.notify(0, builder.build()); //노티 날린다

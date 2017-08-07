@@ -26,4 +26,8 @@
         TODO List를 수행해주세요! 누르면 앱으로 돌아갑니다!
     </string>
 
+    <string name="geofences_added"> Geofence add </string>
+    <string name="geofences_removed"> Geofence remove </string>
+
+
 </resources>

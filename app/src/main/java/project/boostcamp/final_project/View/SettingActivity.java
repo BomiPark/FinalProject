@@ -2,9 +2,11 @@ package project.boostcamp.final_project.View;
 
 import android.app.PendingIntent;
 import android.content.Intent;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -23,12 +25,7 @@ import project.boostcamp.final_project.R;
 
 public class SettingActivity extends AppCompatActivity implements OnCompleteListener<Void> {
 
-    @Override
-    public void onComplete(@NonNull Task<Void> task) {
-
-    }
-
-    private enum PendingGeofenceTask { // 지오펜스의 현재 상황
+    private enum PendingGeofenceTask { // 지오펜스의 현재 상태
         ADD, REMOVE, NONE
     }
 
@@ -46,6 +43,14 @@ public class SettingActivity extends AppCompatActivity implements OnCompleteList
         init();
     }
 
+    @Override
+    public void onStart(){
+        super.onStart();
+
+        mPendingGeofenceTask = PendingGeofenceTask.ADD;
+        addGeofences();
+    }
+
     void init(){
         mGeofenceList = new ArrayList<>(); // 리스트 초기화
         mGeofencePendingIntent = null; //
@@ -55,7 +60,7 @@ public class SettingActivity extends AppCompatActivity implements OnCompleteList
 
     }
 
-    private void performPendingGeofenceTask() {  //     * Performs the geofencing task that was pending until location permission was granted.
+    public void performPendingGeofenceTask() {
         if (mPendingGeofenceTask == PendingGeofenceTask.ADD) {
             addGeofences();
         } else if (mPendingGeofenceTask == PendingGeofenceTask.REMOVE) {
@@ -86,19 +91,14 @@ public class SettingActivity extends AppCompatActivity implements OnCompleteList
         removeGeofences();
     }
 
-    private GeofencingRequest getGeofencingRequest() {
+    private GeofencingRequest getGeofencingRequest() { // 지오펜스 리퀘스트 빌드, 지오펜스 리스트 빌더에 넣구 초기화
         GeofencingRequest.Builder builder = new GeofencingRequest.Builder();
 
-        // The INITIAL_TRIGGER_ENTER flag indicates that geofencing service should trigger a
-        // GEOFENCE_TRANSITION_ENTER notification when the geofence is added and if the device
-        // is already inside that geofence.
-        builder.setInitialTrigger(GeofencingRequest.INITIAL_TRIGGER_ENTER);
+        builder.setInitialTrigger(GeofencingRequest.INITIAL_TRIGGER_ENTER); // 이미들어가있는경우노티티
 
-        // Add the geofences to be monitored by geofencing service.
-        builder.addGeofences(mGeofenceList);
+        builder.addGeofences(mGeofenceList); // 지오펜싱 서비스에 지오펜스 리스트 감시하게 함
 
-        // Return a GeofencingRequest.
-        return builder.build();
+        return builder.build(); // 지오펜스 리퀘스트 리턴
     }
 
     private void removeGeofences() { //이것두 사용자가 퍼미션을 허락해야 사용 가능
@@ -106,7 +106,7 @@ public class SettingActivity extends AppCompatActivity implements OnCompleteList
         mGeofencingClient.removeGeofences(getGeofencePendingIntent()).addOnCompleteListener(this);
     }
 
-    void setGeofenceList(){
+    void setGeofenceList(){ // 리스트로 변경
 
         mGeofenceList.add(new Geofence.Builder()
                 .setRequestId("test1") //지오펜스 구분하기 위한 키값 설정
@@ -120,20 +120,39 @@ public class SettingActivity extends AppCompatActivity implements OnCompleteList
                 .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER | // 전환 타입 지정, 우리는 들어오고 나가는거만 체크할거야
                         Geofence.GEOFENCE_TRANSITION_EXIT)
 
+                .setExpirationDuration(Geofence.NEVER_EXPIRE)
+
                 .build()); //지오펜스 생성
 
     }
 
-    public void onClick(View view){
-        switch (view.getId()){
-            case R.id.start :
-                Toast.makeText(SettingActivity.this, "start", Toast.LENGTH_LONG).show();
+    public void addGeofencesButtonHandler(View view) { // addGeofences()가 성공 또는 실패값을 전달 지오펜스 근처에 들어가거나 나오면 알람이 뜬다
+        mPendingGeofenceTask = PendingGeofenceTask.ADD;
+        addGeofences();
+    }
 
-                break;
-            case R.id.stop :
-                Toast.makeText(SettingActivity.this, "stop", Toast.LENGTH_LONG).show();
+    @Override
+    public void onComplete(@NonNull Task<Void> task) {
+        mPendingGeofenceTask = PendingGeofenceTask.NONE;
+        if (task.isSuccessful()) {
+            updateGeofencesAdded(!getGeofencesAdded());
 
-                break;
+            int messageId = getGeofencesAdded() ? R.string.geofences_added :
+                    R.string.geofences_removed;
+            Toast.makeText(this, getString(messageId), Toast.LENGTH_SHORT).show();
         }
     }
+
+    private boolean getGeofencesAdded() {   //지오펜스가 활성화된 상태이면 true 아니면 false 반환
+        return PreferenceManager.getDefaultSharedPreferences(this).getBoolean(
+                Constant.GEOFENCES_ADDED_KEY, false);
+    }
+
+    private void updateGeofencesAdded(boolean added) {      //SharedPreferences에 지오펜스를 추가한건지 제거한건지 기록한다
+        PreferenceManager.getDefaultSharedPreferences(this)
+                .edit()
+                .putBoolean(Constant.GEOFENCES_ADDED_KEY, added)
+                .apply();
+    }
 }
+
