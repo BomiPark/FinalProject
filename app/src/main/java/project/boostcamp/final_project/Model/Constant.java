@@ -6,9 +6,12 @@ package project.boostcamp.final_project.Model;
 
 public final class Constant {
 
+    public static final int END = -1;
     public static final int DETAIL = 0;
     public static final int SEARCH = 1;
     public static final int MAP = 2;
+    public static final int SAVE = 3;
+
 
     public static final String PACKAGE_NAME = "project.boostcamp.final_project";
     public static final String GEOFENCES_ADDED_KEY = PACKAGE_NAME + ".GEOFENCES_ADDED_KEY";

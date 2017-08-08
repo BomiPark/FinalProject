@@ -14,9 +14,9 @@ import project.boostcamp.final_project.Model.SearchItem;
 import project.boostcamp.final_project.R;
 
 
-public class SearchItemViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+public class SearchItemViewHolder extends RecyclerView.ViewHolder{
 
-    public ImageView icon, check;
+    public ImageView icon, check, line;
     public TextView title, address;
     public LinearLayout background;
 
@@ -27,8 +27,8 @@ public class SearchItemViewHolder extends RecyclerView.ViewHolder implements Vie
         check = (ImageView)view.findViewById(R.id.check);
         title = (TextView)view.findViewById(R.id.title);
         address = (TextView)view.findViewById(R.id.address);
+        line=(ImageView)view.findViewById(R.id.line);
 
-        view.setOnClickListener(this);
     }
 
     public void bind(final SearchItem searchItem){
@@ -37,8 +37,4 @@ public class SearchItemViewHolder extends RecyclerView.ViewHolder implements Vie
         address.setText(searchItem.getAddress());
     }
 
-    @Override
-    public void onClick(View view) {
-        SearchItemAdapter.setLayout();
-    }
 }

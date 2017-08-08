@@ -1,6 +1,9 @@
 package project.boostcamp.final_project.View;
 
 import android.content.Context;
+import android.location.Address;
+import android.location.Geocoder;
+import android.media.Image;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -16,16 +19,23 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import java.util.ArrayList;
+import com.google.android.gms.maps.model.LatLng;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
+import project.boostcamp.final_project.Adapter.RecyclerItemClickListener;
 import project.boostcamp.final_project.Adapter.SearchItemAdapter;
 import project.boostcamp.final_project.Interface.FragmentChangeListener;
 import project.boostcamp.final_project.Model.Constant;
 import project.boostcamp.final_project.Model.SearchItem;
 import project.boostcamp.final_project.Model.SearchItemList;
+import project.boostcamp.final_project.Model.TodoItem;
 import project.boostcamp.final_project.R;
 import project.boostcamp.final_project.Retrofit.NaverService;
 import project.boostcamp.final_project.Retrofit.ServiceAdapter;
+import project.boostcamp.final_project.Util.GeoCodingService;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -34,7 +44,7 @@ public class NewItemSearchFragment  extends Fragment {
 
     static View view;
     EditText editSearch;
-    ImageView searchIcon;
+    ImageView searchIcon, back, ok;
     ArrayList<SearchItem> searchItemList;
 
     RecyclerView recyclerView;
@@ -43,6 +53,9 @@ public class NewItemSearchFragment  extends Fragment {
 
     NaverService naverService;
     FragmentChangeListener listener;
+
+    int beforeSelected = -1;
+    Geocoder geoCoder;
 
     public NewItemSearchFragment(){}
 
@@ -53,16 +66,40 @@ public class NewItemSearchFragment  extends Fragment {
         editSearch = (EditText)view.findViewById(R.id.edit_search);
         searchIcon = (ImageView)view.findViewById(R.id.search_icon);
         recyclerView = (RecyclerView)view.findViewById(R.id.search_list);
+        back = (ImageView)view.findViewById(R.id.back);
+        ok = (ImageView)view.findViewById(R.id.ok);
         searchIcon.setOnClickListener(clickListener);
+        back.setOnClickListener(clickListener);
+        ok.setOnClickListener(clickListener);
         editSearch.setOnKeyListener(keyListener);
+        geoCoder = new Geocoder(getContext());
 
         naverService = ServiceAdapter.getService();
 
         searchItemList = new ArrayList<>();
         adapter = new SearchItemAdapter(getContext(), searchItemList, R.layout.search_item);
         recyclerView.setAdapter(adapter);
+        recyclerView.addOnItemTouchListener(new RecyclerItemClickListener(getActivity(), recyclerView, new RecyclerItemClickListener.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+                if(beforeSelected > -1) {
+                    searchItemList.get(beforeSelected).setSelected(false);}
+                searchItemList.get(position).setSelected(true);
+                adapter.notifyDataSetChanged();
+                beforeSelected = position;
+            }
 
+            @Override
+            public void onItemLongClick(View view, int position) {
+            }
+        }));
         return view;
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        listener.setStatus(Constant.DETAIL);
     }
 
     @Override
@@ -70,13 +107,24 @@ public class NewItemSearchFragment  extends Fragment {
         super.onAttach(context);
 
         listener = (FragmentChangeListener) context;
+        listener.setStatus(Constant.SEARCH);
     }
 
     View.OnClickListener clickListener = new View.OnClickListener(){
 
         @Override
         public void onClick(View view) {
-            setSearch();
+            switch(view.getId()){
+                case R.id.search_icon :
+                    setSearch();
+                    break;
+                case R.id.back :
+                    listener.changeFragment(Constant.SEARCH, Constant.DETAIL, null);
+                    break;
+                case R.id.ok :
+                    getSelectItem();
+                    break;
+            }
         }
     };
 
@@ -95,9 +143,8 @@ public class NewItemSearchFragment  extends Fragment {
 
         String query = editSearch.getText().toString();
 
-        if(query.length() >= 1) {
+        if(query != null) {
             getSearchList(query);
-            Log.e(" " , adapter.getSelectItem().getTitle());
             InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
             imm.hideSoftInputFromWindow(editSearch.getWindowToken(), 0);    //hide keyboard
         }
@@ -111,7 +158,6 @@ public class NewItemSearchFragment  extends Fragment {
 
         linearLayoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(linearLayoutManager);
-
     }
 
     public void getList(String query) {
@@ -135,7 +181,6 @@ public class NewItemSearchFragment  extends Fragment {
                     else{
                         Toast.makeText(getActivity(), "검색 결과가 없습니다." , Toast.LENGTH_LONG).show(); //todo 토스티로
                     }
-
                 }else {
                     int statusCode  = response.code();
                 }
@@ -153,9 +198,28 @@ public class NewItemSearchFragment  extends Fragment {
         return Html.fromHtml(html).toString();
     }
 
-    void see(){  // 클릭한 아이템 이런 식으로 전달
-        SearchItem item = new SearchItem();
-        item.setTitle("test");
-        listener.changeFragment(Constant.SEARCH, Constant.DETAIL, item);
+     void getSelectItem(){
+        if(beforeSelected < 0)
+            Toast.makeText(getActivity(), "지점을 선택해주세요 ", Toast.LENGTH_LONG).show();
+        else{
+            TodoItem item = new TodoItem();
+            Log.e("new", "position" + beforeSelected);
+            item.setAddress(searchItemList.get(beforeSelected).getAddress());
+            item = setLatLng(item);
+
+            listener.changeFragment(Constant.SEARCH, Constant.DETAIL,item);}
+    }
+
+    public TodoItem setLatLng(TodoItem item){
+
+        List<Address> list = null;
+        try {
+            list = geoCoder.getFromLocationName(item.getAddress(), 5);
+            item.setLatitude(list.get(0).getLatitude());
+            item.setLongitude(list.get(0).getLongitude());
+        } catch (Exception e) {
+
+        }
+        return item;
     }
 }

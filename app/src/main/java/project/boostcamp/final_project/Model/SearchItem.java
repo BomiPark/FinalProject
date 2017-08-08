@@ -12,13 +12,20 @@ public class SearchItem {
     String address;
     String roadAddress;
     String telephone;
+    @Expose
+    boolean selected = false;
     @Expose //object 중 해당 값이 null일 경우, json으로 만들 필드를 자동 생략
     Double latitude;
     @Expose
     Double longitude;
 
-    //@Expose
-    //Marker marker;
+    public boolean isSelected() {
+        return selected;
+    }
+
+    public void setSelected(boolean selected) {
+        this.selected = selected;
+    }
 
     public String getRoadAddress() {
         return roadAddress;

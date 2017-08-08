@@ -43,13 +43,6 @@ public class TodoListActivity extends AppCompatActivity {
         Realm.setDefaultConfiguration(config);
 
         realm = Realm.getDefaultInstance();
-        realm.beginTransaction();
-
-        TodoItem item = realm.createObject(TodoItem.class);
-        item.setTodo("realm 빨리44");
-        item.setAddress("판교");
-
-        realm.commitTransaction();
 
         itemList = realm.where(TodoItem.class).findAll();
 

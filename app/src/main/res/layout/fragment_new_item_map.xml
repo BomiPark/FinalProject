@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:background="@color/white"
+        android:layout_height="47dp">
+
+        <ImageView
+            android:id="@+id/back"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginLeft="20dp"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:src="@drawable/action_back" />
+
+        <ImageView
+            android:id="@+id/ok"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginRight="15dp"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:src="@drawable/action_ok" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignBottom="@+id/back"
+            android:layout_marginTop="14dp"
+            android:layout_marginStart="50dp"
+            android:orientation="horizontal">
+
+            <EditText
+                android:layout_width="240dp"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                android:textSize="13dp"
+                android:paddingLeft="20dp"
+                android:id="@+id/search"
+                android:hint="@string/input_address"/>
+
+            <ImageView
+                android:layout_width="17dp"
+                android:layout_height="17dp"
+                android:id="@+id/toSearch"
+                android:src="@drawable/search"/>
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+
+    <fragment
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/map"
+        android:name="com.google.android.gms.maps.MapFragment" />
+
+</LinearLayout>
