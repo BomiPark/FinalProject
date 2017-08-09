@@ -22,7 +22,13 @@
                 android:name="com.google.android.gms.version"
                 android:value="@integer/google_play_services_version" /> <!-- 화면 세로 고정 -->
         </activity>
-        <activity android:name=".View.PermissionActivity" />
+        <activity
+            android:name=".View.PermissionActivity" >
+        <intent-filter>
+            <action android:name="android.intent.action.MAIN" />
+            <category android:name="android.intent.category.LAUNCHER" />
+        </intent-filter>
+        </activity>
         <activity android:name=".View.SettingActivity">
         </activity>
 
@@ -33,13 +39,10 @@
         <activity
             android:name=".View.MainActivity"
             android:label="@string/title_activity_main"
-            android:theme="@style/AppTheme"></activity>
+            android:theme="@style/AppTheme">
+        </activity>
 
         <activity android:name=".View.ItemDetailActivity" >
-        <intent-filter>
-            <action android:name="android.intent.action.MAIN" />
-            <category android:name="android.intent.category.LAUNCHER" />
-        </intent-filter>
         </activity>
 
         <service

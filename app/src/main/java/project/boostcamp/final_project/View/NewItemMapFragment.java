@@ -18,12 +18,19 @@ import android.widget.Toast;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.io.IOException;
 import java.util.List;
 
 import project.boostcamp.final_project.Interface.FragmentChangeListener;
+import project.boostcamp.final_project.Model.Constant;
+import project.boostcamp.final_project.Model.TodoItem;
 import project.boostcamp.final_project.R;
+import project.boostcamp.final_project.Util.LocationListener;
 
 public class NewItemMapFragment extends Fragment {
 
@@ -34,8 +41,15 @@ public class NewItemMapFragment extends Fragment {
     Geocoder geoCoder;
     LatLng latLng;
 
+    TodoItem item;
+
+    LocationListener locationListener;
+    Marker marker;
+    MarkerOptions options;
 
     FragmentChangeListener listener;
+
+    private LatLng changedLatLng;
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -43,13 +57,19 @@ public class NewItemMapFragment extends Fragment {
             view = inflater.inflate(R.layout.fragment_new_item_map, container, false);
         } catch (InflateException e) {}
 
+
+        locationListener = new LocationListener(getActivity());
+
+        item = new TodoItem();
         geoCoder = new Geocoder(getContext());
         com.google.android.gms.maps.MapFragment mapFragment = (com.google.android.gms.maps.MapFragment) getActivity().getFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(mapReadyCallback);
+
         back = (ImageView)view.findViewById(R.id.back);
         ok = (ImageView)view.findViewById(R.id.ok);
         editSearch = (EditText)view.findViewById(R.id.search);
         toSearch = (ImageView)view.findViewById(R.id.toSearch);
+        changedLatLng = new LatLng(0,0);
 
         editSearch.setOnKeyListener(keyListener);
         back.setOnClickListener(clickListener);
@@ -83,6 +103,34 @@ public class NewItemMapFragment extends Fragment {
 
             googleMap = Map;
 
+            LatLng baseLatlng = new LatLng(locationListener.getLocation().latitude, locationListener.getLocation().longitude);
+            googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(baseLatlng, 12)); // 크기 왜이래
+
+            changedLatLng = baseLatlng; // 초기화
+
+            options = new MarkerOptions();
+            options.icon(BitmapDescriptorFactory.fromResource(R.drawable.marker));
+            options.position(baseLatlng);
+            marker = googleMap.addMarker(options);
+
+            marker.setDraggable(true);
+        }
+    };
+
+    GoogleMap.OnMarkerDragListener makerDragListener = new GoogleMap.OnMarkerDragListener() {
+        @Override
+        public void onMarkerDragStart(Marker marker) {
+        }
+
+        @Override
+        public void onMarkerDrag(Marker marker) {
+        }
+
+        @Override
+        public void onMarkerDragEnd(Marker marker) {
+
+            changedLatLng = marker.getPosition();
+            googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(changedLatLng, 12));
         }
     };
 
@@ -106,10 +154,13 @@ public class NewItemMapFragment extends Fragment {
                     setSearch();
                     break;
                 case R.id.back: // pop
-
+                    listener.changeFragment(Constant.MAP, Constant.DETAIL, null);
                     break;
                 case R.id.ok : // 마커 현재 위도 경도 가지고 주소 받아서 돌아가기
-
+                    item.setLatitude(changedLatLng.latitude);
+                    item.setLongitude(changedLatLng.longitude);
+                    item.setAddress(getAddress(changedLatLng));
+                    listener.changeFragment(Constant.MAP, Constant.DETAIL, item);
                     break;
             }
         }
@@ -130,8 +181,9 @@ public class NewItemMapFragment extends Fragment {
 
     void move(String query){
         latLng = getLatlng(query);
-        if(latLng != null)
-            googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 12));
+        if(latLng != null){
+            googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 8));
+            changedLatLng = latLng;}
         else
             Toast.makeText(getContext(), "다른 장소를 입력해주세요", Toast.LENGTH_LONG).show();
     }
@@ -145,6 +197,23 @@ public class NewItemMapFragment extends Fragment {
 
         }
         return latLng;
+    }
+
+    public String getAddress(LatLng latLng){
+        List<Address> addressList = null;
+
+        try {
+            addressList = geoCoder.getFromLocation(latLng.latitude, latLng.longitude, 2);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        if (addressList != null) {
+            for (Address address : addressList) {
+                return  address.getAddressLine(0).toString();
+            }
+        }
+        return null;
     }
 
 }

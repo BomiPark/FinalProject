@@ -75,9 +75,9 @@ public class NewItemActivity extends AppCompatActivity implements FragmentChange
 
         if(now == Constant.DETAIL && to != Constant.END && to != Constant.SAVE){ //todo case 정리 하기
             getSupportFragmentManager().beginTransaction().replace(R.id.container,newInstance(now, to)).addToBackStack(null).commit(); // detail 저장
-        } else if(now == Constant.SEARCH && to == Constant.DETAIL && item == null) {
+        } else if(to == Constant.DETAIL && item == null) {
             getSupportFragmentManager().popBackStack();
-        } else if(now == Constant.SEARCH && to == Constant.DETAIL && item != null) {
+        } else if( to == Constant.DETAIL && item != null) {
             getSupportFragmentManager().popBackStack();
             todoItem = item;
         } else if(to == Constant.END){

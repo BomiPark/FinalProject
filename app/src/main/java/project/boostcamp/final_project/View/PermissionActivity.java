@@ -15,29 +15,32 @@ import android.view.View;
 
 import project.boostcamp.final_project.BuildConfig;
 import project.boostcamp.final_project.R;
+import project.boostcamp.final_project.Util.SharedPreferencesService;
+
+import static project.boostcamp.final_project.R.string.settings;
 
 //https://developer.android.com/training/permissions/requesting.html?hl=ko 디벨로퍼 문서
 // 앱 설치 시 거절-> 세팅창으로 이동, 거절 후 다시 어플리케이션 시작-> 확인 누르면 퍼미션 창 다시 뜬다
-public class PermissionActivity extends AppCompatActivity { //TODO sharedPreference 이용해서 앱 설치 처음에만 뜨게 하기
+public class PermissionActivity extends AppCompatActivity {
 
     private static final String TAG = "PermissionActivity";
     private static final int REQUEST_PERMISSIONS_REQUEST_CODE = 34;
-    public static final String SETTING = "setting";
+    public static final String SETTING = "isSetting";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_permission);
 
-        SharedPreferences settings = getSharedPreferences(SETTING, MODE_PRIVATE);
-        boolean isSetting = settings.getBoolean(SETTING, false);
+        SharedPreferencesService.getInstance().load(getApplicationContext()); //todo 이거스플래시에서하는게 맞는듯!
 
-        if(isSetting == false){ //todo true면 바로 다른 액티비티 호출로 바꾸기
-            SharedPreferences.Editor editor = settings.edit();
-            editor.putBoolean(SETTING, true);
+        boolean isSetting = SharedPreferencesService.getInstance().getPrefData(SETTING);
 
-            editor.commit();
-        }
+        if(isSetting == false)
+            SharedPreferencesService.getInstance().setPrefData(SETTING, true);
+        else{
+            this.finish();
+            startActivity(new Intent(this, MainActivity.class));} //todo 속도 너무 느린데 다른 방법 찾기
 
     }
 
@@ -100,7 +103,7 @@ public class PermissionActivity extends AppCompatActivity { //TODO sharedPrefere
             if (grantResults.length <= 0) {
             } else if (grantResults[0] == PackageManager.PERMISSION_GRANTED) { //todo 여기서 지오펜싱 서비스 시작하기!
             } else {
-                showSnackbar(R.string.permission_denied_explanation, R.string.settings,  // 퍼미션 요청 거절한 경우 스낵바를 통해 꼭 필요한 기능임을 알려주고 누르면 세팅창으로 갈 수 있다
+                showSnackbar(R.string.permission_denied_explanation, settings,  // 퍼미션 요청 거절한 경우 스낵바를 통해 꼭 필요한 기능임을 알려주고 누르면 세팅창으로 갈 수 있다
                         new View.OnClickListener() {
                             @Override
                             public void onClick(View view) { // 세팅창으로

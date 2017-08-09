@@ -79,9 +79,18 @@ public class MainActivity extends AppCompatActivity
             }
 
             @Override
-            public void onItemLongClick(View view, int position) {
-                Toast.makeText(MainActivity.this, "삭제하겠습니까 ", Toast.LENGTH_LONG).show();
-                // 다이얼로그 -> 삭제할거닝->
+            public void onItemLongClick(View view, final int position) {
+                realm.executeTransaction(new Realm.Transaction() { //todo 삭제할거냐고 묻는 다이얼로그 만들기
+                    @Override
+                    public void execute(Realm realm) {
+
+                        TodoItem item = itemList.get(position);
+                        item.deleteFromRealm();
+
+                        itemList.deleteAllFromRealm();
+                    }
+                });
+                adapter.notifyDataSetChanged();
             }
         }));
     }
