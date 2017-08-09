@@ -85,8 +85,7 @@ public class NewItemActivity extends AppCompatActivity implements FragmentChange
         } else if(to == SAVE){
             todoItem = item;
             setData(item);
-            Intent it = new Intent(this, TodoListActivity.class); //todo 테스트
-            startActivity(it);
+            finish();
         }
     }
 
@@ -96,9 +95,9 @@ public class NewItemActivity extends AppCompatActivity implements FragmentChange
         Realm.setDefaultConfiguration(config);
 
         realm = Realm.getDefaultInstance();
-        realm.beginTransaction();
 
-        TodoItem save = realm.copyToRealm(item);
+        realm.beginTransaction();
+        realm.copyToRealm(item);
 
         realm.commitTransaction();
 

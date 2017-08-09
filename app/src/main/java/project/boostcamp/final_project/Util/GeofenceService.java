@@ -1,4 +1,4 @@
-package project.boostcamp.final_project.GeoFencing;
+package project.boostcamp.final_project.Util;
 
 import android.app.IntentService;
 import android.app.NotificationManager;
@@ -21,8 +21,8 @@ import java.util.List;
 import project.boostcamp.final_project.R;
 import project.boostcamp.final_project.View.SettingActivity;
 
-// 로케이션 서비스로부터 지오펜스 전환 이벤트를 받고 이에 관한 전환 처리. 그 결과로서 notification 반환
 
+// 로케이션 서비스로부터 지오펜스 전환 이벤트를 받고 이에 관한 전환 처리. 그 결과로서 notification 반환
 public class GeofenceService extends IntentService {
 
     public final static String TAG = "GeofenceService";
@@ -41,8 +41,7 @@ public class GeofenceService extends IntentService {
 
         int geofenceTransition = geofencingEvent.getGeofenceTransition(); // 전환 타입을 얻는다.
 
-        if (geofenceTransition == Geofence.GEOFENCE_TRANSITION_ENTER ||
-                geofenceTransition == Geofence.GEOFENCE_TRANSITION_EXIT) {
+        if (geofenceTransition == Geofence.GEOFENCE_TRANSITION_ENTER ) {
 
             List<Geofence> triggeringGeofences = geofencingEvent.getTriggeringGeofences(); // 이벤트 발생한 지오펜스 획득. 하나의 이벤트가 여러개의 지오펜스와 관련되어있을 수도 있다
 
@@ -77,7 +76,7 @@ public class GeofenceService extends IntentService {
         TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
 
         // Add the main Activity to the task stack as the parent.
-        stackBuilder.addParentStack(SettingActivity.class);
+        stackBuilder.addParentStack(SettingActivity.class);   //todo 지정한아이템세부항목으로가기
 
         // Push the content Intent onto the stack.
         stackBuilder.addNextIntent(notificationIntent);
@@ -89,8 +88,7 @@ public class GeofenceService extends IntentService {
         // Get a notification builder that's compatible with platform versions >= 4
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this);
 
-        builder.setSmallIcon(R.drawable.search)   //노티 세팅
-
+        builder.setSmallIcon(R.drawable.search)   //노티 세팅 todo 커스텀으로수정~
                 .setLargeIcon(BitmapFactory.decodeResource(getResources(),
                         R.drawable.search))
                 .setColor(Color.RED)

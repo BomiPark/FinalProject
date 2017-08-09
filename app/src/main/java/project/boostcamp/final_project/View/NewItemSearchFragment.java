@@ -3,7 +3,6 @@ package project.boostcamp.final_project.View;
 import android.content.Context;
 import android.location.Address;
 import android.location.Geocoder;
-import android.media.Image;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -19,9 +18,6 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.google.android.gms.maps.model.LatLng;
-
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,7 +31,6 @@ import project.boostcamp.final_project.Model.TodoItem;
 import project.boostcamp.final_project.R;
 import project.boostcamp.final_project.Retrofit.NaverService;
 import project.boostcamp.final_project.Retrofit.ServiceAdapter;
-import project.boostcamp.final_project.Util.GeoCodingService;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;

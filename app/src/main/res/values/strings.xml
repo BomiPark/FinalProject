@@ -5,7 +5,7 @@
     <string name="title">title</string>
     <string name="address">address</string>
     <string name="to_map_setting">매장검색</string>
-    <string name="to_api_setting">현재위치</string>
+    <string name="to_api_setting">지도로지정</string>
     <string name="setting_location">위치설정</string>
     <string name="new_list">NEW\nTODO LIST</string>
     <string name="folder">폴더</string>
@@ -31,6 +31,12 @@
     <string name="geofences_removed"> Geofence remove </string>
 
     <string name="license1">https://github.com/googlesamples/android-play-location/tree/master/Geofencing </string>
+    <string name="title_activity_main">MainActivity</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
 
 
 </resources>

@@ -23,9 +23,7 @@ import com.google.android.gms.maps.model.LatLng;
 import java.util.List;
 
 import project.boostcamp.final_project.Interface.FragmentChangeListener;
-import project.boostcamp.final_project.Model.TodoItem;
 import project.boostcamp.final_project.R;
-import project.boostcamp.final_project.Util.GeoCodingService;
 
 public class NewItemMapFragment extends Fragment {
 
@@ -127,12 +125,15 @@ public class NewItemMapFragment extends Fragment {
             imm.hideSoftInputFromWindow(editSearch.getWindowToken(), 0);    //hide keyboard
         }
         else
-            Toast.makeText(getActivity(), "검색어를 입력해주새요", Toast.LENGTH_LONG).show();
+            Toast.makeText(getActivity(), "검색어를 입력해주세요", Toast.LENGTH_LONG).show(); //todo 이거 안먹는다.
     }
 
     void move(String query){
         latLng = getLatlng(query);
-        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 12));
+        if(latLng != null)
+            googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 12));
+        else
+            Toast.makeText(getContext(), "다른 장소를 입력해주세요", Toast.LENGTH_LONG).show();
     }
 
     public LatLng getLatlng(String address){
