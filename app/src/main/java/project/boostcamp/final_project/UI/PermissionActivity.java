@@ -39,8 +39,8 @@ public class PermissionActivity extends AppCompatActivity {
         if(isSetting == false)
             SharedPreferencesService.getInstance().setPrefData(SETTING, true);
         else{
-            this.finish();
             startActivity(new Intent(this, MainActivity.class));} //todo 속도 너무 느린데 다른 방법 찾기
+            finish();
 
     }
 

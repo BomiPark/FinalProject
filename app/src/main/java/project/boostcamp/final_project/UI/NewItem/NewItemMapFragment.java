@@ -116,6 +116,8 @@ public class NewItemMapFragment extends Fragment {
             marker = googleMap.addMarker(options);
 
             marker.setDraggable(true);
+
+            googleMap.setOnMarkerDragListener(makerDragListener);
         }
     };
 

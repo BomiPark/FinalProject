@@ -26,7 +26,6 @@ public class SettingActivity extends AppCompatActivity {
         setContentView(R.layout.activity_setting);
 
         intent = new Intent(this, GeofencingService.class);
-        unbindService(connection); //todo 이러면안될거같은뎅 ㅠㅠ
         bindService(intent, connection, Context.BIND_AUTO_CREATE);
 
     }
