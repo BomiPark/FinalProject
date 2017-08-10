@@ -4,6 +4,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
 import io.realm.annotations.Required;
 
 import static android.R.attr.format;
@@ -11,7 +12,8 @@ import static android.icu.lang.UCharacter.GraphemeClusterBreak.T;
 
 public class TodoItem extends RealmObject{
 
-    @Required
+    @PrimaryKey
+    private int id;
     private String todo;
     private String address;
     private double latitude;
@@ -34,6 +36,14 @@ public class TodoItem extends RealmObject{
         this.latitude = latitude;
         this.longitude = longitude;
         this.folder = folder;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getTodo() {

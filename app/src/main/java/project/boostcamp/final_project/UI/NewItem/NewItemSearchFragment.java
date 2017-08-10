@@ -1,4 +1,4 @@
-package project.boostcamp.final_project.View;
+package project.boostcamp.final_project.UI.NewItem;
 
 import android.content.Context;
 import android.location.Address;
@@ -21,7 +21,7 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
-import project.boostcamp.final_project.Adapter.RecyclerItemClickListener;
+import project.boostcamp.final_project.Interface.RecyclerItemClickListener;
 import project.boostcamp.final_project.Adapter.SearchItemAdapter;
 import project.boostcamp.final_project.Interface.FragmentChangeListener;
 import project.boostcamp.final_project.Model.Constant;

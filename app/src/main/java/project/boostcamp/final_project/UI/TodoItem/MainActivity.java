@@ -1,4 +1,4 @@
-package project.boostcamp.final_project.View;
+package project.boostcamp.final_project.UI.TodoItem;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -19,10 +19,15 @@ import android.widget.Toast;
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
 import io.realm.RealmResults;
-import project.boostcamp.final_project.Adapter.RecyclerItemClickListener;
+import project.boostcamp.final_project.Interface.RecyclerItemClickListener;
 import project.boostcamp.final_project.Adapter.TodoItemAdapter;
 import project.boostcamp.final_project.Model.TodoItem;
 import project.boostcamp.final_project.R;
+import project.boostcamp.final_project.UI.SettingActivity;
+import project.boostcamp.final_project.UI.NewItem.NewItemActivity;
+import project.boostcamp.final_project.Util.CheckDialog;
+
+import static project.boostcamp.final_project.R.id.clock;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -31,6 +36,7 @@ public class MainActivity extends AppCompatActivity
     RealmResults<TodoItem> itemList;
     RecyclerView recyclerView;
     TodoItemAdapter adapter;
+    static CheckDialog dialog;
 
     Realm realm;
 
@@ -74,26 +80,38 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onItemClick(View view, int position) {
                 Intent intent = new Intent(MainActivity.this, ItemDetailActivity.class); // 선택한애정보가지고갈거야
-                intent.putExtra("itemPosition", position);
+                intent.putExtra("id", itemList.get(position).getId());
                 startActivity(intent);
             }
 
             @Override
             public void onItemLongClick(View view, final int position) {
-                realm.executeTransaction(new Realm.Transaction() { //todo 삭제할거냐고 묻는 다이얼로그 만들기
+                dialog = new CheckDialog(MainActivity.this,
+                        "todo 내용", " ^^ ", leftClickListener ,  new View.OnClickListener() {
                     @Override
-                    public void execute(Realm realm) {
+                    public void onClick(View view) {
+                        realm.executeTransaction(new Realm.Transaction() {
+                            @Override
+                            public void execute(Realm realm) {
 
-                        TodoItem item = itemList.get(position);
-                        item.deleteFromRealm();
-
-                        itemList.deleteAllFromRealm();
+                                TodoItem item = itemList.get(position);
+                                item.deleteFromRealm();
+                            }
+                        });
+                        adapter.notifyDataSetChanged();
+                        dialog.dismiss();
                     }
                 });
-                adapter.notifyDataSetChanged();
+                dialog.show();
             }
         }));
     }
+
+     View.OnClickListener leftClickListener = new View.OnClickListener() {
+        public void onClick(View v) {
+            dialog.dismiss();
+        }
+    };
 
     void setData(){
         Realm.init(this);
@@ -152,6 +170,7 @@ public class MainActivity extends AppCompatActivity
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            startActivity(new Intent(this, SettingActivity.class));
             return true;
         }
 

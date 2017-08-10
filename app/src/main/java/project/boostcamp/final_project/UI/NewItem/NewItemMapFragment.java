@@ -1,8 +1,9 @@
-package project.boostcamp.final_project.View;
+package project.boostcamp.final_project.UI.NewItem;
 
 import android.content.Context;
 import android.location.Address;
 import android.location.Geocoder;
+import android.location.Location;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.InflateException;
@@ -103,8 +104,9 @@ public class NewItemMapFragment extends Fragment {
 
             googleMap = Map;
 
-            LatLng baseLatlng = new LatLng(locationListener.getLocation().latitude, locationListener.getLocation().longitude);
-            googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(baseLatlng, 12)); // 크기 왜이래
+            LatLng loc = locationListener.getLocation();
+            LatLng baseLatlng = new LatLng(loc.latitude, loc.longitude);
+            googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(baseLatlng, 12));
 
             changedLatLng = baseLatlng; // 초기화
 
@@ -130,6 +132,8 @@ public class NewItemMapFragment extends Fragment {
         public void onMarkerDragEnd(Marker marker) {
 
             changedLatLng = marker.getPosition();
+
+            marker.setDraggable(true);
             googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(changedLatLng, 12));
         }
     };
@@ -182,7 +186,12 @@ public class NewItemMapFragment extends Fragment {
     void move(String query){
         latLng = getLatlng(query);
         if(latLng != null){
-            googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 8));
+
+            marker.remove();
+            options.position(latLng);
+            marker = googleMap.addMarker(options);
+
+            googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 12));
             changedLatLng = latLng;}
         else
             Toast.makeText(getContext(), "다른 장소를 입력해주세요", Toast.LENGTH_LONG).show();

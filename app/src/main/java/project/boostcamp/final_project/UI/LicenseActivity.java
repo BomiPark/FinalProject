@@ -1,4 +1,4 @@
-package project.boostcamp.final_project.View;
+package project.boostcamp.final_project.UI;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;

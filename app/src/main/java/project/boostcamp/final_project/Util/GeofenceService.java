@@ -1,6 +1,7 @@
 package project.boostcamp.final_project.Util;
 
 import android.app.IntentService;
+import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -12,6 +13,7 @@ import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
 import android.text.TextUtils;
 import android.util.Log;
+import android.widget.RemoteViews;
 
 import com.google.android.gms.location.Geofence;
 import com.google.android.gms.location.GeofencingEvent;
@@ -19,8 +21,7 @@ import com.google.android.gms.location.GeofencingEvent;
 import java.util.ArrayList;
 import java.util.List;
 import project.boostcamp.final_project.R;
-import project.boostcamp.final_project.View.SettingActivity;
-
+import project.boostcamp.final_project.UI.TodoItem.ItemDetailActivity;
 
 // 로케이션 서비스로부터 지오펜스 전환 이벤트를 받고 이에 관한 전환 처리. 그 결과로서 notification 반환
 public class GeofenceService extends IntentService {
@@ -48,7 +49,6 @@ public class GeofenceService extends IntentService {
             String geofenceTransitionDetails = getGeofenceTransitionDetails(geofenceTransition, triggeringGeofences); // 상태 하나의 문자열로 변환
 
             sendNotification(geofenceTransitionDetails);
-            Log.i(TAG, geofenceTransitionDetails);
         }
     }
 
@@ -63,6 +63,7 @@ public class GeofenceService extends IntentService {
         for (Geofence geofence : triggeringGeofences) {
             triggeringGeofencesIdsList.add(geofence.getRequestId());
         }
+
         String triggeringGeofencesIdsString = TextUtils.join(", ",  triggeringGeofencesIdsList);
 
         return geofenceTransitionString + ": " + triggeringGeofencesIdsString;
@@ -70,13 +71,15 @@ public class GeofenceService extends IntentService {
 
     private void sendNotification(String notificationDetails) {
 
-        Intent notificationIntent = new Intent(getApplicationContext(), SettingActivity.class);
+        Intent notificationIntent = new Intent(getApplicationContext(), ItemDetailActivity.class);
+
+        notificationIntent.putExtra("id", 0);
 
         // Construct a task stack.
         TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
 
         // Add the main Activity to the task stack as the parent.
-        stackBuilder.addParentStack(SettingActivity.class);   //todo 지정한아이템세부항목으로가기
+        stackBuilder.addParentStack(ItemDetailActivity.class);   //todo 지정한아이템세부항목으로가기
 
         // Push the content Intent onto the stack.
         stackBuilder.addNextIntent(notificationIntent);
@@ -88,12 +91,18 @@ public class GeofenceService extends IntentService {
         // Get a notification builder that's compatible with platform versions >= 4
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this);
 
-        builder.setSmallIcon(R.drawable.search)   //노티 세팅 todo 커스텀으로수정~
+        RemoteViews customView = new RemoteViews((getApplicationContext()).getPackageName(), R.layout.noti);
+
+        builder.setSmallIcon(R.drawable.app_icon)   //노티 세팅 todo 커스텀으로수정~
                 .setLargeIcon(BitmapFactory.decodeResource(getResources(),
-                        R.drawable.search))
+                        R.drawable.app_icon))
                 .setColor(Color.RED)
-                .setContentTitle(notificationDetails)
-                .setContentText(getString(R.string.geofence_transition_notification_text))
+                .setDefaults(Notification.DEFAULT_SOUND)
+                .setVibrate(new long[]{1000, 1000, 200, 200})
+                .setLights(0xff00ff00, 500, 500)
+                //.setContentTitle(notificationDetails)
+                //.setContentText(getString(R.string.geofence_transition_notification_text))
+                .setContent(customView)
                 .setContentIntent(notificationPendingIntent);
 
         builder.setAutoCancel(true);            // Dismiss notification once the user touches it.
@@ -108,8 +117,6 @@ public class GeofenceService extends IntentService {
         switch (transitionType) {
             case Geofence.GEOFENCE_TRANSITION_ENTER:
                 return getString(R.string.geofence_transition_entered);
-            case Geofence.GEOFENCE_TRANSITION_EXIT:
-                return getString(R.string.geofence_transition_exited);
             default:
                 return getString(R.string.unknown_geofence_transition);
         }

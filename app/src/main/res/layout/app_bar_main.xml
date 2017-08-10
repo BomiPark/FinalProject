@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="project.boostcamp.final_project.View.MainActivity">
+    tools:context="project.boostcamp.final_project.UI.TodoItem.MainActivity">
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"

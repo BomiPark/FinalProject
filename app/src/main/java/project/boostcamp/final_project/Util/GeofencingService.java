@@ -40,7 +40,7 @@ public class GeofencingService extends Service{
     public GeofencingService() {
     }
 
-    public void staartGeofence(){
+    public void startGeofence(){
         mPendingGeofenceTask = PendingGeofenceTask.ADD;
         addGeofences();
     }
@@ -100,7 +100,7 @@ public class GeofencingService extends Service{
         for(TodoItem item : itemList){
 
             mGeofenceList.add(new Geofence.Builder()
-                    .setRequestId(item.getTodo()) //지오펜스 구분하기 위한 키값 설정
+                    .setRequestId(item.getId()+"") //지오펜스 구분하기 위한 키값 설정
                     .setCircularRegion( // 지오펜스 근처에 영역 지정
                             item.getLatitude(),
                             item.getLongitude(),
@@ -122,7 +122,7 @@ public class GeofencingService extends Service{
 
         realm = Realm.getDefaultInstance();
 
-        itemList = realm.where(TodoItem.class).findAll();
+        itemList = realm.where(TodoItem.class).equalTo("isCompleted", false).findAll();
 
     }
 

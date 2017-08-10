@@ -5,7 +5,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="project.boostcamp.final_project.View.SettingActivity">
+    tools:context="project.boostcamp.final_project.UI.SettingActivity">
 
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="start"
+        android:onClick="onClick"/>
 
 </LinearLayout>

@@ -1,4 +1,4 @@
-package project.boostcamp.final_project.View;
+package project.boostcamp.final_project.UI;
 
 import android.content.ComponentName;
 import android.content.Context;
@@ -26,7 +26,9 @@ public class SettingActivity extends AppCompatActivity {
         setContentView(R.layout.activity_setting);
 
         intent = new Intent(this, GeofencingService.class);
+        unbindService(connection); //todo 이러면안될거같은뎅 ㅠㅠ
         bindService(intent, connection, Context.BIND_AUTO_CREATE);
+
     }
 
     private ServiceConnection connection = new ServiceConnection() {
@@ -43,7 +45,7 @@ public class SettingActivity extends AppCompatActivity {
     };
 
     public void onClick(View view) {
-        geofencingService.staartGeofence();
-    }
+        geofencingService.startGeofence();
+    } //todo 이거바로시작하면강제종료
 
 }

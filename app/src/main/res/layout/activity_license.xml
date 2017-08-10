@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="project.boostcamp.final_project.View.LicenseActivity">
+    tools:context="project.boostcamp.final_project.UI.LicenseActivity">
 
     <TextView
         android:layout_width="match_parent"

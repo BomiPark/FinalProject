@@ -16,33 +16,33 @@
             android:value="@string/google_maps_key" />
 
         <activity
-            android:name=".View.NewItemActivity"
+            android:name=".UI.NewItem.NewItemActivity"
             android:screenOrientation="portrait">
             <meta-data
                 android:name="com.google.android.gms.version"
                 android:value="@integer/google_play_services_version" /> <!-- 화면 세로 고정 -->
         </activity>
         <activity
-            android:name=".View.PermissionActivity" >
+            android:name=".UI.PermissionActivity" >
         <intent-filter>
             <action android:name="android.intent.action.MAIN" />
             <category android:name="android.intent.category.LAUNCHER" />
         </intent-filter>
         </activity>
-        <activity android:name=".View.SettingActivity">
+        <activity android:name=".UI.SettingActivity">
         </activity>
 
         <service android:name=".Util.GeofenceService" />
 
-        <activity android:name=".View.LicenseActivity" />
+        <activity android:name=".UI.LicenseActivity" />
 
         <activity
-            android:name=".View.MainActivity"
+            android:name=".UI.TodoItem.MainActivity"
             android:label="@string/title_activity_main"
             android:theme="@style/AppTheme">
         </activity>
 
-        <activity android:name=".View.ItemDetailActivity" >
+        <activity android:name=".UI.TodoItem.ItemDetailActivity" >
         </activity>
 
         <service

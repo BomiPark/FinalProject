@@ -1,13 +1,14 @@
 <resources>
     <string name="app_name">Final-Project</string>
 
-    <!-- 새로운 아이템 입력 xml에서 사용하는 string -->
+    <!--  xml에서 사용하는 string -->
     <string name="title">title</string>
     <string name="address">address</string>
     <string name="to_map_setting">매장검색</string>
     <string name="to_api_setting">지도로지정</string>
     <string name="setting_location">위치설정</string>
     <string name="new_list">NEW\nTODO LIST</string>
+    <string name="todo">TODO LIST</string>
     <string name="folder">폴더</string>
     <string name="setting_push">푸시알림</string>
     <string name="on">On</string>

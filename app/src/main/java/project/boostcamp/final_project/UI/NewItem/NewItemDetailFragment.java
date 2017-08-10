@@ -1,4 +1,4 @@
-package project.boostcamp.final_project.View;
+package project.boostcamp.final_project.UI.NewItem;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -13,8 +13,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import io.realm.Realm;
-import io.realm.RealmConfiguration;
 import project.boostcamp.final_project.Model.Constant;
 import project.boostcamp.final_project.Interface.FragmentChangeListener;
 import project.boostcamp.final_project.Model.TodoItem;
@@ -100,8 +98,6 @@ public class NewItemDetailFragment extends Fragment {
             }
         }
     };
-
-
 
     void setBtnColor(int id){
         Log.e("new", id + "  " ); //todo 텍스트뷰 색 바꾼거 상태 저장 안되고 on off 버튼은 이전에체크한애만 반응한당
