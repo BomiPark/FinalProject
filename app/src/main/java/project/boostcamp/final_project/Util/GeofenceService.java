@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
@@ -23,6 +24,8 @@ import java.util.List;
 import project.boostcamp.final_project.R;
 import project.boostcamp.final_project.UI.TodoItem.ItemDetailActivity;
 
+import static android.icu.lang.UCharacter.GraphemeClusterBreak.L;
+
 // 로케이션 서비스로부터 지오펜스 전환 이벤트를 받고 이에 관한 전환 처리. 그 결과로서 notification 반환
 public class GeofenceService extends IntentService {
 
@@ -34,6 +37,23 @@ public class GeofenceService extends IntentService {
 
     public GeofenceService(String name) {
         super(name);
+    }
+
+    private String getGeofenceTransitionDetails( // 이벤트 발생 상태 하나의 문자열로 변환
+                                                 int geofenceTransition, // 지오펜스 전환 타입
+                                                 List<Geofence> triggeringGeofences) { //발생된 지오펜스
+
+
+        // Get the Ids of each geofence that was triggered.
+        ArrayList<String> triggeringGeofencesIdsList = new ArrayList<>();
+        for (Geofence geofence : triggeringGeofences) {
+            triggeringGeofencesIdsList.add(geofence.getRequestId());
+            Log.e(TAG, "65 LINE : " +geofence.getRequestId());
+        }
+
+        Log.e(TAG, "반환하는 문자열54 : " +triggeringGeofencesIdsList.get(0).toString());
+
+        return triggeringGeofencesIdsList.get(0).toString();
     }
 
     @Override
@@ -48,31 +68,25 @@ public class GeofenceService extends IntentService {
 
             String geofenceTransitionDetails = getGeofenceTransitionDetails(geofenceTransition, triggeringGeofences); // 상태 하나의 문자열로 변환
 
-            sendNotification(geofenceTransitionDetails);
+            Log.e(TAG, "geofenceTransition = " +  geofenceTransitionDetails + "triggeringGeofences" + triggeringGeofences); //todo 고치기
+
+
+            Log.e("75", " "+ intent.getIntExtra("id", 0));
+
+            int position = Integer.parseInt(geofenceTransitionDetails);
+
+            sendNotification(position);
         }
     }
 
-    private String getGeofenceTransitionDetails( // 이벤트 발생 상태 하나의 문자열로 변환
-            int geofenceTransition, // 지오펜스 전환 타입
-            List<Geofence> triggeringGeofences) { //발생된 지오펜스
-
-        String geofenceTransitionString = getTransitionString(geofenceTransition);
-
-        // Get the Ids of each geofence that was triggered.
-        ArrayList<String> triggeringGeofencesIdsList = new ArrayList<>();
-        for (Geofence geofence : triggeringGeofences) {
-            triggeringGeofencesIdsList.add(geofence.getRequestId());
-            //Log.e("geo", "" +geofence.getRequestId());
-        }
-
-        return geofenceTransitionString;
-    }
-
-    private void sendNotification(String notificationDetails) {
+    private void sendNotification(int notificationDetails) {
 
         Intent notificationIntent = new Intent(getApplicationContext(), ItemDetailActivity.class);
 
-        notificationIntent.putExtra("id", 0);
+        Log.e("geo84", notificationDetails + "");
+        notificationIntent.putExtra("id", notificationDetails);
+
+        //notificationIntent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_SINGLE_TOP.
 
         // Construct a task stack.
         TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
@@ -85,7 +99,7 @@ public class GeofenceService extends IntentService {
 
         // Get a PendingIntent containing the entire back stack.
         PendingIntent notificationPendingIntent =
-                stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
+                stackBuilder.getPendingIntent(0, PendingIntent.FLAG_ONE_SHOT);
 
         // Get a notification builder that's compatible with platform versions >= 4
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this);
@@ -100,12 +114,9 @@ public class GeofenceService extends IntentService {
                 .setVibrate(new long[]{1000, 1000, 200, 200})
                 .setLights(0xff00ff00, 500, 500)
                 //.setContentTitle(notificationDetails)
-                //.setContentText(getString(R.string.geofence_transition_notification_text))
+                //.setContentText(수행해야할텍스트내용! )
                 .setContent(customView)
                 .setContentIntent(notificationPendingIntent);
-
-
-        Log.e("geo",  "노티까지옴! ");
 
         builder.setAutoCancel(true);            // Dismiss notification once the user touches it.
 

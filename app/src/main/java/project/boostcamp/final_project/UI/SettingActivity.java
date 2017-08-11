@@ -27,7 +27,7 @@ public class SettingActivity extends AppCompatActivity {
     Intent intent;
     GeoBinder geoBinder;
     GeofencingService geofencingService;
-    boolean isBound;
+    boolean isBound; // shared에저장해야할듯!!
 
     Button start, stop;
 

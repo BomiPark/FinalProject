@@ -54,6 +54,10 @@ public class ItemDetailActivity extends AppCompatActivity {
 
         intent = getIntent();
         int position = intent.getExtras().getInt("id"); // 아이템 받아와서 세팅하면 될 듯!!
+
+        int siba = intent.getIntExtra("id", 0);
+
+        Log.e("detail58", position + " siba=" + siba);
         item = realm.where(TodoItem.class).equalTo("id", position).findAll().get(0);
         setLayout();
 

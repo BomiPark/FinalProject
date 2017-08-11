@@ -109,17 +109,13 @@ public class GeofencingService extends Service{
                     )
 
                     .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER)  // 전환 타입 지정
-                    .setLoiteringDelay(30000)
+                    //.setLoiteringDelay(30000)
                     .setExpirationDuration(Geofence.NEVER_EXPIRE)
                     .build()); //지오펜스 생성
         }
     }
 
     void setData(){
-
-        Log.e("geofencing122", "setData() 호출 ");
-
-        itemList = null;
 
         Realm.init(this);
         RealmConfiguration config = new RealmConfiguration.Builder().build();
@@ -129,6 +125,7 @@ public class GeofencingService extends Service{
 
         itemList = realm.where(TodoItem.class).equalTo("isCompleted", false).findAll();
 
+        Log.e("geofencing128 아이템 갯수 ", itemList.size() + "");
     }
 
     public class GeoBinder extends Binder {
