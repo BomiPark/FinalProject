@@ -100,10 +100,8 @@ public class GeofencingService extends Service{
         setData();
         for(TodoItem item : itemList){
 
-            Log.e("fencing103", "" + item.getTodo());
-
             mGeofenceList.add(new Geofence.Builder()
-                    .setRequestId(item.getTodo()) //지오펜스 구분하기 위한 키값 설정
+                    .setRequestId(item.getId()+"") //지오펜스 구분하기 위한 키값 설정
                     .setCircularRegion( // 지오펜스 근처에 영역 지정
                             item.getLatitude(),
                             item.getLongitude(),

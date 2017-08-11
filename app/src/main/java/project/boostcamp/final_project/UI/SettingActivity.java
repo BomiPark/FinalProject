@@ -12,6 +12,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import io.realm.Realm;
+import io.realm.RealmConfiguration;
+import project.boostcamp.final_project.Model.TodoItem;
 import project.boostcamp.final_project.R;
 import project.boostcamp.final_project.UI.TodoItem.MainActivity;
 import project.boostcamp.final_project.Util.GeofencingService;
@@ -59,7 +62,6 @@ public class SettingActivity extends AppCompatActivity {
         }
 
 
-
         @Override
         public void onServiceDisconnected(ComponentName componentName) {
 
@@ -75,16 +77,29 @@ public class SettingActivity extends AppCompatActivity {
             switch(view.getId()){
                 case R.id.start :
                     Toast.makeText(getApplicationContext(), "service start", Toast.LENGTH_LONG).show();
-                    geofencingService.startGeofence();
+                    if(isEmpty() != true)
+                        geofencingService.startGeofence();
                     break;
                 case R.id.stop :
                     Toast.makeText(getApplicationContext(), "service stop", Toast.LENGTH_LONG).show();
                     geofencingService.stopGeofence();//
-                    //unbindService(connection);
                     isBound = false;
                     break;
             }
         }
     };
+
+    boolean isEmpty(){
+
+        Realm.init(this);
+        RealmConfiguration config = new RealmConfiguration.Builder().build();
+        Realm.setDefaultConfiguration(config);
+
+        Realm realm = Realm.getDefaultInstance();
+        if(realm.where(TodoItem.class).findAll().size() == 0)
+            return true;
+        else
+            return false;
+    }
 
 }

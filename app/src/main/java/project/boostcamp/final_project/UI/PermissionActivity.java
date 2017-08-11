@@ -26,7 +26,7 @@ public class PermissionActivity extends AppCompatActivity {
 
     private static final String TAG = "PermissionActivity";
     private static final int REQUEST_PERMISSIONS_REQUEST_CODE = 34;
-    private static final String SETTING = "isSetting";
+    public static final String SETTING = "isSetting";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,12 +38,10 @@ public class PermissionActivity extends AppCompatActivity {
         boolean isSetting = SharedPreferencesService.getInstance().getPrefData(SETTING);
 
         if(isSetting == false)
-            //SharedPreferencesService.getInstance().setPrefData(SETTING, true);
-            Log.e("permission", "처음설치");
+            SharedPreferencesService.getInstance().setPrefData(SETTING, true);
         else{
+            this.finish();
             startActivity(new Intent(this, MainActivity.class));} //todo 속도 너무 느린데 다른 방법 찾기
-            finish();
-
 
     }
 
@@ -104,9 +102,7 @@ public class PermissionActivity extends AppCompatActivity {
                                            @NonNull int[] grantResults) {
         if (requestCode == REQUEST_PERMISSIONS_REQUEST_CODE) {
             if (grantResults.length <= 0) {
-            } else if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {//todo 여기서 지오펜싱 서비스 시작하기!
-                finish();
-                startActivity(new Intent(this, MainActivity.class));
+            } else if (grantResults[0] == PackageManager.PERMISSION_GRANTED) { //todo 여기서 지오펜싱 서비스 시작하기!
             } else {
                 showSnackbar(R.string.permission_denied_explanation, settings,  // 퍼미션 요청 거절한 경우 스낵바를 통해 꼭 필요한 기능임을 알려주고 누르면 세팅창으로 갈 수 있다
                         new View.OnClickListener() {
