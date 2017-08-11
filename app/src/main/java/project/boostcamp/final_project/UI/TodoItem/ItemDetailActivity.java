@@ -1,8 +1,13 @@
 package project.boostcamp.final_project.UI.TodoItem;
 
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
+import android.content.ServiceConnection;
+import android.os.IBinder;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -13,6 +18,8 @@ import org.w3c.dom.Text;
 import io.realm.Realm;
 import project.boostcamp.final_project.Model.TodoItem;
 import project.boostcamp.final_project.R;
+import project.boostcamp.final_project.Util.GeofencingService;
+import project.boostcamp.final_project.Util.GeofencingService.GeoBinder;
 
 public class ItemDetailActivity extends AppCompatActivity {
 
@@ -47,7 +54,7 @@ public class ItemDetailActivity extends AppCompatActivity {
 
         intent = getIntent();
         int position = intent.getExtras().getInt("id"); // 아이템 받아와서 세팅하면 될 듯!!
-        item = realm.where(TodoItem.class).findAll().get(position);
+        item = realm.where(TodoItem.class).equalTo("id", position).findAll().get(0);
         setLayout();
 
     }

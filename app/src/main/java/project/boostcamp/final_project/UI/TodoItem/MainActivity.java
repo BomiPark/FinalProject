@@ -32,6 +32,7 @@ import static project.boostcamp.final_project.R.id.clock;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
+
     RealmResults<TodoItem> itemList;
     RecyclerView recyclerView;
     TodoItemAdapter adapter;

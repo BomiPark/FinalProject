@@ -22,7 +22,7 @@ import project.boostcamp.final_project.Model.TodoItem;
 
 public class GeofencingService extends Service{
 
-    public final IBinder binder = new GeoBinder();
+    private final IBinder binder = new GeoBinder();
 
     private enum PendingGeofenceTask { // 지오펜스의 현재 상태
         ADD, REMOVE, NONE
@@ -53,6 +53,7 @@ public class GeofencingService extends Service{
     @SuppressWarnings("MissingPermission")
     private void addGeofences() { //사용자가 요청을 허락한 경우에만 사용 가능해서 퍼미션 요구함
 
+        setGeofenceList();
         mGeofencingClient.addGeofences(getGeofencingRequest(), getGeofencePendingIntent());
                //.addOnCompleteListener(getApplication());
     }
@@ -74,7 +75,7 @@ public class GeofencingService extends Service{
     private GeofencingRequest getGeofencingRequest() { // 지오펜스 리퀘스트 빌드, 지오펜스 리스트 빌더에 넣구 초기화
         GeofencingRequest.Builder builder = new GeofencingRequest.Builder();
 
-        builder.setInitialTrigger(GeofencingRequest.INITIAL_TRIGGER_ENTER); // 이미들어가있는경우노티티
+        builder.setInitialTrigger(GeofencingRequest.INITIAL_TRIGGER_ENTER); // 이미들어가있는경우노티티\
 
         builder.addGeofences(mGeofenceList); // 지오펜싱 서비스에 지오펜스 리스트 감시하게 함
 
@@ -94,13 +95,15 @@ public class GeofencingService extends Service{
         return binder;
     }
 
-    void setGeofenceList(){ // 지오펜스 리스트 설정
+    void setGeofenceList() throws IllegalArgumentException{ // 지오펜스 리스트 설정
 
         setData();
         for(TodoItem item : itemList){
 
+            Log.e("fencing103", "" + item.getTodo());
+
             mGeofenceList.add(new Geofence.Builder()
-                    .setRequestId(item.getId()+"") //지오펜스 구분하기 위한 키값 설정
+                    .setRequestId(item.getTodo()) //지오펜스 구분하기 위한 키값 설정
                     .setCircularRegion( // 지오펜스 근처에 영역 지정
                             item.getLatitude(),
                             item.getLongitude(),
@@ -108,14 +111,18 @@ public class GeofencingService extends Service{
                     )
 
                     .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER)  // 전환 타입 지정
-
+                    .setLoiteringDelay(30000)
                     .setExpirationDuration(Geofence.NEVER_EXPIRE)
-
                     .build()); //지오펜스 생성
         }
     }
 
     void setData(){
+
+        Log.e("geofencing122", "setData() 호출 ");
+
+        itemList = null;
+
         Realm.init(this);
         RealmConfiguration config = new RealmConfiguration.Builder().build();
         Realm.setDefaultConfiguration(config);
@@ -128,6 +135,7 @@ public class GeofencingService extends Service{
 
     public class GeoBinder extends Binder {
         public GeofencingService getService(){
+
             return GeofencingService.this;
         }
     }

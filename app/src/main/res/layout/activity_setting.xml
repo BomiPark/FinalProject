@@ -9,8 +9,23 @@
 
     <Button
         android:layout_width="match_parent"
+        android:id="@+id/start"
         android:layout_height="wrap_content"
         android:text="start"
         android:onClick="onClick"/>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="stop"
+        android:id="@+id/stop"
+        android:onClick="onClick"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="onClick"
+        android:id="@+id/test"
+        android:text="test"/>
 
 </LinearLayout>

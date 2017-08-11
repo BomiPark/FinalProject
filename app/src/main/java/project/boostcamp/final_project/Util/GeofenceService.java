@@ -62,11 +62,10 @@ public class GeofenceService extends IntentService {
         ArrayList<String> triggeringGeofencesIdsList = new ArrayList<>();
         for (Geofence geofence : triggeringGeofences) {
             triggeringGeofencesIdsList.add(geofence.getRequestId());
+            //Log.e("geo", "" +geofence.getRequestId());
         }
 
-        String triggeringGeofencesIdsString = TextUtils.join(", ",  triggeringGeofencesIdsList);
-
-        return geofenceTransitionString + ": " + triggeringGeofencesIdsString;
+        return geofenceTransitionString;
     }
 
     private void sendNotification(String notificationDetails) {
@@ -93,7 +92,7 @@ public class GeofenceService extends IntentService {
 
         RemoteViews customView = new RemoteViews((getApplicationContext()).getPackageName(), R.layout.noti);
 
-        builder.setSmallIcon(R.drawable.app_icon)   //노티 세팅 todo 커스텀으로수정~
+        builder.setSmallIcon(R.drawable.app_icon)   // 메시지 내용 동적으로 변경 고려
                 .setLargeIcon(BitmapFactory.decodeResource(getResources(),
                         R.drawable.app_icon))
                 .setColor(Color.RED)
@@ -105,6 +104,9 @@ public class GeofenceService extends IntentService {
                 .setContent(customView)
                 .setContentIntent(notificationPendingIntent);
 
+
+        Log.e("geo",  "노티까지옴! ");
+
         builder.setAutoCancel(true);            // Dismiss notification once the user touches it.
 
         NotificationManager mNotificationManager =   //노티 매니저
@@ -113,7 +115,7 @@ public class GeofenceService extends IntentService {
         mNotificationManager.notify(0, builder.build()); //노티 날린다
     }
 
-    private String getTransitionString(int transitionType) {    //전환 상태 제공  들어왔는지 나갔는지
+    private String getTransitionString(int transitionType) {    //전환 상태 제공
         switch (transitionType) {
             case Geofence.GEOFENCE_TRANSITION_ENTER:
                 return getString(R.string.geofence_transition_entered);

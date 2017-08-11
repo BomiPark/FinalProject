@@ -10,6 +10,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 
 import project.boostcamp.final_project.BuildConfig;
@@ -25,7 +26,7 @@ public class PermissionActivity extends AppCompatActivity {
 
     private static final String TAG = "PermissionActivity";
     private static final int REQUEST_PERMISSIONS_REQUEST_CODE = 34;
-    public static final String SETTING = "isSetting";
+    private static final String SETTING = "isSetting";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,10 +38,12 @@ public class PermissionActivity extends AppCompatActivity {
         boolean isSetting = SharedPreferencesService.getInstance().getPrefData(SETTING);
 
         if(isSetting == false)
-            SharedPreferencesService.getInstance().setPrefData(SETTING, true);
+            //SharedPreferencesService.getInstance().setPrefData(SETTING, true);
+            Log.e("permission", "처음설치");
         else{
             startActivity(new Intent(this, MainActivity.class));} //todo 속도 너무 느린데 다른 방법 찾기
             finish();
+
 
     }
 

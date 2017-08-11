@@ -7,7 +7,7 @@ package project.boostcamp.final_project.Model;
 public class Folder {
 
     int id;
-    String category;
+    String folder;
 
     public Folder(){
 
@@ -21,11 +21,11 @@ public class Folder {
         this.id = id;
     }
 
-    public String getCategory() {
-        return category;
+    public String getFolder() {
+        return folder;
     }
 
-    public void setCategory(String category) {
-        this.category = category;
+    public void setFolder(String folder) {
+        this.folder = folder;
     }
 }

@@ -116,8 +116,6 @@ public class NewItemMapFragment extends Fragment {
             marker = googleMap.addMarker(options);
 
             marker.setDraggable(true);
-
-            googleMap.setOnMarkerDragListener(makerDragListener);
         }
     };
 
@@ -176,7 +174,7 @@ public class NewItemMapFragment extends Fragment {
 
         String query = editSearch.getText().toString();
 
-        if(query != null) {
+        if(query.length() > 0) {
             move(query);
             InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
             imm.hideSoftInputFromWindow(editSearch.getWindowToken(), 0);    //hide keyboard

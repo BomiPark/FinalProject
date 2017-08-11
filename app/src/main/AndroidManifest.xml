@@ -32,8 +32,6 @@
         <activity android:name=".UI.SettingActivity">
         </activity>
 
-        <service android:name=".Util.GeofenceService" />
-
         <activity android:name=".UI.LicenseActivity" />
 
         <activity
@@ -44,6 +42,11 @@
 
         <activity android:name=".UI.TodoItem.ItemDetailActivity" >
         </activity>
+
+        <service android:name=".Util.GeofenceService"
+            android:enabled="true"
+            android:exported="true"
+            android:process=":my_process"/>
 
         <service
             android:name=".Util.GeofencingService"
