@@ -21,11 +21,14 @@ import project.boostcamp.final_project.Util.GeofencingService;
 import project.boostcamp.final_project.Util.GeofencingService.GeoBinder;
 import project.boostcamp.final_project.Util.SharedPreferencesService;
 
+import static android.icu.lang.UCharacter.GraphemeClusterBreak.T;
+import static project.boostcamp.final_project.UI.PermissionActivity.SETTING;
+
 
 public class SettingActivity extends AppCompatActivity {
 
     Intent intent;
-    GeoBinder geoBinder;
+    public GeoBinder geoBinder;
     GeofencingService geofencingService;
     boolean isBound; // shared에저장해야할듯!!
 
@@ -38,13 +41,15 @@ public class SettingActivity extends AppCompatActivity {
 
         intent = new Intent(this, GeofencingService.class);
 
+        SharedPreferencesService.getInstance().load(getApplicationContext());
+      //  isBound =  SharedPreferencesService.getInstance().getPrefData("isBound"); //todo 체크 
+
         if(isBound == false) {
-            bindService(intent, connection, Context.BIND_AUTO_CREATE); // 이걸 계속하는 게 문제인강
-            isBound = true;
+            bindService(intent, connection, Context.BIND_AUTO_CREATE);
         }
         start = (Button)findViewById(R.id.start);
-        start.setOnClickListener(clickListener);
         stop = (Button)findViewById(R.id.stop);
+        start.setOnClickListener(clickListener);
         stop.setOnClickListener(clickListener);
 
 
@@ -58,16 +63,18 @@ public class SettingActivity extends AppCompatActivity {
 
             geoBinder = (GeoBinder) service;
             geofencingService = geoBinder.getService();
+            SharedPreferencesService.getInstance().setPrefData("isBound", true);
             isBound = true;
+
         }
 
 
         @Override
         public void onServiceDisconnected(ComponentName componentName) {
 
-            geoBinder = null;
-            isBound = false;
             geofencingService = null;
+            geoBinder = null;
+            SharedPreferencesService.getInstance().setPrefData("isBound", false);
         }
     };
 
@@ -77,8 +84,9 @@ public class SettingActivity extends AppCompatActivity {
             switch(view.getId()){
                 case R.id.start :
                     Toast.makeText(getApplicationContext(), "service start", Toast.LENGTH_LONG).show();
-                    if(isEmpty() != true)
+                    if(isEmpty() != true && geofencingService != null)
                         geofencingService.startGeofence();
+
                     break;
                 case R.id.stop :
                     Toast.makeText(getApplicationContext(), "service stop", Toast.LENGTH_LONG).show();

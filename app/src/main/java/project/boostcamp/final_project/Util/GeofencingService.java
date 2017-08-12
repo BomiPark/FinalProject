@@ -34,19 +34,14 @@ public class GeofencingService extends Service{
     private ArrayList<Geofence> mGeofenceList; // 알람 울리게 관리하는 지역 리스트
     private PendingIntent mGeofencePendingIntent; // 지오펜스를 요청하거나 삭제한 경우 사용
 
-    private PendingGeofenceTask mPendingGeofenceTask = PendingGeofenceTask.NONE; // 지오펜싱 태스크의 현재 상황을 설정 할 수 있다. 기본 세팅은 NONE
-
-
     public GeofencingService() {
     }
 
     public void startGeofence(){
-        mPendingGeofenceTask = PendingGeofenceTask.ADD;
         addGeofences();
     }
 
     public void stopGeofence(){
-        mPendingGeofenceTask = PendingGeofenceTask.REMOVE;
         removeGeofences();
     }
 
@@ -87,7 +82,6 @@ public class GeofencingService extends Service{
 
         mGeofenceList = new ArrayList<>(); // 리스트 초기화
         mGeofencePendingIntent = null; //
-        mPendingGeofenceTask = PendingGeofenceTask.ADD;
 
         setGeofenceList();
         mGeofencingClient = LocationServices.getGeofencingClient(this);

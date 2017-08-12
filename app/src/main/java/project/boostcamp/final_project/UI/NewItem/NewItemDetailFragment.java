@@ -4,28 +4,37 @@ import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.util.ArraySet;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.afollestad.materialdialogs.MaterialDialog;
+
+import java.util.ArrayList;
 
 import project.boostcamp.final_project.Model.Constant;
 import project.boostcamp.final_project.Interface.FragmentChangeListener;
 import project.boostcamp.final_project.Model.TodoItem;
 import project.boostcamp.final_project.R;
 
+import static project.boostcamp.final_project.R.id.toSearch;
+
 public class NewItemDetailFragment extends Fragment {
 
     static View view;
     FragmentChangeListener listener;
-    TextView toMap, toSearch, on, off;
     ImageView back, ok;
     EditText todo;
     boolean isAlarm = true;
+    Button folder, toSearch, toMap, on, off;
+    ArrayList<String> folderList;
 
     TodoItem item;
 
@@ -35,15 +44,20 @@ public class NewItemDetailFragment extends Fragment {
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_new_item_detail, container, false);
 
-        toMap = (TextView)view.findViewById(R.id.to_map);
-        toSearch = (TextView)view.findViewById(R.id.to_search);
+        toMap = (Button) view.findViewById(R.id.to_map);
+        toSearch = (Button) view.findViewById(R.id.to_search);
         back = (ImageView)view.findViewById(R.id.back);
         ok = (ImageView)view.findViewById(R.id.ok);
         todo = (EditText)view.findViewById(R.id.todo);
-        on = (TextView)view.findViewById(R.id.on);
-        off = (TextView)view.findViewById(R.id.off);
+        on = (Button)view.findViewById(R.id.on);
+        off = (Button)view.findViewById(R.id.off);
+        folder = (Button)view.findViewById(R.id.folder);
 
         item = new TodoItem();
+
+        folderList = new ArrayList<>(); //todo 이거 렘에서 받아오기
+        folderList.add("살 것");
+        folderList.add("챙길 것");
 
         toSearch.setOnClickListener(clickListener); // 클릭리스너 연결
         toMap.setOnClickListener(clickListener);
@@ -51,6 +65,7 @@ public class NewItemDetailFragment extends Fragment {
         ok.setOnClickListener(clickListener);
         on.setOnClickListener(clickListener);
         off.setOnClickListener(clickListener);
+        folder.setOnClickListener(clickListener);
 
         return view;
     }
@@ -86,6 +101,7 @@ public class NewItemDetailFragment extends Fragment {
                     else{
                         item.setTodo(todo.getText().toString()); // 입력 받은 값 세팅 todo 폴더 추가
                         item.setAlarm(isAlarm);
+                        item.setFolder(folder.getText().toString());
                         listener.changeFragment(Constant.DETAIL, Constant.SAVE, item);
                     }
                     break;
@@ -94,6 +110,9 @@ public class NewItemDetailFragment extends Fragment {
                     break;
                 case R.id.off :
                     isAlarm = false;
+                    break;
+                case R.id.folder :
+                    getDialog();
                     break;
             }
         }
@@ -121,5 +140,22 @@ public class NewItemDetailFragment extends Fragment {
         }
     }
 
-
+    void getDialog(){
+        new MaterialDialog.Builder(getActivity())
+                .title("폴더선택")
+                .items(folderList)
+                .itemsCallbackSingleChoice(-1, new MaterialDialog.ListCallbackSingleChoice() {
+                    @Override
+                    public boolean onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
+                        folder.setText(text);
+                        item.setFolder(text.toString()); //todo 값 유지하게 되면 변경하기
+                        return true;
+                    }
+                })
+                .positiveText("확인")
+                .show();
+    }
 }
+
+
+

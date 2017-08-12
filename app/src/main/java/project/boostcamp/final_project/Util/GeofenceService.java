@@ -86,8 +86,6 @@ public class GeofenceService extends IntentService {
         Log.e("geo84", notificationDetails + "");
         notificationIntent.putExtra("id", notificationDetails);
 
-        //notificationIntent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_SINGLE_TOP.
-
         // Construct a task stack.
         TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
 
