@@ -130,12 +130,12 @@ public class NewItemDetailFragment extends Fragment {
                 toSearch.setTextColor(Color.parseColor("#E35757"));
                 break;
             case R.id.on :
-                on.setTextColor(Color.parseColor("#767676")); // 체크
-                off.setTextColor(Color.parseColor("#E35757"));
+                on.setTextColor(Color.parseColor("#E35757"));
+                off.setTextColor(Color.parseColor("#767676"));
                 break;
             case R.id.off :
-                on.setTextColor(Color.parseColor("#E35757"));
-                off.setTextColor(Color.parseColor("#767676")); // 체크
+                on.setTextColor(Color.parseColor("#767676"));
+                off.setTextColor(Color.parseColor("#E35757"));
 
         }
     }

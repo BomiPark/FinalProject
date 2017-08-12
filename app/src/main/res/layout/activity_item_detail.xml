@@ -84,7 +84,7 @@
                 android:id="@+id/folder"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="address"
+                android:text="@string/folder"
                 android:textSize="12sp"/>
 
 
@@ -112,7 +112,7 @@
                 android:layout_gravity="center_vertical"
                 android:gravity="center"
                 android:text="@string/on"
-                android:textColor="@color/click_back"
+                android:textColor="@drawable/btn_selector"
                 android:textSize="13sp"
                 style="@style/Widget.AppCompat.Button.Borderless.Colored" />
 
@@ -144,14 +144,16 @@
                 style="@style/Widget.AppCompat.Button.Borderless.Colored"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textColor="@color/click_back"
                 android:text="completed" />
 
             <Button
                 android:id="@+id/not_completed"
-                style="@style/Widget.AppCompat.Button.Colored"
+                style="@style/Widget.AppCompat.Button.Borderless.Colored"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="not" />
+                android:text="not"
+                android:textColor="@color/gray" />
 
         </LinearLayout>
 

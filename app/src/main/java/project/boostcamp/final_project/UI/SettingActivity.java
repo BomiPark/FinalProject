@@ -7,32 +7,33 @@ import android.content.ServiceConnection;
 import android.os.IBinder;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CompoundButton;
+import android.widget.SeekBar;
+import android.widget.Switch;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
 import project.boostcamp.final_project.Model.TodoItem;
 import project.boostcamp.final_project.R;
-import project.boostcamp.final_project.UI.TodoItem.MainActivity;
 import project.boostcamp.final_project.Util.GeofencingService;
 import project.boostcamp.final_project.Util.GeofencingService.GeoBinder;
 import project.boostcamp.final_project.Util.SharedPreferencesService;
 
-import static android.icu.lang.UCharacter.GraphemeClusterBreak.T;
-import static project.boostcamp.final_project.UI.PermissionActivity.SETTING;
-
-
 public class SettingActivity extends AppCompatActivity {
 
     Intent intent;
-    public GeoBinder geoBinder;
-    GeofencingService geofencingService;
+    GeoBinder geoBinder;
+    public static GeofencingService geofencingService;
     boolean isBound; // shared에저장해야할듯!!
 
-    Button start, stop;
+    Button on, off;
+    Switch swich;
+    SeekBar radiusBar;
+    TextView radiusValue;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,18 +41,49 @@ public class SettingActivity extends AppCompatActivity {
         setContentView(R.layout.activity_setting);
 
         intent = new Intent(this, GeofencingService.class);
+        on = (Button)findViewById(R.id.on);
+        off = (Button)findViewById(R.id.off);
+        on.setOnClickListener(clickListener);
+        off.setOnClickListener(clickListener);
+        swich = (Switch)findViewById(R.id.switchBar);
+        radiusBar = (SeekBar)findViewById(R.id.radiusBar);
+        radiusValue = (TextView)findViewById(R.id.radiusValue);
+
+        swich.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(isChecked == true) {
+                    setAlarmOn(true);
+                }
+                else{
+                    setAlarmOn(false);
+                }
+            }
+        });
+
+        radiusBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() { //todo 채우기
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                radiusValue.setText(progress + " M");
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+            }
+        });
 
         SharedPreferencesService.getInstance().load(getApplicationContext());
-      //  isBound =  SharedPreferencesService.getInstance().getPrefData("isBound"); //todo 체크 
+
+      //  isBound =  SharedPreferencesService.getInstance().getPrefData("isBound"); //todo 체크
 
         if(isBound == false) {
             bindService(intent, connection, Context.BIND_AUTO_CREATE);
         }
-        start = (Button)findViewById(R.id.start);
-        stop = (Button)findViewById(R.id.stop);
-        start.setOnClickListener(clickListener);
-        stop.setOnClickListener(clickListener);
-
 
     }
 
@@ -82,20 +114,43 @@ public class SettingActivity extends AppCompatActivity {
         @Override
         public void onClick(View view) {
             switch(view.getId()){
-                case R.id.start :
-                    Toast.makeText(getApplicationContext(), "service start", Toast.LENGTH_LONG).show();
-                    if(isEmpty() != true && geofencingService != null)
-                        geofencingService.startGeofence();
-
+                case R.id.on :
+                    setAlarmOn(true);
                     break;
-                case R.id.stop :
-                    Toast.makeText(getApplicationContext(), "service stop", Toast.LENGTH_LONG).show();
-                    geofencingService.stopGeofence();//
-                    isBound = false;
+                case R.id.off :
+                    setAlarmOn(false);
                     break;
             }
         }
     };
+
+    void setAlarmOn(boolean on){
+        if(on == true){
+            swich.setChecked(true);
+            Toast.makeText(getApplicationContext(), "service start", Toast.LENGTH_LONG).show();
+            setTextColor(true);
+            if(isEmpty() != true && geofencingService != null)
+                geofencingService.startGeofence();
+        }
+        else{
+            swich.setChecked(false);
+            Toast.makeText(getApplicationContext(), "service stop", Toast.LENGTH_LONG).show();
+            geofencingService.stopGeofence();//
+            setTextColor(false);
+            isBound = false;
+        }
+    }
+
+    void setTextColor(boolean alarmOn){
+        if(alarmOn == true){
+            on.setTextColor(getResources().getColor(R.color.click_back));
+            off.setTextColor(getResources().getColor(R.color.gray));
+        }
+        else{
+            on.setTextColor(getResources().getColor(R.color.gray));
+            off.setTextColor(getResources().getColor(R.color.click_back));
+        }
+    }
 
     boolean isEmpty(){
 

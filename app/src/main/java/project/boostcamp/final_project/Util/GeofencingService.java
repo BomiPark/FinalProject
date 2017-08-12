@@ -45,12 +45,22 @@ public class GeofencingService extends Service{
         removeGeofences();
     }
 
+    public void updateGeofence() {
+        removeGeofences();
+        updateGeofence();
+    }
+
+    @SuppressWarnings("MissingPermission")
+    public void setRadius(int radius){
+        setGeofenceList(radius);
+        mGeofencingClient.addGeofences(getGeofencingRequest(), getGeofencePendingIntent());
+    }
+
     @SuppressWarnings("MissingPermission")
     private void addGeofences() { //사용자가 요청을 허락한 경우에만 사용 가능해서 퍼미션 요구함
 
-        setGeofenceList();
+        setGeofenceList(0);
         mGeofencingClient.addGeofences(getGeofencingRequest(), getGeofencePendingIntent());
-               //.addOnCompleteListener(getApplication());
     }
 
     private void removeGeofences() { //이것두 사용자가 퍼미션을 허락해야 사용 가능
@@ -83,29 +93,45 @@ public class GeofencingService extends Service{
         mGeofenceList = new ArrayList<>(); // 리스트 초기화
         mGeofencePendingIntent = null; //
 
-        setGeofenceList();
+        setGeofenceList(0);
         mGeofencingClient = LocationServices.getGeofencingClient(this);
 
         return binder;
     }
 
-    void setGeofenceList() throws IllegalArgumentException{ // 지오펜스 리스트 설정
+    void setGeofenceList(int radius) throws IllegalArgumentException { // 지오펜스 리스트 설정
 
         setData();
-        for(TodoItem item : itemList){
 
-            mGeofenceList.add(new Geofence.Builder()
-                    .setRequestId(item.getId()+"") //지오펜스 구분하기 위한 키값 설정
-                    .setCircularRegion( // 지오펜스 근처에 영역 지정
-                            item.getLatitude(),
-                            item.getLongitude(),
-                            Constant.GEOFENCE_RADIUS_IN_METERS  //todo 이거 입력받아서 수정할수 있게 만들기
-                    )
+        if (radius == 0) {
+            for (TodoItem item : itemList) {
 
-                    .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER)  // 전환 타입 지정
-                    //.setLoiteringDelay(30000)
-                    .setExpirationDuration(Geofence.NEVER_EXPIRE)
-                    .build()); //지오펜스 생성
+                mGeofenceList.add(new Geofence.Builder()
+                        .setRequestId(item.getId() + "") //지오펜스 구분하기 위한 키값 설정
+                        .setCircularRegion( // 지오펜스 근처에 영역 지정
+                                item.getLatitude(),
+                                item.getLongitude(),
+                                Constant.GEOFENCE_RADIUS_IN_METERS
+                        )
+                        .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER)
+                        .setExpirationDuration(Geofence.NEVER_EXPIRE)
+                        .build()); //지오펜스 생성
+            }
+        }
+        else {
+            for (TodoItem item : itemList) {
+
+                mGeofenceList.add(new Geofence.Builder()
+                        .setRequestId(item.getId() + "") //지오펜스 구분하기 위한 키값 설정
+                        .setCircularRegion( // 지오펜스 근처에 영역 지정
+                                item.getLatitude(),
+                                item.getLongitude(),
+                                radius
+                        )
+                        .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER)
+                        .setExpirationDuration(Geofence.NEVER_EXPIRE)
+                        .build()); //지오펜스 생성
+            }
         }
     }
 

@@ -1,8 +1,10 @@
 package project.boostcamp.final_project.UI.TodoItem;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -27,16 +29,17 @@ import project.boostcamp.final_project.UI.SettingActivity;
 import project.boostcamp.final_project.UI.NewItem.NewItemActivity;
 import project.boostcamp.final_project.Util.CheckDialog;
 
-import static project.boostcamp.final_project.R.id.clock;
+import static project.boostcamp.final_project.UI.SettingActivity.geofencingService;
+
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-
     RealmResults<TodoItem> itemList;
     RecyclerView recyclerView;
     TodoItemAdapter adapter;
-    static CheckDialog dialog;
+    AlertDialog.Builder dialog;
+    DrawerLayout drawer;
 
     Realm realm;
 
@@ -56,7 +59,7 @@ public class MainActivity extends AppCompatActivity
             }
         });
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
@@ -72,6 +75,7 @@ public class MainActivity extends AppCompatActivity
     void init(){
 
         setData();
+        dialog = new AlertDialog.Builder(MainActivity.this);
         recyclerView = (RecyclerView)findViewById(R.id.recyclerView);
         adapter = new TodoItemAdapter(this, itemList, R.layout.todo_item);
         recyclerView.setAdapter(adapter);
@@ -86,32 +90,35 @@ public class MainActivity extends AppCompatActivity
 
             @Override
             public void onItemLongClick(View view, final int position) {
-                dialog = new CheckDialog(MainActivity.this,
-                        "todo 내용", " ^^ ", leftClickListener ,  new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        realm.executeTransaction(new Realm.Transaction() {
+                dialog = new AlertDialog.Builder(MainActivity.this);
+                dialog.setTitle(R.string.dialog_title).setMessage(itemList.get(position).getTodo())
+                        .setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
                             @Override
-                            public void execute(Realm realm) {
+                            public void onClick(DialogInterface dialog, int which) {
+                                realm.executeTransaction(new Realm.Transaction() {
+                                    @Override
+                                    public void execute(Realm realm) {
 
-                                TodoItem item = itemList.get(position);
-                                item.deleteFromRealm();
+                                        TodoItem item = itemList.get(position);
+                                        item.deleteFromRealm();
+                                    }
+                                });
+                                adapter.notifyDataSetChanged();
+                                // geofencingService.updateGeofence(); //todo 서비스 생성 위치 바꾸고 활성화
                             }
-                        });
-                        adapter.notifyDataSetChanged();
-                        dialog.dismiss();
-                    }
-                });
-                dialog.show();
+                        })
+                        .setNegativeButton(getString(R.string.cancel),
+                                new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        // negative button logic
+                                    }
+                                });
+                AlertDialog dialogCreate = dialog.create();
+                dialogCreate.show();
             }
         }));
     }
-
-     View.OnClickListener leftClickListener = new View.OnClickListener() {
-        public void onClick(View v) {
-            dialog.dismiss();
-        }
-    };
 
     void setData(){
         Realm.init(this);
@@ -136,8 +143,8 @@ public class MainActivity extends AppCompatActivity
             public void execute(Realm realm) { //todo 이렇게안해두되긴하는거같당!
                 itemList = null;
                 itemList = realm.where(TodoItem.class).equalTo("isCompleted", false).findAll();
+                //geofencingService.updateGeofence();  //todo 서비스 생성 위치 바꾸고 활성화
                 adapter.notifyDataSetChanged();
-
             }
         });
 

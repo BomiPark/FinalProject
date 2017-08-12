@@ -12,10 +12,17 @@
     <string name="todo">TODO\nLIST</string>
     <string name="folder">폴더</string>
     <string name="select_folder">폴더선택</string>
-    <string name="setting_push">푸시알림</string>
+    <string name="setting_push">알림</string>
     <string name="on">On</string>
     <string name="off">Off</string>
     <string name="input_address">이동할 주소를 입력해주세요</string>
+    <string name="radius">알림반경</string>
+    <string name="meter">200M</string>
+    <string name="name">오리너구리</string>
+    <string name="dialog_title">아이템을 삭제하시겠습니까</string>
+    <string name="ok">확인</string>
+    <string name="cancel">취소</string>
+
 
     <!-- 퍼미션 관련 -->
     <string name="permission_rationale">어플리케이션 기능 상 위치 정보 접근이 필요합니다.</string>
