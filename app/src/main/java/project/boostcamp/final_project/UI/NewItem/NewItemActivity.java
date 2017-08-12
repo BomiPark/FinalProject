@@ -72,7 +72,7 @@ public class NewItemActivity extends AppCompatActivity implements FragmentChange
         } else if( to == Constant.DETAIL && item != null) {
             getSupportFragmentManager().popBackStack();
             todoItem = item;
-        } else if(to == Constant.END){
+        } else if(to == Constant.END){ // 아이템 저장안하고 종료하는 경우
             finish();
         } else if(to == SAVE){
             todoItem = item;
@@ -94,7 +94,6 @@ public class NewItemActivity extends AppCompatActivity implements FragmentChange
 
         realm.beginTransaction();
         item.setId(nextID);
-
         realm.copyToRealm(item);
 
         realm.commitTransaction();
@@ -105,7 +104,6 @@ public class NewItemActivity extends AppCompatActivity implements FragmentChange
     public int setStatus(int now) {
 
         STATUS = now;
-
         return 0;
     }
 

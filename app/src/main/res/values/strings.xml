@@ -11,7 +11,10 @@
     <string name="new_list">NEW\nTODO LIST</string>
     <string name="todo">TODO\nLIST</string>
     <string name="folder">폴더</string>
+    <string name="folder_eng">FOLDER</string>
+    <string name="add_folder">Add folder</string>
     <string name="select_folder">폴더선택</string>
+    <string name="input_folder"> 추가할 폴더 이름을 입력해주세요 </string>
     <string name="setting_push">알림</string>
     <string name="on">On</string>
     <string name="off">Off</string>
@@ -19,7 +22,7 @@
     <string name="radius">알림반경</string>
     <string name="meter">200M</string>
     <string name="name">오리너구리</string>
-    <string name="dialog_title">아이템을 삭제하시겠습니까</string>
+    <string name="dialog_title">Delete Item</string>
     <string name="ok">확인</string>
     <string name="cancel">취소</string>
 

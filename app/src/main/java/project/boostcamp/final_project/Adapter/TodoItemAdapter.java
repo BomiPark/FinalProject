@@ -48,8 +48,4 @@ public class TodoItemAdapter  extends RecyclerView.Adapter<TodoItemViewHolder> {
     public int getItemCount() {
         return itemList.size();
     }
-
-    public void setTodoItemList(ArrayList<TodoItem> itemList){
-        this.itemList = itemList;
-    }
 }

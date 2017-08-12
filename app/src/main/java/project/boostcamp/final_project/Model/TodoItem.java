@@ -12,7 +12,7 @@ import static android.icu.lang.UCharacter.GraphemeClusterBreak.T;
 
 public class TodoItem extends RealmObject{
 
-    @PrimaryKey
+
     private int id;
     private String todo;
     private String address;

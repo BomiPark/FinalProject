@@ -72,7 +72,7 @@ public class NewItemSearchFragment  extends Fragment {
         naverService = ServiceAdapter.getService();
 
         searchItemList = new ArrayList<>();
-        adapter = new SearchItemAdapter(getContext(), searchItemList, R.layout.search_item);
+        adapter = new SearchItemAdapter(getContext(), searchItemList, R.layout.item_search);
         recyclerView.setAdapter(adapter);
         recyclerView.addOnItemTouchListener(new RecyclerItemClickListener(getActivity(), recyclerView, new RecyclerItemClickListener.OnItemClickListener() {
             @Override
