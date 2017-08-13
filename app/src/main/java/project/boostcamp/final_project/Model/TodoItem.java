@@ -25,6 +25,7 @@ public class TodoItem extends RealmObject{
     public TodoItem(){
         this.date = getCurrentDate();
         isCompleted = false;
+        alarm = true;
     }
 
     public TodoItem(String todo, String address, double latitude, double longitude, String folder){
@@ -32,6 +33,7 @@ public class TodoItem extends RealmObject{
         isCompleted = false;
         this.todo = todo;
         this.address = address;
+        this.alarm = true;
         this.latitude = latitude;
         this.longitude = longitude;
         this.folder = folder;

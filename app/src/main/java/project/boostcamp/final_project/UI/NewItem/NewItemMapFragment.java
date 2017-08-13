@@ -81,6 +81,7 @@ public class NewItemMapFragment extends Fragment {
         super.onAttach(context);
 
         listener = (FragmentChangeListener) context;
+        listener.setStatus(Constant.MAP);
     }
 
     @Override

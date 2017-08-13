@@ -12,7 +12,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import io.realm.Realm;
+import io.realm.RealmConfiguration;
 import project.boostcamp.final_project.BuildConfig;
+import project.boostcamp.final_project.Model.FolderItem;
 import project.boostcamp.final_project.R;
 import project.boostcamp.final_project.UI.TodoItem.MainActivity;
 import project.boostcamp.final_project.Util.SharedPreferencesService;
@@ -25,12 +31,16 @@ public class PermissionActivity extends AppCompatActivity {
 
     private static final String TAG = "PermissionActivity";
     private static final int REQUEST_PERMISSIONS_REQUEST_CODE = 34;
+    Realm realm;
+    List<String> folderList;
+    FolderItem folder;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_permission);
 
+        setDefaultFolder();
     }
 
     @Override
@@ -111,4 +121,30 @@ public class PermissionActivity extends AppCompatActivity {
             }
         }
     }
+
+    void setDefaultFolder(){
+
+        getFolderList();
+        Realm.init(this);
+        RealmConfiguration config = new RealmConfiguration.Builder().build();
+        Realm.setDefaultConfiguration(config);
+
+        realm = Realm.getDefaultInstance();
+        realm.beginTransaction();
+        for(int i=0; i< folderList.size(); i++) {
+            folder = realm.createObject(FolderItem.class);
+            folder.setId(i);
+            folder.setFolder(folderList.get(i).toString());
+            realm.copyToRealm(folder);
+        }
+        realm.commitTransaction();
+    }
+
+    void getFolderList(){
+        folderList = new ArrayList<>();
+        folderList.add(getResources().getString(R.string.folder_default1));
+        folderList.add(getResources().getString(R.string.folder_default2));
+        folderList.add(getResources().getString(R.string.folder_default3));
+    }
+
 }

@@ -1,9 +1,11 @@
 package project.boostcamp.final_project.UI.NewItem;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -49,6 +51,8 @@ public class NewItemDetailFragment extends Fragment {
     Realm realm;
     TodoItem item;
 
+    int status;
+
     public NewItemDetailFragment(){}
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -66,16 +70,6 @@ public class NewItemDetailFragment extends Fragment {
 
         initData();
 
-        item = new TodoItem();
-        folderList = ImmutableList.copyOf(Collections2.transform(realmResults, new Function<FolderItem, String>(){
-                    @Nullable
-                    @Override
-                    public String apply(@Nullable FolderItem input) {
-                        return input.getFolder();
-                    }
-                }));
-
-
         toSearch.setOnClickListener(clickListener); // 클릭리스너 연결
         toMap.setOnClickListener(clickListener);
         back.setOnClickListener(clickListener);
@@ -92,9 +86,25 @@ public class NewItemDetailFragment extends Fragment {
         super.onAttach(context);
 
         listener = (FragmentChangeListener) context;
-        listener.setStatus(Constant.DETAIL);
     }
 
+    @Override
+    public void onStart(){
+        super.onStart();
+
+        if(item != null)
+            setView();
+        else
+            item = new TodoItem();
+    }
+
+    @Override
+    public void onPause(){
+        super.onPause();
+
+        saveData();
+
+    }
 
     View.OnClickListener clickListener = new View.OnClickListener() {
         @Override
@@ -102,9 +112,11 @@ public class NewItemDetailFragment extends Fragment {
             setBtnColor(view.getId()); // 위치 설정한 방법은 붉은색으로 표시
             switch (view.getId()){
                 case R.id.to_map :
+                    status = R.id.to_map;
                     listener.changeFragment(Constant.DETAIL, Constant.MAP, null);
                     break;
                 case R.id.to_search :
+                    status = R.id.to_search;
                     listener.changeFragment(Constant.DETAIL, Constant.SEARCH, null);
                     break;
                 case R.id.back :
@@ -113,11 +125,8 @@ public class NewItemDetailFragment extends Fragment {
                 case R.id.ok :
                     item = listener.getCurrentItem();
                     if(isItemEmpty(item) == false){
-                        item.setTodo(todo.getText().toString());
-                        item.setAlarm(isAlarm);
-                        item.setFolder(folder.getText().toString());
-                        listener.changeFragment(Constant.DETAIL, Constant.SAVE, item);
-                    }
+                        saveData();
+                        listener.changeFragment(Constant.DETAIL, Constant.SAVE, item);}
                     break;
                 case R.id.on :
                     isAlarm = true;
@@ -141,17 +150,34 @@ public class NewItemDetailFragment extends Fragment {
         if (item.getAddress() == null) {
             Toast.makeText(getContext(), "알람이 울릴 지점을 선택해주세요", Toast.LENGTH_LONG).show();
             return true;
-        }/*
+        }
         if (folder.getText().toString().equals("폴더선택")) {
             Toast.makeText(getContext(), "포함될 폴더를 선택해주세요", Toast.LENGTH_LONG).show();
             return true;
-        }*/
+        }
         return false;
 
     }
 
+    void saveData(){
+        item.setTodo(todo.getText().toString());
+        item.setAlarm(isAlarm);
+        item.setFolder(folder.getText().toString());
+    }
+
+    void setView(){
+
+        folder.setText(item.getFolder());
+        setBtnColor(status);
+
+        if(item.isAlarm() == true)
+            setBtnColor(R.id.on);
+        else
+            setBtnColor(R.id.off);
+    }
+
+
     void setBtnColor(int id){
-        Log.e("new", id + "  " ); //todo 텍스트뷰 색 바꾼거 상태 저장 안되고 on off 버튼은 이전에체크한애만 반응한당
         switch(id){
             case R.id.to_map :
                 toMap.setTextColor(Color.parseColor("#E35757")); // 체크된 상태
@@ -173,14 +199,13 @@ public class NewItemDetailFragment extends Fragment {
     }
 
     void getDialog(){
-
         new MaterialDialog.Builder(getActivity())
                 .title("폴더선택")
                 .items(folderList)
                 .itemsCallbackSingleChoice(-1, new MaterialDialog.ListCallbackSingleChoice() {
                     @Override
                     public boolean onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
-                        folder.setText(folderList.get(which));//todo 값 유지안되니까 따로 설정
+                        folder.setText(folderList.get(which));//todo 이거 안이쁨 수정
                         item.setFolder(folderList.get(which));
                         return true;
                     }
@@ -196,7 +221,16 @@ public class NewItemDetailFragment extends Fragment {
 
         realm = Realm.getDefaultInstance();
         realmResults = realm.where(FolderItem.class).findAll();
+
+        folderList = ImmutableList.copyOf(Collections2.transform(realmResults, new Function<FolderItem, String>(){
+            @Nullable
+            @Override
+            public String apply(@Nullable FolderItem input) {
+                return input.getFolder();
+            }
+        }));
     }
+
 
 }
 

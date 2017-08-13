@@ -28,7 +28,9 @@
     <string name="ok_eng">OK</string>
     <string name="cancel_eng">CANCEL</string>
     <string name="saved">저장되었습니다 </string>
-
+    <string name="folder_default1">사야할 것</string>
+    <string name="folder_default2">해야할 것</string>
+    <string name="folder_default3">봐야할 것</string>
 
     <!-- 퍼미션 관련 -->
     <string name="permission_rationale">어플리케이션 기능 상 위치 정보 접근이 필요합니다.</string>

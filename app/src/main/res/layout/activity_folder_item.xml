@@ -19,6 +19,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="50dp"
+        android:id="@+id/folder_title"
         android:background="@color/click_back"
         android:textColor="@color/white"
         android:padding="10dp"
@@ -30,7 +31,7 @@
     <android.support.v7.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="20dp">
+        android:id="@+id/simple_todo_list">
 
     </android.support.v7.widget.RecyclerView>
 

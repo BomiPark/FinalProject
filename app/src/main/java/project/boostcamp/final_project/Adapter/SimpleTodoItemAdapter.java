@@ -5,43 +5,39 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import java.util.ArrayList;
 import java.util.List;
 
 import io.realm.RealmResults;
-import project.boostcamp.final_project.Model.SearchItem;
 import project.boostcamp.final_project.Model.TodoItem;
-import project.boostcamp.final_project.R;
 
-
-public class TodoItemAdapter extends RecyclerView.Adapter<TodoItemViewHolder> {
+public class SimpleTodoItemAdapter extends RecyclerView.Adapter<SimpleTodoItemViewHolder>{
 
     private Context context;
     private List<TodoItem> itemList = new ArrayList<>();
     private int item_layout;
-    private TodoItemViewHolder viewHolder;
+    private SimpleTodoItemViewHolder viewHolder;
 
-    public TodoItemAdapter(Context context, RealmResults<TodoItem> itemList, int item_layout){
+    public SimpleTodoItemAdapter(Context context, RealmResults<TodoItem> itemList, int item_layout){
         this.context = context;
         this.itemList = itemList;
         this.item_layout = item_layout;
     }
 
     @Override
-    public TodoItemViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public SimpleTodoItemViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
         View view;
 
         view = LayoutInflater.from(parent.getContext()).inflate(item_layout, parent, false);
-        viewHolder = new TodoItemViewHolder(view);
+        viewHolder = new SimpleTodoItemViewHolder(view);
 
         return viewHolder;
     }
 
     @Override
-    public void onBindViewHolder(TodoItemViewHolder holder, int position) {
-        ((TodoItemViewHolder) holder).bind(itemList.get(position));
+    public void onBindViewHolder(SimpleTodoItemViewHolder holder, int position) { //todo 클릭리스너등록
+        ((SimpleTodoItemViewHolder) holder).bind(itemList.get(position));
     }
 
     @Override

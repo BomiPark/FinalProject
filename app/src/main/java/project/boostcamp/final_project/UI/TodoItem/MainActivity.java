@@ -9,6 +9,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -109,8 +110,8 @@ public class MainActivity extends AppCompatActivity
             public void onItemClick(View view, int position) {
                 DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout); //todo 폴더리스트로이동
                 drawer.closeDrawer(GravityCompat.START);
-                Toast.makeText(MainActivity.this, folderList.get(position).getFolder()+"리스트로이동, 아직구현x" , Toast.LENGTH_LONG).show();
                 Intent intent = new Intent(MainActivity.this, FolderItemActivity.class);
+                intent.putExtra("folder", folderList.get(position).getFolder());
                 startActivity(intent);
             }
 
