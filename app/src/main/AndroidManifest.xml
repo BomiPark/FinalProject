@@ -4,7 +4,7 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
     <application
         android:allowBackup="true"
@@ -19,41 +19,37 @@
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
 
-        <activity
-            android:name=".UI.PermissionActivity" >
-        <intent-filter>
-            <action android:name="android.intent.action.MAIN" />
-            <category android:name="android.intent.category.LAUNCHER" />
-        </intent-filter>
+        <activity android:name=".UI.PermissionActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
         <activity
             android:name=".UI.NewItem.NewItemActivity"
-            android:screenOrientation="portrait"><!-- 화면 세로 고정 -->
+            android:screenOrientation="portrait"> <!-- 화면 세로 고정 -->
         </activity>
-        <activity android:name=".UI.SettingActivity">
-        </activity>
-
+        <activity android:name=".UI.SettingActivity" />
         <activity android:name=".UI.LicenseActivity" />
-
         <activity
             android:name=".UI.TodoItem.MainActivity"
             android:label=""
-            android:theme="@style/AppTheme">
-        </activity>
+            android:theme="@style/AppTheme" />
+        <activity android:name=".UI.TodoItem.ItemDetailActivity" />
 
-        <activity android:name=".UI.TodoItem.ItemDetailActivity" >
-        </activity>
-
-        <service android:name=".Util.GeofenceService"
+        <service
+            android:name=".Util.GeofenceService"
             android:enabled="true"
             android:exported="true"
-            android:process=":my_process"/>
-
+            android:process=":my_process" />
         <service
             android:name=".Util.GeofencingService"
             android:enabled="true"
-            android:exported="true">
-        </service>
+            android:exported="true" />
+
+        <activity android:name=".UI.FolderItemActivity" />
+
     </application>
 
 </manifest>

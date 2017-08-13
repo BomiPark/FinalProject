@@ -14,8 +14,7 @@
         <include
             android:layout_height="46dp"
             android:layout_width="match_parent"
-            layout="@layout/tool_bar"
-            />
+            layout="@layout/tool_bar" />
     </FrameLayout>
 
     <TextView

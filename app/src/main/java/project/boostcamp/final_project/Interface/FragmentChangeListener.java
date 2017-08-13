@@ -1,5 +1,7 @@
 package project.boostcamp.final_project.Interface;
 
+import com.google.android.gms.maps.model.LatLng;
+
 import project.boostcamp.final_project.Model.TodoItem;
 
 /**
@@ -13,5 +15,8 @@ public interface FragmentChangeListener {
     int setStatus(int now);
 
     TodoItem getCurrentItem();
+
+    LatLng getCurrentLocation();
+
 
 }

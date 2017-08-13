@@ -36,6 +36,7 @@ import project.boostcamp.final_project.Adapter.TodoItemAdapter;
 import project.boostcamp.final_project.Model.FolderItem;
 import project.boostcamp.final_project.Model.TodoItem;
 import project.boostcamp.final_project.R;
+import project.boostcamp.final_project.UI.FolderItemActivity;
 import project.boostcamp.final_project.UI.SettingActivity;
 import project.boostcamp.final_project.UI.NewItem.NewItemActivity;
 
@@ -105,7 +106,9 @@ public class MainActivity extends AppCompatActivity
             public void onItemClick(View view, int position) {
                 DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout); //todo 폴더리스트로이동
                 drawer.closeDrawer(GravityCompat.START);
-                Toast.makeText(MainActivity.this, "폴더 리스트로 이동", Toast.LENGTH_LONG).show();
+                Toast.makeText(MainActivity.this, folderList.get(position).getFolder() , Toast.LENGTH_LONG).show();
+                Intent intent = new Intent(MainActivity.this, FolderItemActivity.class);
+                startActivity(intent);
             }
 
             @Override

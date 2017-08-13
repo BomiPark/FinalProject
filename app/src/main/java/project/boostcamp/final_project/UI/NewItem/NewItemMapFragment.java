@@ -3,7 +3,6 @@ package project.boostcamp.final_project.UI.NewItem;
 import android.content.Context;
 import android.location.Address;
 import android.location.Geocoder;
-import android.location.Location;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.InflateException;
@@ -31,7 +30,7 @@ import project.boostcamp.final_project.Interface.FragmentChangeListener;
 import project.boostcamp.final_project.Model.Constant;
 import project.boostcamp.final_project.Model.TodoItem;
 import project.boostcamp.final_project.R;
-import project.boostcamp.final_project.Util.LocationListener;
+import project.boostcamp.final_project.Util.LocationService;
 
 public class NewItemMapFragment extends Fragment {
 
@@ -44,7 +43,6 @@ public class NewItemMapFragment extends Fragment {
 
     TodoItem item;
 
-    LocationListener locationListener;
     Marker marker;
     MarkerOptions options;
 
@@ -58,8 +56,6 @@ public class NewItemMapFragment extends Fragment {
             view = inflater.inflate(R.layout.fragment_new_item_map, container, false);
         } catch (InflateException e) {}
 
-
-        locationListener = new LocationListener(getActivity());
 
         item = new TodoItem();
         geoCoder = new Geocoder(getContext());
@@ -104,7 +100,7 @@ public class NewItemMapFragment extends Fragment {
 
             googleMap = Map;
 
-            LatLng loc = locationListener.getLocation();
+            LatLng loc = listener.getCurrentLocation();
             LatLng baseLatlng = new LatLng(loc.latitude, loc.longitude);
             googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(baseLatlng, 12));
 

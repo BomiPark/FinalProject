@@ -8,12 +8,15 @@ import android.util.Log;
 import android.widget.FrameLayout;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.model.LatLng;
+
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
 import project.boostcamp.final_project.Interface.FragmentChangeListener;
 import project.boostcamp.final_project.Model.Constant;
 import project.boostcamp.final_project.Model.TodoItem;
 import project.boostcamp.final_project.R;
+import project.boostcamp.final_project.Util.LocationService;
 
 import static project.boostcamp.final_project.Model.Constant.SAVE;
 
@@ -22,6 +25,7 @@ public class NewItemActivity extends AppCompatActivity implements FragmentChange
     FrameLayout container;
     FragmentManager fragmentManager;
     NewItemDetailFragment detailFragment;
+    LocationService locationService;
 
     Realm realm;
     TodoItem todoItem;
@@ -54,12 +58,19 @@ public class NewItemActivity extends AppCompatActivity implements FragmentChange
         container = (FrameLayout)findViewById(R.id.container);
         fragmentManager = getSupportFragmentManager();
         todoItem = new TodoItem();
+        locationService = new LocationService(this);
 
         STATUS = Constant.DETAIL;
         detailFragment = new NewItemDetailFragment();
 
         getSupportFragmentManager().beginTransaction().replace(R.id.container, detailFragment).commit();
 
+    }
+
+    @Override
+    public void onDestroy(){
+        super.onDestroy();
+        locationService.stopLocationService();
     }
 
     @Override
@@ -81,6 +92,12 @@ public class NewItemActivity extends AppCompatActivity implements FragmentChange
         }
     }
 
+    @Override
+    public int setStatus(int now) {
+        STATUS = now;
+        return STATUS;
+    }
+
     void setData(TodoItem item){
         Realm.init(this);
         RealmConfiguration config = new RealmConfiguration.Builder().build();
@@ -100,16 +117,15 @@ public class NewItemActivity extends AppCompatActivity implements FragmentChange
 
     }
 
-    @Override
-    public int setStatus(int now) {
-
-        STATUS = now;
-        return 0;
-    }
 
     @Override
     public TodoItem getCurrentItem() {
         return todoItem;
+    }
+
+    @Override
+    public LatLng getCurrentLocation() {
+        return locationService.getLocation();
     }
 
 }

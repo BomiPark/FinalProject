@@ -115,12 +115,8 @@ public class NewItemDetailFragment extends Fragment {
                     break;
                 case R.id.ok :
                     item = listener.getCurrentItem();
-                    if(item.getAddress() == null)
-                        Toast.makeText(getContext(), "알람이 울릴 지점을 선택해주세요", Toast.LENGTH_LONG).show();
-                    if(folder.getText().toString().equals("폴더선택("))
-                        Toast.makeText(getContext(), "포함될 폴더를 선택해주세요", Toast.LENGTH_LONG).show();
-                    else{
-                        item.setTodo(todo.getText().toString()); // 입력 받은 값 세팅 todo 폴더 추가
+                    if(isItemEmpty(item) == false){
+                        item.setTodo(todo.getText().toString());
                         item.setAlarm(isAlarm);
                         item.setFolder(folder.getText().toString());
                         listener.changeFragment(Constant.DETAIL, Constant.SAVE, item);
@@ -138,6 +134,24 @@ public class NewItemDetailFragment extends Fragment {
             }
         }
     };
+
+    boolean isItemEmpty(TodoItem item) {
+
+        if (todo.getText().toString().equals("")) {
+            Toast.makeText(getContext(), "TODO List를 입력해주세요", Toast.LENGTH_LONG).show();
+            return true;
+        }
+        if (item.getAddress() == null) {
+            Toast.makeText(getContext(), "알람이 울릴 지점을 선택해주세요", Toast.LENGTH_LONG).show();
+            return true;
+        }
+        if (folder.getText().toString().equals("폴더선택")) {
+            Toast.makeText(getContext(), "포함될 폴더를 선택해주세요", Toast.LENGTH_LONG).show();
+            return true;
+        }
+        return false;
+
+    }
 
     void setBtnColor(int id){
         Log.e("new", id + "  " ); //todo 텍스트뷰 색 바꾼거 상태 저장 안되고 on off 버튼은 이전에체크한애만 반응한당

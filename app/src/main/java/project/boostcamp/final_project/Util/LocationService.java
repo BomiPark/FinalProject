@@ -4,30 +4,32 @@ import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.location.Location;
+import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
+import android.util.Log;
 
 import com.google.android.gms.maps.model.LatLng;
 
-public class LocationListener {
+public class LocationService {
 
     private LocationManager locManager;
     private Context context;
     LatLng currentLoc;
-    int set = 0;
 
-    public LocationListener(Context context) {
+    public LocationService(Context context) {
 
         this.context = context;
+        currentLoc = new LatLng(0,0);
+        locManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
         startLocationService();
-
+        Log.e("location", "생성");
     }
 
-    private void startLocationService() {
-        locManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
+    public void startLocationService() {
 
-        if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+        if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
 
             return;
         }
@@ -42,18 +44,17 @@ public class LocationListener {
 
     }
 
-    private void stopLocationService() {
-        set = 0;
+    public void stopLocationService() {
 
         locManager.removeUpdates(locationListener);
     }
 
-    android.location.LocationListener locationListener = new android.location.LocationListener() {
+    LocationListener locationListener = new LocationListener() {
         @Override
         public void onLocationChanged(Location location) {
 
-            set = 1;
             currentLoc = new LatLng(location.getLatitude(), location.getLongitude());
+            Log.e("locationService55", currentLoc.latitude+"");
 
         }
 
@@ -73,11 +74,10 @@ public class LocationListener {
 
     public LatLng getLocation(){
 
-        if(set == 1) {
-            stopLocationService();
+        if(currentLoc != null)
             return currentLoc;
-        }        else
-            return new LatLng(37.5804580, 126.8895390);
+        else
+            return new LatLng(0,0);
     }
 
 }
