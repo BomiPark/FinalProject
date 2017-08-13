@@ -75,6 +75,7 @@ public class NewItemDetailFragment extends Fragment {
                     }
                 }));
 
+
         toSearch.setOnClickListener(clickListener); // 클릭리스너 연결
         toMap.setOnClickListener(clickListener);
         back.setOnClickListener(clickListener);
@@ -172,14 +173,15 @@ public class NewItemDetailFragment extends Fragment {
     }
 
     void getDialog(){
+
         new MaterialDialog.Builder(getActivity())
                 .title("폴더선택")
                 .items(folderList)
                 .itemsCallbackSingleChoice(-1, new MaterialDialog.ListCallbackSingleChoice() {
                     @Override
                     public boolean onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
-                        folder.setText(folderList.get(which));
-                        item.setFolder(folderList.get(which)); //todo 값 유지하게 되면 변경하기
+                        folder.setText(folderList.get(which));//todo 값 유지안되니까 따로 설정
+                        item.setFolder(folderList.get(which));
                         return true;
                     }
                 })

@@ -66,6 +66,8 @@ public class ItemDetailActivity extends AppCompatActivity {
         public void onClick(View view) {
             switch (view.getId()){
                 case R.id.back :
+                    if(getParentActivityIntent() == null)
+                        startActivity(new Intent(ItemDetailActivity.this, MainActivity.class));
                     finish();
                     break;
                 case R.id.ok :

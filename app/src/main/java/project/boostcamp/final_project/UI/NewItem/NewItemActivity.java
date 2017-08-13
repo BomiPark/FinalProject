@@ -17,6 +17,7 @@ import project.boostcamp.final_project.R;
 import project.boostcamp.final_project.Util.LocationService;
 
 import static project.boostcamp.final_project.Model.Constant.SAVE;
+import static project.boostcamp.final_project.UI.Setting.SettingActivity.geofencingService;
 
 public class NewItemActivity extends AppCompatActivity implements FragmentChangeListener {
 
@@ -86,6 +87,8 @@ public class NewItemActivity extends AppCompatActivity implements FragmentChange
         } else if(to == SAVE){
             todoItem = item;
             setData(item);
+            if(geofencingService != null)
+                geofencingService.updateGeofence();
             finish();
         }
     }

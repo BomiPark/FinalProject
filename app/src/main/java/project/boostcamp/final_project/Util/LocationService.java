@@ -21,10 +21,9 @@ public class LocationService {
     public LocationService(Context context) {
 
         this.context = context;
-        currentLoc = new LatLng(0,0);
+        currentLoc = new LatLng(37.4017670,127.1094800);
         locManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
         startLocationService();
-        Log.e("location", "생성");
     }
 
     public void startLocationService() {
@@ -54,7 +53,6 @@ public class LocationService {
         public void onLocationChanged(Location location) {
 
             currentLoc = new LatLng(location.getLatitude(), location.getLongitude());
-            Log.e("locationService55", currentLoc.latitude+"");
 
         }
 
@@ -74,10 +72,7 @@ public class LocationService {
 
     public LatLng getLocation(){
 
-        if(currentLoc != null)
-            return currentLoc;
-        else
-            return new LatLng(0,0);
+         return currentLoc;
     }
 
 }

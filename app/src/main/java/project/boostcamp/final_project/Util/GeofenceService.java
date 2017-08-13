@@ -39,15 +39,10 @@ public class GeofenceService extends IntentService {
                                                  int geofenceTransition, // 지오펜스 전환 타입
                                                  List<Geofence> triggeringGeofences) { //발생된 지오펜스
 
-
-        // Get the Ids of each geofence that was triggered.
         ArrayList<String> triggeringGeofencesIdsList = new ArrayList<>();
         for (Geofence geofence : triggeringGeofences) {
             triggeringGeofencesIdsList.add(geofence.getRequestId());
-            Log.e(TAG, "65 LINE : " +geofence.getRequestId());
         }
-
-        Log.e(TAG, "반환하는 문자열54 : " +triggeringGeofencesIdsList.toString());
 
         return triggeringGeofencesIdsList.get(0).toString();
     }
@@ -63,11 +58,6 @@ public class GeofenceService extends IntentService {
             List<Geofence> triggeringGeofences = geofencingEvent.getTriggeringGeofences(); // 이벤트 발생한 지오펜스 획득. 하나의 이벤트가 여러개의 지오펜스와 관련되어있을 수도 있다
 
             String geofenceTransitionDetails = getGeofenceTransitionDetails(geofenceTransition, triggeringGeofences); // 상태 하나의 문자열로 변환
-
-            Log.e(TAG, "geofenceTransition = " +  geofenceTransitionDetails + "triggeringGeofences" + triggeringGeofences); //todo 고치기
-
-
-            Log.e("Geofencd75", " "+ intent.getIntExtra("id", 0));
 
             int position = Integer.parseInt(geofenceTransitionDetails);
 

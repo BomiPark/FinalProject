@@ -11,6 +11,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -24,6 +26,8 @@ import project.boostcamp.final_project.Util.GeofencingService;
 import project.boostcamp.final_project.Util.GeofencingService.GeoBinder;
 import project.boostcamp.final_project.Util.SharedPreferencesService;
 
+import static project.boostcamp.final_project.R.id.back;
+
 public class SettingActivity extends AppCompatActivity {
 
     Intent intent;
@@ -32,6 +36,7 @@ public class SettingActivity extends AppCompatActivity {
     public static boolean isBound; // shared에저장해야할듯!!
 
     Button on, off;
+    ImageView back;
     Switch swich;
     SeekBar radiusBar;
     TextView radiusValue;
@@ -44,8 +49,15 @@ public class SettingActivity extends AppCompatActivity {
         intent = new Intent(this, GeofencingService.class);
         on = (Button)findViewById(R.id.on);
         off = (Button)findViewById(R.id.off);
+        back=(ImageView)findViewById(R.id.back);
         on.setOnClickListener(clickListener);
         off.setOnClickListener(clickListener);
+        back.setOnClickListener(new ImageView.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
         swich = (Switch)findViewById(R.id.switchBar);
         radiusBar = (SeekBar)findViewById(R.id.radiusBar);
         radiusValue = (TextView)findViewById(R.id.radiusValue);

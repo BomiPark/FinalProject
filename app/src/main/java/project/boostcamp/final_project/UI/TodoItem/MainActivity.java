@@ -35,6 +35,8 @@ import project.boostcamp.final_project.R;
 import project.boostcamp.final_project.UI.Setting.SettingActivity;
 import project.boostcamp.final_project.UI.NewItem.NewItemActivity;
 
+import static project.boostcamp.final_project.UI.Setting.SettingActivity.geofencingService;
+
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -92,6 +94,12 @@ public class MainActivity extends AppCompatActivity
 
         writeIcon.setOnClickListener(clickListener);
 
+        setFolderItemList();
+
+        setTodoItemList();
+    }
+
+    void setFolderItemList(){
         folderItemAdapter = new FolderItemAdapter(this, folderList, R.layout.item_folder);
         drawer_list.setAdapter(folderItemAdapter);
         drawer_list.setLayoutManager(new LinearLayoutManager(this));
@@ -101,7 +109,7 @@ public class MainActivity extends AppCompatActivity
             public void onItemClick(View view, int position) {
                 DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout); //todo 폴더리스트로이동
                 drawer.closeDrawer(GravityCompat.START);
-                Toast.makeText(MainActivity.this, folderList.get(position).getFolder() , Toast.LENGTH_LONG).show();
+                Toast.makeText(MainActivity.this, folderList.get(position).getFolder()+"리스트로이동, 아직구현x" , Toast.LENGTH_LONG).show();
                 Intent intent = new Intent(MainActivity.this, FolderItemActivity.class);
                 startActivity(intent);
             }
@@ -112,6 +120,9 @@ public class MainActivity extends AppCompatActivity
             }
         }));
 
+    }
+
+    void setTodoItemList(){
         recyclerView = (RecyclerView)findViewById(R.id.recyclerView);
         todoItemAdapter = new TodoItemAdapter(this, itemList, R.layout.item_todo);
         recyclerView.setAdapter(todoItemAdapter);
@@ -154,13 +165,11 @@ public class MainActivity extends AppCompatActivity
             public void execute(Realm realm) { //todo 이렇게안해두되긴하는거같당!
                 itemList = null;
                 itemList = realm.where(TodoItem.class).equalTo("isCompleted", false).findAll();
-                //geofencingService.updateGeofence();  //todo 서비스 생성 위치 바꾸고 활성화
                 todoItemAdapter.notifyDataSetChanged();
             }
         });
 
     }
-
 
     @Override
     public void onBackPressed() {
@@ -208,7 +217,8 @@ public class MainActivity extends AppCompatActivity
                             }
                         });
                         todoItemAdapter.notifyDataSetChanged();
-                        // geofencingService.updateGeofence(); //todo 서비스 생성 위치 바꾸고 활성화
+                        if(geofencingService != null)
+                            geofencingService.updateGeofence();
                     }
                 })
                 .setNegativeButton(getString(R.string.cancel),
@@ -237,8 +247,7 @@ public class MainActivity extends AppCompatActivity
 
         alert.setPositiveButton(R.string.ok_eng, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int whichButton) {
-                        String newFolderText = input.getText().toString(); //todo reaml 에 저장저장
-
+                        String newFolderText = input.getText().toString();
                         if (newFolderText.equals("")) {
                             Toast.makeText(MainActivity.this, getResources().getString(R.string.input_folder), Toast.LENGTH_LONG).show();
                             OpenFolderDialogBox();

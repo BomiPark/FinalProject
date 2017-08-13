@@ -47,7 +47,7 @@ public class GeofencingService extends Service{
 
     public void updateGeofence() {
         removeGeofences();
-        updateGeofence();
+        addGeofences();
     }
 
     @SuppressWarnings("MissingPermission")
