@@ -4,7 +4,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.TextView;
 
-import project.boostcamp.final_project.Model.Folder;
+import project.boostcamp.final_project.Model.FolderItem;
 import project.boostcamp.final_project.R;
 
 /**
@@ -20,7 +20,7 @@ public class FolderItemViewHolder extends RecyclerView.ViewHolder {
         folder = (TextView) view.findViewById(R.id.folder);
     }
 
-    public void bind(final Folder item){
+    public void bind(final FolderItem item){
         folder.setText(item.getFolder());
     }
 }

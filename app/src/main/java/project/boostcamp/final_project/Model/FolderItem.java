@@ -1,19 +1,16 @@
 package project.boostcamp.final_project.Model;
 
-import io.realm.RealmModel;
+import io.realm.RealmObject;
 
-/**
- * Created by qkrqh on 2017-08-10.
- */
 
-public class Folder implements RealmModel {
+public class FolderItem  extends RealmObject {
 
     int id;
     String folder;
 
-    public Folder(){}
+    public FolderItem(){}
 
-    public Folder(int id, String folder){
+    public FolderItem(int id, String folder){
         this.folder = folder;
     }
 

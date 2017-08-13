@@ -7,6 +7,7 @@ import android.content.ServiceConnection;
 import android.os.IBinder;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
@@ -28,7 +29,7 @@ public class SettingActivity extends AppCompatActivity {
     Intent intent;
     GeoBinder geoBinder;
     public static GeofencingService geofencingService;
-    boolean isBound; // shared에저장해야할듯!!
+    public static boolean isBound; // shared에저장해야할듯!!
 
     Button on, off;
     Switch swich;
@@ -58,6 +59,7 @@ public class SettingActivity extends AppCompatActivity {
                 else{
                     setAlarmOn(false);
                 }
+                Log.e("setting62", isChecked + "");
             }
         });
 
@@ -129,8 +131,10 @@ public class SettingActivity extends AppCompatActivity {
             swich.setChecked(true);
             Toast.makeText(getApplicationContext(), "service start", Toast.LENGTH_LONG).show();
             setTextColor(true);
-            if(isEmpty() != true && geofencingService != null)
+            if(isEmpty() != true && geofencingService != null) {
                 geofencingService.startGeofence();
+                Log.e("setting135", geofencingService + "");
+            }
         }
         else{
             swich.setChecked(false);

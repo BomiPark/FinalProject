@@ -3,6 +3,7 @@ package project.boostcamp.final_project.UI.TodoItem;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
+import android.media.Image;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
@@ -19,10 +20,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -34,28 +33,30 @@ import io.realm.RealmResults;
 import project.boostcamp.final_project.Adapter.FolderItemAdapter;
 import project.boostcamp.final_project.Interface.RecyclerItemClickListener;
 import project.boostcamp.final_project.Adapter.TodoItemAdapter;
-import project.boostcamp.final_project.Model.Folder;
+import project.boostcamp.final_project.Model.FolderItem;
 import project.boostcamp.final_project.Model.TodoItem;
 import project.boostcamp.final_project.R;
 import project.boostcamp.final_project.UI.SettingActivity;
 import project.boostcamp.final_project.UI.NewItem.NewItemActivity;
-import project.boostcamp.final_project.Util.CheckDialog;
 
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     RealmResults<TodoItem> itemList;
+    RealmResults<FolderItem> folderList;
     RecyclerView recyclerView;
     TodoItemAdapter todoItemAdapter;
     AlertDialog.Builder dialog;
-    ImageView writeIcon;
 
     DrawerLayout drawer;
     RecyclerView drawer_list;
     FolderItemAdapter folderItemAdapter;
 
+    ImageView writeIcon;
+
     Realm realm;
+    FolderItem folder = new FolderItem();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,17 +89,14 @@ public class MainActivity extends AppCompatActivity
 
     void init(){
 
-        setData();
+        initData();
         dialog = new AlertDialog.Builder(MainActivity.this);
         drawer_list = (RecyclerView) findViewById(R.id.drawer_list);
         writeIcon = (ImageView)findViewById(R.id.writeIcon);
 
-        List<Folder> folders = new ArrayList<>();
-        folders.add(new Folder(0, "dd"));
-
         writeIcon.setOnClickListener(clickListener);
 
-        folderItemAdapter = new FolderItemAdapter(this, folders, R.layout.item_folder);
+        folderItemAdapter = new FolderItemAdapter(this, folderList, R.layout.item_folder);
         drawer_list.setAdapter(folderItemAdapter);
         drawer_list.setLayoutManager(new LinearLayoutManager(this));
         drawer_list.addOnItemTouchListener(new RecyclerItemClickListener(MainActivity.this, drawer_list, new RecyclerItemClickListener.OnItemClickListener() {
@@ -134,7 +132,7 @@ public class MainActivity extends AppCompatActivity
         }));
     }
 
-    void setData(){
+    void initData(){
         Realm.init(this);
         RealmConfiguration config = new RealmConfiguration.Builder().build();
         Realm.setDefaultConfiguration(config);
@@ -142,6 +140,7 @@ public class MainActivity extends AppCompatActivity
         realm = Realm.getDefaultInstance();
 
         itemList = realm.where(TodoItem.class).equalTo("isCompleted", false).findAll();
+        folderList = realm.where(FolderItem.class).findAll();
 
     }
 
@@ -230,7 +229,7 @@ public class MainActivity extends AppCompatActivity
         LayoutInflater layoutInflater = LayoutInflater.from(this);
         View promptView = layoutInflater.inflate(R.layout.dialog_add_folder, null);
         final AlertDialog.Builder alert = new AlertDialog.Builder(this);
-        alert.setTitle("Add New Folder");
+        alert.setTitle("Add New FolderItem");
         alert.setView(promptView);
 
         final EditText input = (EditText) promptView.findViewById(R.id.add_folder);
@@ -238,7 +237,7 @@ public class MainActivity extends AppCompatActivity
         input.requestFocus();
         input.setTextColor(Color.BLACK);
 
-        alert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+        alert.setPositiveButton(R.string.ok_eng, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int whichButton) {
                         String newFolderText = input.getText().toString(); //todo reaml 에 저장저장
 
@@ -246,16 +245,15 @@ public class MainActivity extends AppCompatActivity
                             Toast.makeText(MainActivity.this, getResources().getString(R.string.input_folder), Toast.LENGTH_LONG).show();
                             OpenFolderDialogBox();
                         } else {
-                            Toast.makeText(getApplicationContext(),
-                                    "저장되었습니다. ", Toast.LENGTH_SHORT).show();
+                            saveFolder(newFolderText);
+                            Toast.makeText(getApplicationContext(), R.string.saved, Toast.LENGTH_SHORT).show();
                         }
                     }
                 }
         );
 
-        alert.setNegativeButton("CANCEL",
+        alert.setNegativeButton(R.string.cancel_eng,
                 new DialogInterface.OnClickListener() {
-
                     public void onClick(DialogInterface dialog, int whichButton) {
                         Toast.makeText(getApplicationContext(),
                                 "CANCEL", Toast.LENGTH_SHORT).show();
@@ -266,6 +264,24 @@ public class MainActivity extends AppCompatActivity
 
         alertDialog.show();
 
+    }
+
+    void saveFolder(String folderName){
+
+        int nextID =0;
+
+        if(realm.where(FolderItem.class).findAll().size() > 0)
+            nextID = realm.where(FolderItem.class).findAll().last().getId() + 1; // 가장 마지막에 저장된 id 값
+
+        realm.beginTransaction();
+        folder.setId(nextID);
+        folder.setFolder(folderName);
+        realm.copyToRealm(folder);
+
+        realm.commitTransaction();
+
+        folderList= realm.where(FolderItem.class).findAll();
+        folderItemAdapter.notifyDataSetChanged();
     }
 
     View.OnClickListener clickListener = new ImageView.OnClickListener(){

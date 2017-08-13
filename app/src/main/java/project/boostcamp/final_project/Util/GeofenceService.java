@@ -51,7 +51,7 @@ public class GeofenceService extends IntentService {
             Log.e(TAG, "65 LINE : " +geofence.getRequestId());
         }
 
-        Log.e(TAG, "반환하는 문자열54 : " +triggeringGeofencesIdsList.get(0).toString());
+        Log.e(TAG, "반환하는 문자열54 : " +triggeringGeofencesIdsList.toString());
 
         return triggeringGeofencesIdsList.get(0).toString();
     }
@@ -71,7 +71,7 @@ public class GeofenceService extends IntentService {
             Log.e(TAG, "geofenceTransition = " +  geofenceTransitionDetails + "triggeringGeofences" + triggeringGeofences); //todo 고치기
 
 
-            Log.e("75", " "+ intent.getIntExtra("id", 0));
+            Log.e("Geofencd75", " "+ intent.getIntExtra("id", 0));
 
             int position = Integer.parseInt(geofenceTransitionDetails);
 

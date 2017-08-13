@@ -25,6 +25,9 @@
     <string name="dialog_title">Delete Item</string>
     <string name="ok">확인</string>
     <string name="cancel">취소</string>
+    <string name="ok_eng">OK</string>
+    <string name="cancel_eng">CANCEL</string>
+    <string name="saved">저장되었습니다 </string>
 
 
     <!-- 퍼미션 관련 -->

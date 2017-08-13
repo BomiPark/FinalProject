@@ -40,5 +40,7 @@ dependencies {
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
     compile 'com.afollestad.material-dialogs:core:0.9.4.5'
 
+    compile 'com.google.guava:guava:22.0-android'
+
     testCompile 'junit:junit:4.12'
 }

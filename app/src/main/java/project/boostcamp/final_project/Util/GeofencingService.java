@@ -93,6 +93,7 @@ public class GeofencingService extends Service{
         mGeofenceList = new ArrayList<>(); // 리스트 초기화
         mGeofencePendingIntent = null; //
 
+        initRealm();
         setGeofenceList(0);
         mGeofencingClient = LocationServices.getGeofencingClient(this);
 
@@ -137,15 +138,19 @@ public class GeofencingService extends Service{
 
     void setData(){
 
+        itemList = realm.where(TodoItem.class).equalTo("isCompleted", false).findAll();
+
+        Log.e("geofencing128 아이템 갯수 ", itemList.size() + "");
+    }
+
+    void initRealm(){
+
         Realm.init(this);
         RealmConfiguration config = new RealmConfiguration.Builder().build();
         Realm.setDefaultConfiguration(config);
 
         realm = Realm.getDefaultInstance();
 
-        itemList = realm.where(TodoItem.class).equalTo("isCompleted", false).findAll();
-
-        Log.e("geofencing128 아이템 갯수 ", itemList.size() + "");
     }
 
     public class GeoBinder extends Binder {

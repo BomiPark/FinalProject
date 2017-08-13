@@ -5,29 +5,27 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
-import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import io.realm.RealmResults;
-import project.boostcamp.final_project.Model.Folder;
+import project.boostcamp.final_project.Model.FolderItem;
 
 public class FolderItemAdapter extends RecyclerView.Adapter<FolderItemViewHolder> {
 
     Context context;
     int item_layout;
-    List<Folder> list = new ArrayList<>();
+    List<FolderItem> list = new ArrayList<>();
     FolderItemViewHolder viewHolder;
 
-    public FolderItemAdapter(Context context, RealmResults<Folder> list, int item_layout){
+    public FolderItemAdapter(Context context, RealmResults<FolderItem> list, int item_layout){
         this.context = context;
         this.list = list;
         this.item_layout = item_layout;
     }
 
-    public FolderItemAdapter(Context context, List<Folder> list, int item_layout){
+    public FolderItemAdapter(Context context, List<FolderItem> list, int item_layout){
         this.context = context;
         this.list = list;
         this.item_layout = item_layout;

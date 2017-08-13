@@ -16,11 +16,22 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.google.common.base.Function;
+import com.google.common.base.Predicate;
+import com.google.common.collect.Collections2;
+import com.google.common.collect.ImmutableList;
 
 import java.util.ArrayList;
+import java.util.List;
 
+import javax.annotation.Nullable;
+
+import io.realm.Realm;
+import io.realm.RealmConfiguration;
+import io.realm.RealmResults;
 import project.boostcamp.final_project.Model.Constant;
 import project.boostcamp.final_project.Interface.FragmentChangeListener;
+import project.boostcamp.final_project.Model.FolderItem;
 import project.boostcamp.final_project.Model.TodoItem;
 import project.boostcamp.final_project.R;
 
@@ -34,8 +45,11 @@ public class NewItemDetailFragment extends Fragment {
     EditText todo;
     boolean isAlarm = true;
     Button folder, toSearch, toMap, on, off;
-    ArrayList<String> folderList;
 
+    RealmResults<FolderItem> realmResults = null;
+    List<String> folderList = new ArrayList<>();
+
+    Realm realm;
     TodoItem item;
 
     public NewItemDetailFragment(){}
@@ -53,11 +67,16 @@ public class NewItemDetailFragment extends Fragment {
         off = (Button)view.findViewById(R.id.off);
         folder = (Button)view.findViewById(R.id.folder);
 
-        item = new TodoItem();
+        initData();
 
-        folderList = new ArrayList<>(); //todo 이거 렘에서 받아오기
-        folderList.add("살 것");
-        folderList.add("챙길 것");
+        item = new TodoItem();
+        folderList = ImmutableList.copyOf(Collections2.transform(realmResults, new Function<FolderItem, String>(){
+                    @Nullable
+                    @Override
+                    public String apply(@Nullable FolderItem input) {
+                        return input.getFolder();
+                    }
+                }));
 
         toSearch.setOnClickListener(clickListener); // 클릭리스너 연결
         toMap.setOnClickListener(clickListener);
@@ -98,6 +117,8 @@ public class NewItemDetailFragment extends Fragment {
                     item = listener.getCurrentItem();
                     if(item.getAddress() == null)
                         Toast.makeText(getContext(), "알람이 울릴 지점을 선택해주세요", Toast.LENGTH_LONG).show();
+                    if(folder.getText().toString().equals("폴더선택("))
+                        Toast.makeText(getContext(), "포함될 폴더를 선택해주세요", Toast.LENGTH_LONG).show();
                     else{
                         item.setTodo(todo.getText().toString()); // 입력 받은 값 세팅 todo 폴더 추가
                         item.setAlarm(isAlarm);
@@ -147,14 +168,24 @@ public class NewItemDetailFragment extends Fragment {
                 .itemsCallbackSingleChoice(-1, new MaterialDialog.ListCallbackSingleChoice() {
                     @Override
                     public boolean onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
-                        folder.setText(text);
-                        item.setFolder(text.toString()); //todo 값 유지하게 되면 변경하기
+                        folder.setText(folderList.get(which));
+                        item.setFolder(folderList.get(which)); //todo 값 유지하게 되면 변경하기
                         return true;
                     }
                 })
                 .positiveText("확인")
                 .show();
     }
+
+    void initData(){
+        Realm.init(getActivity());
+        RealmConfiguration config = new RealmConfiguration.Builder().build();
+        Realm.setDefaultConfiguration(config);
+
+        realm = Realm.getDefaultInstance();
+        realmResults = realm.where(FolderItem.class).findAll();
+    }
+
 }
 
 
