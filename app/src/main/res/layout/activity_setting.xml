@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/background"
     android:orientation="vertical"
-    tools:context="project.boostcamp.final_project.UI.SettingActivity">
+    tools:context="project.boostcamp.final_project.UI.Setting.SettingActivity">
 
     <FrameLayout
         android:layout_width="wrap_content"

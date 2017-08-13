@@ -86,7 +86,7 @@ public class GeofenceService extends IntentService {
         TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
 
         // Add the main Activity to the task stack as the parent.
-        stackBuilder.addParentStack(ItemDetailActivity.class);   //todo 지정한아이템세부항목으로가기
+        stackBuilder.addParentStack(ItemDetailActivity.class);
 
         // Push the content Intent onto the stack.
         stackBuilder.addNextIntent(notificationIntent);

@@ -3,7 +3,6 @@ package project.boostcamp.final_project.UI.TodoItem;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
-import android.media.Image;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
@@ -24,9 +23,6 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
 import io.realm.RealmResults;
@@ -36,8 +32,7 @@ import project.boostcamp.final_project.Adapter.TodoItemAdapter;
 import project.boostcamp.final_project.Model.FolderItem;
 import project.boostcamp.final_project.Model.TodoItem;
 import project.boostcamp.final_project.R;
-import project.boostcamp.final_project.UI.FolderItemActivity;
-import project.boostcamp.final_project.UI.SettingActivity;
+import project.boostcamp.final_project.UI.Setting.SettingActivity;
 import project.boostcamp.final_project.UI.NewItem.NewItemActivity;
 
 

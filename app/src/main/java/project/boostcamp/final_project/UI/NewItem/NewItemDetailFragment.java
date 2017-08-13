@@ -4,7 +4,6 @@ import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.util.ArraySet;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,12 +11,10 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.google.common.base.Function;
-import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.ImmutableList;
 
@@ -89,7 +86,6 @@ public class NewItemDetailFragment extends Fragment {
         return view;
     }
 
-
     @Override
     public void onAttach(Context context){
         super.onAttach(context);
@@ -144,11 +140,11 @@ public class NewItemDetailFragment extends Fragment {
         if (item.getAddress() == null) {
             Toast.makeText(getContext(), "알람이 울릴 지점을 선택해주세요", Toast.LENGTH_LONG).show();
             return true;
-        }
+        }/*
         if (folder.getText().toString().equals("폴더선택")) {
             Toast.makeText(getContext(), "포함될 폴더를 선택해주세요", Toast.LENGTH_LONG).show();
             return true;
-        }
+        }*/
         return false;
 
     }

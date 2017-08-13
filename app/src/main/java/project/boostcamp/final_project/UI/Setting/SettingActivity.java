@@ -1,4 +1,4 @@
-package project.boostcamp.final_project.UI;
+package project.boostcamp.final_project.UI.Setting;
 
 import android.content.ComponentName;
 import android.content.Context;

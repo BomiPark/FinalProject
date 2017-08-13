@@ -1,4 +1,4 @@
-package project.boostcamp.final_project.UI;
+package project.boostcamp.final_project.UI.Setting;
 
 import android.Manifest;
 import android.content.Intent;
@@ -10,7 +10,6 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 
 import project.boostcamp.final_project.BuildConfig;
@@ -26,22 +25,11 @@ public class PermissionActivity extends AppCompatActivity {
 
     private static final String TAG = "PermissionActivity";
     private static final int REQUEST_PERMISSIONS_REQUEST_CODE = 34;
-    public static final String SETTING = "isSetting";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_permission);
-
-        SharedPreferencesService.getInstance().load(getApplicationContext()); //todo 이거스플래시에서하는게 맞는듯!
-
-        boolean isSetting = SharedPreferencesService.getInstance().getPrefData(SETTING);
-
-        if(isSetting == false)
-            SharedPreferencesService.getInstance().setPrefData(SETTING, true);
-        else{
-            this.finish();
-            startActivity(new Intent(this, MainActivity.class));} //todo 속도 너무 느린데 다른 방법 찾기
 
     }
 

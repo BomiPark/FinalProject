@@ -19,19 +19,14 @@
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
 
-        <activity android:name=".UI.PermissionActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+        <activity android:name=".UI.Setting.PermissionActivity">
         </activity>
         <activity
             android:name=".UI.NewItem.NewItemActivity"
             android:screenOrientation="portrait"> <!-- 화면 세로 고정 -->
         </activity>
-        <activity android:name=".UI.SettingActivity" />
-        <activity android:name=".UI.LicenseActivity" />
+        <activity android:name=".UI.Setting.SettingActivity" />
+        <activity android:name=".UI.Setting.LicenseActivity" />
         <activity
             android:name=".UI.TodoItem.MainActivity"
             android:label=""
@@ -48,8 +43,14 @@
             android:enabled="true"
             android:exported="true" />
 
-        <activity android:name=".UI.FolderItemActivity" />
+        <activity android:name=".UI.TodoItem.FolderItemActivity" />
+        <activity android:name=".UI.Setting.SplashActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>
