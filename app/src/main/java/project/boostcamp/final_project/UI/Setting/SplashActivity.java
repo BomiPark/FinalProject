@@ -9,9 +9,10 @@ import project.boostcamp.final_project.R;
 import project.boostcamp.final_project.UI.TodoItem.MainActivity;
 import project.boostcamp.final_project.Util.SharedPreferencesService;
 
+import static project.boostcamp.final_project.Util.SharedPreferencesService.IS_SETTING;
+
 public class SplashActivity extends AppCompatActivity {
 
-    public static final String SETTING = "isSetting";
     Intent intent;
 
     @Override
@@ -20,10 +21,10 @@ public class SplashActivity extends AppCompatActivity {
         setContentView(R.layout.activity_splash);
 
         SharedPreferencesService.getInstance().load(getApplicationContext());
-        boolean isSetting = SharedPreferencesService.getInstance().getPrefData(SETTING);
+        boolean isSetting = SharedPreferencesService.getInstance().getPrefBooleanData(IS_SETTING);
 
         if(isSetting == false){
-            SharedPreferencesService.getInstance().setPrefData(SETTING, true);
+            SharedPreferencesService.getInstance().setPrefData(IS_SETTING, true);
             intent = new Intent(this, PermissionActivity.class);}
         else{
             intent = new Intent(this, MainActivity.class);
@@ -37,6 +38,6 @@ public class SplashActivity extends AppCompatActivity {
                 startActivity(intent);
                 finish();
             }
-        }, 300);
+        }, 500);
     }
 }

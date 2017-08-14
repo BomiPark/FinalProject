@@ -6,6 +6,9 @@ import android.content.SharedPreferences;
 public class SharedPreferencesService {
 
     private static final String SETTING = "setting";
+    public static final String IS_SETTING = "isSetting"; // 앱 처음 설치한 것인지 확인
+    public static final String PROP_NAME = "prop_name";
+    public static final String PROP_IMG = "prop_img";
 
     private static SharedPreferencesService sharedPreferencesManager;
     private SharedPreferences pref;
@@ -30,14 +33,33 @@ public class SharedPreferencesService {
         getPref(context);
     }
 
-    public boolean getPrefData(String key){
+    public String getPrefStringData(String key){
+        return pref.getString(key, null);
+    }
+
+    public int getPrefIntData(String key){
+        return pref.getInt(key, 1);
+    }
+
+    public boolean getPrefBooleanData(String key){
         return pref.getBoolean(key, false);
     }
 
     public void setPrefData(String key, boolean value) {
-
         SharedPreferences.Editor editor = pref.edit();
         editor.putBoolean(key, value);
+        editor.commit();
+    }
+
+    public void setPrefStringData(String key, String value) {
+        SharedPreferences.Editor editor = pref.edit();
+        editor.putString(key, value);
+        editor.commit();
+    }
+
+    public void setPrefIntData(String key, int value) {
+        SharedPreferences.Editor editor = pref.edit();
+        editor.putInt(key, value);
         editor.commit();
     }
 }

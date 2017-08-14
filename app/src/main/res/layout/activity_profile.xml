@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/activity_main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:background="@color/background"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:orientation="vertical">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_marginTop="20dp"
+            android:layout_height="104dp">
+
+            <TextView
+                android:layout_width="101dp"
+                android:layout_height="18dp"
+                android:text="@string/app_name"
+                android:gravity="center"
+                android:layout_marginBottom="498.8dp"
+                android:layout_marginLeft="120dp"
+                android:layout_marginTop="80dp"/>
+
+            <ImageView
+                android:layout_width="65dp"
+                android:layout_height="57dp"
+                android:layout_marginLeft="130dp"
+                android:layout_marginTop="20.5dp"
+                android:layout_marginBottom="528.8dp"
+                android:src="@drawable/app_icon"
+                android:id="@+id/logo_image"
+                />
+
+        </FrameLayout>
+    </FrameLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:orientation="vertical"
+            android:keepScreenOn="true"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:layout_width="106dp"
+                android:layout_height="116dp"
+                android:src="@drawable/circle"
+                android:id="@+id/circle_img"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"/>
+
+            <ImageView
+                android:layout_width="106.5dp"
+                android:layout_height="126.8dp"
+                android:id="@+id/prop_image"
+                android:layout_marginLeft="90.5dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="90.5dp"
+                android:src="@drawable/prop_img1"
+                android:layout_alignBottom="@+id/circle_img"
+                android:layout_centerHorizontal="true"/>
+        </RelativeLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="30dp"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/prop_img1"
+                android:tag="R.drawable.prop_img1"
+                android:layout_width="0dp"
+                android:layout_height="70dp"
+                android:layout_gravity="bottom"
+                android:layout_marginLeft="18.3dp"
+                android:layout_weight="1.3"
+                android:src="@drawable/prop_img1" />
+
+            <ImageView
+                android:id="@+id/prop_img2"
+                android:layout_width="0dp"
+                android:tag="R.drawable.prop_img2"
+                android:layout_height="60dp"
+                android:layout_gravity="bottom"
+                android:layout_marginLeft="11.5dp"
+                android:layout_weight="1"
+                android:src="@drawable/prop_img2" />
+
+            <ImageView
+                android:id="@+id/prop_img3"
+                android:tag="R.drawable.prop_img3"
+                android:layout_width="0dp"
+                android:layout_height="59dp"
+                android:layout_gravity="bottom"
+                android:layout_marginLeft="14.8dp"
+                android:layout_weight="1"
+                android:src="@drawable/prop_img3" />
+
+            <ImageView
+                android:id="@+id/prop_img4"
+                android:tag="@drawable/prop_img4"
+                android:layout_width="0dp"
+                android:layout_height="55dp"
+                android:layout_gravity="bottom"
+                android:layout_marginLeft="13dp"
+                android:layout_weight="1"
+                android:src="@drawable/prop_img4" />
+
+            <ImageView
+                android:id="@+id/prop_img5"
+                android:tag="R.drawable.prop_img5"
+                android:layout_width="0dp"
+                android:layout_height="66dp"
+                android:layout_marginLeft="14.8dp"
+                android:layout_marginRight="18dp"
+                android:layout_weight="0.9"
+                android:src="@drawable/prop_img5" />
+        </LinearLayout>
+
+        <EditText
+            android:id="@+id/prop_name"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="30dp"
+            android:gravity="center"
+            android:hint="이름" />
+
+        <Button
+            android:id="@+id/prop_save"
+            android:layout_width="179.3dp"
+            android:layout_height="35.5dp"
+            android:layout_marginBottom="40.3dp"
+            android:layout_marginLeft="85dp"
+            android:layout_marginTop="40.8dp"
+            android:background="@drawable/folder_select"
+            android:gravity="center"
+            android:onClick="onClick"
+            android:text="저장하기"
+            android:textColor="@color/white"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+</LinearLayout>

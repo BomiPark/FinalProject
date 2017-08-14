@@ -90,7 +90,7 @@
                 android:layout_height="30dp"
                 android:id="@+id/folder"
                 android:layout_gravity="center_vertical"
-                android:background="@drawable/foler_select"
+                android:background="@drawable/folder_select"
                 android:text="@string/select_folder"
                 android:textColor="@color/white" />
 

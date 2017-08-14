@@ -71,7 +71,6 @@ public class SettingActivity extends AppCompatActivity {
                 else{
                     setAlarmOn(false);
                 }
-                Log.e("setting62", isChecked + "");
             }
         });
 

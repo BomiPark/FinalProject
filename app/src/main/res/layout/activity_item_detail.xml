@@ -144,7 +144,7 @@
                 style="@style/Widget.AppCompat.Button.Borderless.Colored"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/click_back"
+                android:textColor="@color/gray"
                 android:text="completed" />
 
             <Button

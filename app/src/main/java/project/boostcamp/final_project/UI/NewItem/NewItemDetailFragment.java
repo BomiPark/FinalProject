@@ -156,7 +156,6 @@ public class NewItemDetailFragment extends Fragment {
             return true;
         }
         return false;
-
     }
 
     void saveData(){

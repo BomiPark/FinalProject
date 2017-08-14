@@ -177,7 +177,7 @@ public class NewItemMapFragment extends Fragment {
             imm.hideSoftInputFromWindow(editSearch.getWindowToken(), 0);    //hide keyboard
         }
         else
-            Toast.makeText(getActivity(), "검색어를 입력해주세요", Toast.LENGTH_LONG).show(); //todo 이거 안먹는다.
+            Toast.makeText(getActivity(), "이동할 장소를 입력해주세요", Toast.LENGTH_LONG).show();
     }
 
     void move(String query){

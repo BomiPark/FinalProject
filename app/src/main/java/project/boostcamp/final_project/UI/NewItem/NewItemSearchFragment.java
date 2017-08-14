@@ -198,9 +198,8 @@ public class NewItemSearchFragment  extends Fragment {
             Toast.makeText(getActivity(), "지점을 선택해주세요 ", Toast.LENGTH_LONG).show();
         else{
             TodoItem item = new TodoItem();
-            Log.e("new", "position" + beforeSelected);
             item.setAddress(searchItemList.get(beforeSelected).getAddress());
-            item = setLatLng(item);
+            item = setLatLng(item); //todo 이거 다른 곳에서 하기!
 
             listener.changeFragment(Constant.SEARCH, Constant.DETAIL,item);}
     }
@@ -209,7 +208,7 @@ public class NewItemSearchFragment  extends Fragment {
 
         List<Address> list = null;
         try {
-            list = geoCoder.getFromLocationName(item.getAddress(), 5);
+            list = geoCoder.getFromLocationName(item.getAddress(), 1);
             item.setLatitude(list.get(0).getLatitude());
             item.setLongitude(list.get(0).getLongitude());
         } catch (Exception e) {

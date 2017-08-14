@@ -81,7 +81,7 @@ public class SearchItemAdapter extends RecyclerView.Adapter<SearchItemViewHolder
 
     public SearchItem getSelectItem() {
         SearchItem item = new SearchItem();
-        item.setTitle("dd");
+        item.setTitle("test");
         return item;
     }
 

@@ -9,7 +9,6 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -22,6 +21,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import io.realm.Realm;
@@ -33,11 +33,16 @@ import project.boostcamp.final_project.Adapter.TodoItemAdapter;
 import project.boostcamp.final_project.Model.FolderItem;
 import project.boostcamp.final_project.Model.TodoItem;
 import project.boostcamp.final_project.R;
+import project.boostcamp.final_project.UI.Setting.ProfileActivity;
 import project.boostcamp.final_project.UI.Setting.SettingActivity;
 import project.boostcamp.final_project.UI.NewItem.NewItemActivity;
+import project.boostcamp.final_project.Util.SharedPreferencesService;
 
+import static android.icu.lang.UCharacter.GraphemeClusterBreak.L;
 import static project.boostcamp.final_project.UI.Setting.SettingActivity.geofencingService;
-
+import static project.boostcamp.final_project.Util.SharedPreferencesService.IS_SETTING;
+import static project.boostcamp.final_project.Util.SharedPreferencesService.PROP_IMG;
+import static project.boostcamp.final_project.Util.SharedPreferencesService.PROP_NAME;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -52,7 +57,8 @@ public class MainActivity extends AppCompatActivity
     RecyclerView drawer_list;
     FolderItemAdapter folderItemAdapter;
 
-    ImageView writeIcon;
+    ImageView writeIcon, nav_img; // navigation drawer 관련 뷰
+    TextView nav_name;
 
     Realm realm;
     FolderItem folder = new FolderItem();
@@ -91,11 +97,17 @@ public class MainActivity extends AppCompatActivity
         initData();
         dialog = new AlertDialog.Builder(MainActivity.this);
         drawer_list = (RecyclerView) findViewById(R.id.drawer_list);
+        nav_name = (TextView)findViewById(R.id.nav_name);
+        nav_img = (ImageView)findViewById(R.id.nav_img);
         writeIcon = (ImageView)findViewById(R.id.writeIcon);
 
         writeIcon.setOnClickListener(clickListener);
+        nav_name.setOnClickListener(clickListener);
+        nav_img.setOnClickListener(clickListener);
 
         setFolderItemList();
+
+        setProfile();
 
         setTodoItemList();
     }
@@ -108,7 +120,7 @@ public class MainActivity extends AppCompatActivity
 
             @Override
             public void onItemClick(View view, int position) {
-                DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout); //todo 폴더리스트로이동
+                DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
                 drawer.closeDrawer(GravityCompat.START);
                 Intent intent = new Intent(MainActivity.this, FolderItemActivity.class);
                 intent.putExtra("folder", folderList.get(position).getFolder());
@@ -116,11 +128,22 @@ public class MainActivity extends AppCompatActivity
             }
 
             @Override
-            public void onItemLongClick(View view, int position) {
+            public void onItemLongClick(View view, int position) { //todo 삭제도 구현해야 할 듯
 
             }
         }));
 
+    }
+
+    void setProfile(){
+
+        SharedPreferencesService.getInstance().load(getApplicationContext());
+        int prop_img = SharedPreferencesService.getInstance().getPrefIntData(PROP_IMG);
+        if(prop_img != 1){
+            nav_img.setImageResource(prop_img);}
+        String prop_name = SharedPreferencesService.getInstance().getPrefStringData(PROP_NAME);
+        if(prop_name != null)
+            nav_name.setText(prop_name);
     }
 
     void setTodoItemList(){
@@ -157,13 +180,14 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onResume(){
         super.onResume();
-        updateData();
+        setProfile();
+        updateData(); //todo 위치 변경
     }
 
     void updateData(){
         realm.executeTransaction(new Realm.Transaction() {
             @Override
-            public void execute(Realm realm) { //todo 이렇게안해두되긴하는거같당!
+            public void execute(Realm realm) {
                 itemList = null;
                 itemList = realm.where(TodoItem.class).equalTo("isCompleted", false).findAll();
                 todoItemAdapter.notifyDataSetChanged();
@@ -276,7 +300,7 @@ public class MainActivity extends AppCompatActivity
 
     void saveFolder(String folderName){
 
-        int nextID =0;
+        int nextID = 0;
 
         if(realm.where(FolderItem.class).findAll().size() > 0)
             nextID = realm.where(FolderItem.class).findAll().last().getId() + 1; // 가장 마지막에 저장된 id 값
@@ -299,6 +323,9 @@ public class MainActivity extends AppCompatActivity
             switch (v.getId()){
                 case R.id.writeIcon :
                     OpenFolderDialogBox();
+                    break;
+                default:
+                    startActivity(new Intent(MainActivity.this, ProfileActivity.class));
                     break;
             }
         }
