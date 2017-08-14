@@ -13,9 +13,6 @@ import com.google.j2objc.annotations.ObjectiveCName;
 import project.boostcamp.final_project.R;
 import project.boostcamp.final_project.Util.SharedPreferencesService;
 
-import static project.boostcamp.final_project.R.id.nav_img;
-import static project.boostcamp.final_project.R.id.nav_name;
-import static project.boostcamp.final_project.Util.SharedPreferencesService.IS_SETTING;
 import static project.boostcamp.final_project.Util.SharedPreferencesService.PROP_IMG;
 import static project.boostcamp.final_project.Util.SharedPreferencesService.PROP_NAME;
 

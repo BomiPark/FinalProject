@@ -10,7 +10,7 @@ import project.boostcamp.final_project.R;
 
 public class SimpleTodoItemViewHolder extends RecyclerView.ViewHolder{
 
-    public TextView todo;
+    private TextView todo;
     public ImageView check;
 
     public SimpleTodoItemViewHolder(View view){

@@ -9,6 +9,7 @@ public class SharedPreferencesService {
     public static final String IS_SETTING = "isSetting"; // 앱 처음 설치한 것인지 확인
     public static final String PROP_NAME = "prop_name";
     public static final String PROP_IMG = "prop_img";
+    public static final String IS_BOUND = "is_bound";
 
     private static SharedPreferencesService sharedPreferencesManager;
     private SharedPreferences pref;

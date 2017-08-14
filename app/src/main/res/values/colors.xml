@@ -7,5 +7,6 @@
     <color name="gray">#767676</color>
     <color name="click_back">#E35757</color>
     <color name="background">#f0fafa</color>
+    <color name="light_gray">#D8D8D8</color>
 
 </resources>

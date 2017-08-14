@@ -27,6 +27,7 @@ import project.boostcamp.final_project.Util.GeofencingService.GeoBinder;
 import project.boostcamp.final_project.Util.SharedPreferencesService;
 
 import static project.boostcamp.final_project.R.id.back;
+import static project.boostcamp.final_project.Util.SharedPreferencesService.IS_BOUND;
 
 public class SettingActivity extends AppCompatActivity {
 
@@ -92,9 +93,7 @@ public class SettingActivity extends AppCompatActivity {
 
         SharedPreferencesService.getInstance().load(getApplicationContext());
 
-      //  isBound =  SharedPreferencesService.getInstance().getPrefData("isBound"); //todo 체크
-
-        if(isBound == false) {
+        if(!SharedPreferencesService.getInstance().getPrefBooleanData(IS_BOUND)) {
             bindService(intent, connection, Context.BIND_AUTO_CREATE);
         }
 
@@ -108,7 +107,7 @@ public class SettingActivity extends AppCompatActivity {
 
             geoBinder = (GeoBinder) service;
             geofencingService = geoBinder.getService();
-            SharedPreferencesService.getInstance().setPrefData("isBound", true);
+            SharedPreferencesService.getInstance().setPrefData(IS_BOUND, true);
             isBound = true;
 
         }
@@ -119,7 +118,7 @@ public class SettingActivity extends AppCompatActivity {
 
             geofencingService = null;
             geoBinder = null;
-            SharedPreferencesService.getInstance().setPrefData("isBound", false);
+            SharedPreferencesService.getInstance().setPrefData(IS_BOUND, false);
         }
     };
 

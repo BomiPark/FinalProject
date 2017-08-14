@@ -4,6 +4,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 import android.widget.TextView;
 
 import org.w3c.dom.Text;
@@ -13,6 +14,7 @@ import io.realm.RealmConfiguration;
 import io.realm.RealmResults;
 import project.boostcamp.final_project.Adapter.FolderItemAdapter;
 import project.boostcamp.final_project.Adapter.SimpleTodoItemAdapter;
+import project.boostcamp.final_project.Interface.RecyclerItemClickListener;
 import project.boostcamp.final_project.Model.FolderItem;
 import project.boostcamp.final_project.Model.TodoItem;
 import project.boostcamp.final_project.R;
@@ -35,6 +37,17 @@ public class FolderItemActivity extends AppCompatActivity {
         folder_title = (TextView)findViewById(R.id.folder_title);
 
         initData(getIntent().getExtras().getString("folder"));
+
+        recyclerView.addOnItemTouchListener(new RecyclerItemClickListener(this, recyclerView, new RecyclerItemClickListener.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+
+            }
+            @Override
+            public void onItemLongClick(View view, int position) {
+
+            }
+        }));
     }
 
 

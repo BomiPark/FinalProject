@@ -24,9 +24,6 @@ public class GeofencingService extends Service{
 
     private final IBinder binder = new GeoBinder();
 
-    private enum PendingGeofenceTask { // 지오펜스의 현재 상태
-        ADD, REMOVE, NONE
-    }
     RealmResults<TodoItem> itemList;
     Realm realm;
 
@@ -102,7 +99,9 @@ public class GeofencingService extends Service{
 
     void setGeofenceList(int radius) throws IllegalArgumentException { // 지오펜스 리스트 설정
 
-        setData();
+        itemList = realm.where(TodoItem.class).equalTo("isCompleted", false).findAll();
+
+        Log.e("geofencing 아이템 갯수 ", itemList.size() + "");
 
         if (radius == 0) {
             for (TodoItem item : itemList) {
@@ -136,12 +135,6 @@ public class GeofencingService extends Service{
         }
     }
 
-    void setData(){
-
-        itemList = realm.where(TodoItem.class).equalTo("isCompleted", false).findAll();
-
-        Log.e("geofencing128 아이템 갯수 ", itemList.size() + "");
-    }
 
     void initRealm(){
 
@@ -150,12 +143,10 @@ public class GeofencingService extends Service{
         Realm.setDefaultConfiguration(config);
 
         realm = Realm.getDefaultInstance();
-
     }
 
     public class GeoBinder extends Binder {
         public GeofencingService getService(){
-
             return GeofencingService.this;
         }
     }
