@@ -11,13 +11,11 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
 import project.boostcamp.final_project.Model.TodoItem;
@@ -26,15 +24,10 @@ import project.boostcamp.final_project.Util.GeofencingService;
 import project.boostcamp.final_project.Util.GeofencingService.GeoBinder;
 import project.boostcamp.final_project.Util.SharedPreferencesService;
 
-import static project.boostcamp.final_project.R.id.back;
+import static project.boostcamp.final_project.Util.BindingService.geofencingService;
 import static project.boostcamp.final_project.Util.SharedPreferencesService.IS_BOUND;
 
 public class SettingActivity extends AppCompatActivity {
-
-    Intent intent;
-    GeoBinder geoBinder;
-    public static GeofencingService geofencingService;
-    public static boolean isBound; // shared에저장해야할듯!!
 
     Button on, off;
     ImageView back;
@@ -47,7 +40,6 @@ public class SettingActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setting);
 
-        intent = new Intent(this, GeofencingService.class);
         on = (Button)findViewById(R.id.on);
         off = (Button)findViewById(R.id.off);
         back=(ImageView)findViewById(R.id.back);
@@ -91,36 +83,8 @@ public class SettingActivity extends AppCompatActivity {
             }
         });
 
-        SharedPreferencesService.getInstance().load(getApplicationContext());
-
-        if(!SharedPreferencesService.getInstance().getPrefBooleanData(IS_BOUND)) {
-            bindService(intent, connection, Context.BIND_AUTO_CREATE);
-        }
-
     }
 
-    private ServiceConnection connection = new ServiceConnection() {
-        @Override
-        public void onServiceConnected(ComponentName componentName, IBinder service) {
-
-            Toast.makeText(SettingActivity.this, "Service Connected", Toast.LENGTH_LONG).show();
-
-            geoBinder = (GeoBinder) service;
-            geofencingService = geoBinder.getService();
-            SharedPreferencesService.getInstance().setPrefData(IS_BOUND, true);
-            isBound = true;
-
-        }
-
-
-        @Override
-        public void onServiceDisconnected(ComponentName componentName) {
-
-            geofencingService = null;
-            geoBinder = null;
-            SharedPreferencesService.getInstance().setPrefData(IS_BOUND, false);
-        }
-    };
 
     View.OnClickListener clickListener =new View.OnClickListener() {
         @Override
@@ -137,21 +101,14 @@ public class SettingActivity extends AppCompatActivity {
     };
 
     void setAlarmOn(boolean on){
-        if(on == true){
+        if(on == true){ //todo 추가추가
             swich.setChecked(true);
-            Toast.makeText(getApplicationContext(), "service start", Toast.LENGTH_LONG).show();
             setTextColor(true);
-            if(isEmpty() != true && geofencingService != null) {
-                geofencingService.startGeofence();
-                Log.e("setting135", geofencingService + "");
-            }
+
         }
         else{
             swich.setChecked(false);
-            Toast.makeText(getApplicationContext(), "service stop", Toast.LENGTH_LONG).show();
-            geofencingService.stopGeofence();//
             setTextColor(false);
-            isBound = false;
         }
     }
 
@@ -164,19 +121,6 @@ public class SettingActivity extends AppCompatActivity {
             on.setTextColor(getResources().getColor(R.color.gray));
             off.setTextColor(getResources().getColor(R.color.click_back));
         }
-    }
-
-    boolean isEmpty(){
-
-        Realm.init(this);
-        RealmConfiguration config = new RealmConfiguration.Builder().build();
-        Realm.setDefaultConfiguration(config);
-
-        Realm realm = Realm.getDefaultInstance();
-        if(realm.where(TodoItem.class).findAll().size() == 0)
-            return true;
-        else
-            return false;
     }
 
 }

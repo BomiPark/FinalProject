@@ -36,11 +36,10 @@ import project.boostcamp.final_project.R;
 import project.boostcamp.final_project.UI.Setting.ProfileActivity;
 import project.boostcamp.final_project.UI.Setting.SettingActivity;
 import project.boostcamp.final_project.UI.NewItem.NewItemActivity;
+import project.boostcamp.final_project.Util.BindingService;
 import project.boostcamp.final_project.Util.SharedPreferencesService;
 
-import static android.icu.lang.UCharacter.GraphemeClusterBreak.L;
-import static project.boostcamp.final_project.UI.Setting.SettingActivity.geofencingService;
-import static project.boostcamp.final_project.Util.SharedPreferencesService.IS_SETTING;
+import static project.boostcamp.final_project.Util.BindingService.geofencingService;
 import static project.boostcamp.final_project.Util.SharedPreferencesService.PROP_IMG;
 import static project.boostcamp.final_project.Util.SharedPreferencesService.PROP_NAME;
 
@@ -52,6 +51,7 @@ public class MainActivity extends AppCompatActivity
     RecyclerView recyclerView;
     TodoItemAdapter todoItemAdapter;
     AlertDialog.Builder dialog;
+    public static BindingService bindingService;
 
     DrawerLayout drawer;
     RecyclerView drawer_list;
@@ -105,11 +105,15 @@ public class MainActivity extends AppCompatActivity
         nav_name.setOnClickListener(clickListener);
         nav_img.setOnClickListener(clickListener);
 
+        bindingService =  new BindingService(this);
+
         setFolderItemList();
 
         setProfile();
 
         setTodoItemList();
+
+        bindingService.startService();
     }
 
     void setFolderItemList(){

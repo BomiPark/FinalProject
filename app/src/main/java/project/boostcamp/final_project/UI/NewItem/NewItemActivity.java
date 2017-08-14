@@ -17,7 +17,7 @@ import project.boostcamp.final_project.R;
 import project.boostcamp.final_project.Util.LocationService;
 
 import static project.boostcamp.final_project.Model.Constant.SAVE;
-import static project.boostcamp.final_project.UI.Setting.SettingActivity.geofencingService;
+import static project.boostcamp.final_project.Util.BindingService.geofencingService;
 
 public class NewItemActivity extends AppCompatActivity implements FragmentChangeListener {
 

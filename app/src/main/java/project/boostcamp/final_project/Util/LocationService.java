@@ -16,7 +16,7 @@ public class LocationService {
 
     private LocationManager locManager;
     private Context context;
-    LatLng currentLoc;
+    private LatLng currentLoc;
 
     public LocationService(Context context) {
 
