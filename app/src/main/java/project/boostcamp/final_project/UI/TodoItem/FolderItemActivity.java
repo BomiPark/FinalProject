@@ -18,6 +18,7 @@ import project.boostcamp.final_project.Interface.RecyclerItemClickListener;
 import project.boostcamp.final_project.Model.FolderItem;
 import project.boostcamp.final_project.Model.TodoItem;
 import project.boostcamp.final_project.R;
+import project.boostcamp.final_project.Util.RealmHelper;
 
 public class FolderItemActivity extends AppCompatActivity {
 
@@ -52,13 +53,10 @@ public class FolderItemActivity extends AppCompatActivity {
 
 
     void initData(String folderName){
-        Realm.init(this);
-        RealmConfiguration config = new RealmConfiguration.Builder().build();
-        Realm.setDefaultConfiguration(config);
 
         folder_title.setText(folderName);
 
-        realm = Realm.getDefaultInstance();
+        realm = RealmHelper.getInstance(this);
 
         list = realm.where(TodoItem.class).equalTo("folder", folderName).findAll();
 

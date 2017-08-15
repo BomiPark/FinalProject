@@ -15,6 +15,7 @@ import project.boostcamp.final_project.Model.Constant;
 import project.boostcamp.final_project.Model.TodoItem;
 import project.boostcamp.final_project.R;
 import project.boostcamp.final_project.Util.LocationService;
+import project.boostcamp.final_project.Util.RealmHelper;
 
 import static project.boostcamp.final_project.Model.Constant.SAVE;
 import static project.boostcamp.final_project.Util.BindingService.geofencingService;
@@ -100,18 +101,11 @@ public class NewItemActivity extends AppCompatActivity implements FragmentChange
     }
 
     void setData(TodoItem item){
-        Realm.init(this);
-        RealmConfiguration config = new RealmConfiguration.Builder().build();
-        Realm.setDefaultConfiguration(config);
 
-        realm = Realm.getDefaultInstance();
-        int nextID =0;
-
-        if(realm.where(TodoItem.class).findAll().size() > 0)
-            nextID = realm.where(TodoItem.class).findAll().last().getId() + 1; // 가장 마지막에 저장된 id 값
+        realm = RealmHelper.getInstance(this);
 
         realm.beginTransaction();
-        item.setId(nextID);
+        item.setId(RealmHelper.getNextTodoId());
         realm.copyToRealm(item);
 
         realm.commitTransaction();

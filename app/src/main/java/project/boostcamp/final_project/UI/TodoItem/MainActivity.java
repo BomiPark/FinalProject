@@ -9,6 +9,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -30,6 +31,8 @@ import io.realm.RealmResults;
 import project.boostcamp.final_project.Adapter.FolderItemAdapter;
 import project.boostcamp.final_project.Interface.RecyclerItemClickListener;
 import project.boostcamp.final_project.Adapter.TodoItemAdapter;
+import project.boostcamp.final_project.Interface.TodoCheckClickListener;
+import project.boostcamp.final_project.Interface.TodoMainClickListener;
 import project.boostcamp.final_project.Model.FolderItem;
 import project.boostcamp.final_project.Model.TodoItem;
 import project.boostcamp.final_project.R;
@@ -37,6 +40,7 @@ import project.boostcamp.final_project.UI.Setting.ProfileActivity;
 import project.boostcamp.final_project.UI.Setting.SettingActivity;
 import project.boostcamp.final_project.UI.NewItem.NewItemActivity;
 import project.boostcamp.final_project.Util.BindingService;
+import project.boostcamp.final_project.Util.RealmHelper;
 import project.boostcamp.final_project.Util.SharedPreferencesService;
 
 import static project.boostcamp.final_project.Util.BindingService.geofencingService;
@@ -61,10 +65,11 @@ public class MainActivity extends AppCompatActivity
     TextView nav_name;
 
     Realm realm;
+    TodoItem todo = new TodoItem();
     FolderItem folder = new FolderItem();
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) { //todo 스피너 추가
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -94,6 +99,8 @@ public class MainActivity extends AppCompatActivity
 
     void init(){
 
+        bindingService =  new BindingService(this);
+
         initData();
         dialog = new AlertDialog.Builder(MainActivity.this);
         drawer_list = (RecyclerView) findViewById(R.id.drawer_list);
@@ -105,15 +112,11 @@ public class MainActivity extends AppCompatActivity
         nav_name.setOnClickListener(clickListener);
         nav_img.setOnClickListener(clickListener);
 
-        bindingService =  new BindingService(this);
-
         setFolderItemList();
 
         setProfile();
 
         setTodoItemList();
-
-        bindingService.startService();
     }
 
     void setFolderItemList(){
@@ -152,31 +155,40 @@ public class MainActivity extends AppCompatActivity
 
     void setTodoItemList(){
         recyclerView = (RecyclerView)findViewById(R.id.recyclerView);
-        todoItemAdapter = new TodoItemAdapter(this, itemList, R.layout.item_todo);
-        recyclerView.setAdapter(todoItemAdapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.addOnItemTouchListener(new RecyclerItemClickListener(MainActivity.this, recyclerView, new RecyclerItemClickListener.OnItemClickListener() {
+        todoItemAdapter = new TodoItemAdapter(this, itemList, R.layout.item_todo, new TodoMainClickListener() {
             @Override
             public void onItemClick(View view, int position) {
                 Intent intent = new Intent(MainActivity.this, ItemDetailActivity.class); // 선택한애정보가지고갈거야
                 intent.putExtra("id", itemList.get(position).getId());
                 startActivity(intent);
             }
+
             @Override
-            public void onItemLongClick(View view, final int position) {
+            public void onLongClick(View view, int position) {
                 removeItemDialogBox(position);
             }
-        }));
+        }, new TodoCheckClickListener() {
+            @Override
+            public void onClick(final int position) { //todo real 데이터 수정
+                Log.e("item id", itemList.get(position)+ "  po" + position);
+
+                realm.beginTransaction();
+
+                todo = realm.where(TodoItem.class).equalTo("id", itemList.get(position).getId()).findFirst();
+                todo.setCompleted(!todo.isCompleted());
+
+                realm.commitTransaction();
+            }
+        });
+        recyclerView.setAdapter(todoItemAdapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
 
     void initData(){
-        Realm.init(this);
-        RealmConfiguration config = new RealmConfiguration.Builder().build();
-        Realm.setDefaultConfiguration(config);
 
-        realm = Realm.getDefaultInstance();
+        realm = RealmHelper.getInstance(this);
 
-        itemList = realm.where(TodoItem.class).equalTo("isCompleted", false).findAll();
+        itemList = realm.where(TodoItem.class).findAll();
         folderList = realm.where(FolderItem.class).findAll();
 
     }
@@ -193,7 +205,7 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void execute(Realm realm) {
                 itemList = null;
-                itemList = realm.where(TodoItem.class).equalTo("isCompleted", false).findAll();
+                itemList = realm.where(TodoItem.class).findAll();
                 todoItemAdapter.notifyDataSetChanged();
             }
         });
@@ -304,13 +316,8 @@ public class MainActivity extends AppCompatActivity
 
     void saveFolder(String folderName){
 
-        int nextID = 0;
-
-        if(realm.where(FolderItem.class).findAll().size() > 0)
-            nextID = realm.where(FolderItem.class).findAll().last().getId() + 1; // 가장 마지막에 저장된 id 값
-
         realm.beginTransaction();
-        folder.setId(nextID);
+        folder.setId(RealmHelper.getNextFolderId());
         folder.setFolder(folderName);
         realm.copyToRealm(folder);
 

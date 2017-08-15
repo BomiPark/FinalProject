@@ -21,6 +21,7 @@ import project.boostcamp.final_project.BuildConfig;
 import project.boostcamp.final_project.Model.FolderItem;
 import project.boostcamp.final_project.R;
 import project.boostcamp.final_project.UI.TodoItem.MainActivity;
+import project.boostcamp.final_project.Util.RealmHelper;
 import project.boostcamp.final_project.Util.SharedPreferencesService;
 
 import static project.boostcamp.final_project.R.string.settings;
@@ -125,11 +126,8 @@ public class PermissionActivity extends AppCompatActivity {
     void setDefaultFolder(){
 
         getFolderList();
-        Realm.init(this);
-        RealmConfiguration config = new RealmConfiguration.Builder().build();
-        Realm.setDefaultConfiguration(config);
 
-        realm = Realm.getDefaultInstance();
+        realm = RealmHelper.getInstance(this);
         realm.beginTransaction();
         for(int i=0; i< folderList.size(); i++) {
             folder = realm.createObject(FolderItem.class);

@@ -13,6 +13,7 @@ import android.os.IBinder;
 import android.util.Log;
 import android.widget.Toast;
 
+import static project.boostcamp.final_project.UI.TodoItem.MainActivity.bindingService;
 import static project.boostcamp.final_project.Util.SharedPreferencesService.IS_BOUND;
 
 public class BindingService {
@@ -32,6 +33,7 @@ public class BindingService {
         if(!SharedPreferencesService.getInstance().getPrefBooleanData(IS_BOUND)) {
             context.bindService(intent, connection, Context.BIND_AUTO_CREATE);
         }
+
     }
 
     private ServiceConnection connection = new ServiceConnection() {
@@ -45,8 +47,9 @@ public class BindingService {
             SharedPreferencesService.getInstance().setPrefData(IS_BOUND, true);
             isBound = true;
 
-        }
+            bindingService.startService();
 
+        }
 
         @Override
         public void onServiceDisconnected(ComponentName componentName) {
@@ -58,10 +61,10 @@ public class BindingService {
     };
 
     public void startService(){
+
         if(isEmpty() != true && geofencingService != null) {
             Toast.makeText(context, "service start", Toast.LENGTH_LONG).show();
             geofencingService.startGeofence();
-            Log.e("setting135", geofencingService + "");
         }
     }
 
@@ -73,11 +76,7 @@ public class BindingService {
 
     boolean isEmpty(){
 
-        Realm.init(context);
-        RealmConfiguration config = new RealmConfiguration.Builder().build();
-        Realm.setDefaultConfiguration(config);
-
-        Realm realm = Realm.getDefaultInstance();
+        Realm realm = RealmHelper.getInstance(context);
         if(realm.where(TodoItem.class).findAll().size() == 0)
             return true;
         else

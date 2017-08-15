@@ -20,6 +20,7 @@ import project.boostcamp.final_project.Model.TodoItem;
 import project.boostcamp.final_project.R;
 import project.boostcamp.final_project.Util.GeofencingService;
 import project.boostcamp.final_project.Util.GeofencingService.GeoBinder;
+import project.boostcamp.final_project.Util.RealmHelper;
 
 public class ItemDetailActivity extends AppCompatActivity {
 
@@ -41,7 +42,7 @@ public class ItemDetailActivity extends AppCompatActivity {
 
     void init(){
 
-        realm = Realm.getDefaultInstance();
+        realm = RealmHelper.getInstance(this);
 
         todo = (TextView)findViewById(R.id.todo);
         address = (TextView)findViewById(R.id.address);

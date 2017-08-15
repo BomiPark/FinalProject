@@ -10,9 +10,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import io.realm.RealmResults;
-import project.boostcamp.final_project.Model.SearchItem;
+import project.boostcamp.final_project.Interface.RecyclerItemClickListener;
+import project.boostcamp.final_project.Interface.TodoCheckClickListener;
+import project.boostcamp.final_project.Interface.TodoMainClickListener;
 import project.boostcamp.final_project.Model.TodoItem;
-import project.boostcamp.final_project.R;
 
 
 public class TodoItemAdapter extends RecyclerView.Adapter<TodoItemViewHolder> {
@@ -22,10 +23,17 @@ public class TodoItemAdapter extends RecyclerView.Adapter<TodoItemViewHolder> {
     private int item_layout;
     private TodoItemViewHolder viewHolder;
 
-    public TodoItemAdapter(Context context, RealmResults<TodoItem> itemList, int item_layout){
+    private TodoMainClickListener itemClickListener;
+    private TodoCheckClickListener checkClickListener;
+
+    public TodoItemAdapter(Context context, RealmResults<TodoItem> itemList, int item_layout,
+                           TodoMainClickListener itemClickListener,
+                           TodoCheckClickListener checkClickListener){
         this.context = context;
         this.itemList = itemList;
         this.item_layout = item_layout;
+        this.itemClickListener = itemClickListener;
+        this.checkClickListener = checkClickListener;
     }
 
     @Override
@@ -41,7 +49,7 @@ public class TodoItemAdapter extends RecyclerView.Adapter<TodoItemViewHolder> {
 
     @Override
     public void onBindViewHolder(TodoItemViewHolder holder, int position) {
-        ((TodoItemViewHolder) holder).bind(itemList.get(position));
+        ((TodoItemViewHolder) holder).bind(itemList.get(position), itemClickListener, checkClickListener);
     }
 
     @Override

@@ -25,4 +25,14 @@
         android:layout_below="@+id/splash_icon"
         android:layout_alignEnd="@+id/splash_icon" />
 
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"
+        android:background="@color/click_back">
+
+    </FrameLayout>
+
+
 </RelativeLayout>

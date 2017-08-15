@@ -12,7 +12,7 @@ import static android.icu.lang.UCharacter.GraphemeClusterBreak.T;
 
 public class TodoItem extends RealmObject{
 
-    private int id;
+    private int id; // todo 기본키 설정
     private String todo;
     private String address;
     private double latitude;
