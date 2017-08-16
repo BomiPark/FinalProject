@@ -101,7 +101,7 @@ public class PermissionActivity extends AppCompatActivity {
                                            @NonNull int[] grantResults) {
         if (requestCode == REQUEST_PERMISSIONS_REQUEST_CODE) {
             if (grantResults.length <= 0) {
-            } else if (grantResults[0] == PackageManager.PERMISSION_GRANTED) { //todo 여기서 지오펜싱 서비스 시작하기!
+            } else if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 startActivity(new Intent(this, MainActivity.class));
                 finish();
             } else {
@@ -140,6 +140,7 @@ public class PermissionActivity extends AppCompatActivity {
 
     void getFolderList(){
         folderList = new ArrayList<>();
+        folderList.add(getResources().getString(R.string.folder_default0));
         folderList.add(getResources().getString(R.string.folder_default1));
         folderList.add(getResources().getString(R.string.folder_default2));
         folderList.add(getResources().getString(R.string.folder_default3));

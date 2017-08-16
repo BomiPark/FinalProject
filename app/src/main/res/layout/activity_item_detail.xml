@@ -58,9 +58,11 @@
 
             <TextView
                 android:id="@+id/address"
-                android:layout_width="match_parent"
+                android:layout_width="200dp"
                 android:layout_height="wrap_content"
-                android:text="address"
+                android:text="@string/address"
+                android:lines="2"
+                android:ellipsize="marquee"
                 android:textSize="12sp"/>
 
         </LinearLayout>
@@ -137,13 +139,13 @@
                 android:layout_width="100dp"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="수행" />
+                android:text="수행여부" />
 
             <Button
                 android:id="@+id/completed"
-                style="@style/Widget.AppCompat.Button.Borderless.Colored"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                style="@style/Widget.AppCompat.Button.Borderless.Colored"
                 android:textColor="@color/gray"
                 android:text="completed" />
 
@@ -157,6 +159,18 @@
 
         </LinearLayout>
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="vertical">
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/to_update"
+                android:onClick="onClick"
+                android:text="수정하기"/>
+        </LinearLayout>
 
     </LinearLayout>
 

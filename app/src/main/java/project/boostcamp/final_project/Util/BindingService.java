@@ -10,7 +10,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.IBinder;
-import android.util.Log;
 import android.widget.Toast;
 
 import static project.boostcamp.final_project.UI.TodoItem.MainActivity.bindingService;

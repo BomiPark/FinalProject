@@ -33,6 +33,7 @@ import project.boostcamp.final_project.Interface.FragmentChangeListener;
 import project.boostcamp.final_project.Model.FolderItem;
 import project.boostcamp.final_project.Model.TodoItem;
 import project.boostcamp.final_project.R;
+import project.boostcamp.final_project.Util.RealmHelper;
 
 import static project.boostcamp.final_project.R.id.toSearch;
 
@@ -93,9 +94,14 @@ public class NewItemDetailFragment extends Fragment {
         super.onStart();
 
         if(item != null)
-            setView();
-        else
+            setView(); // 디테일 -> 다른 프래그먼트 다녀온 경우.
+        else {
             item = new TodoItem();
+            if(listener.getCurrentItem().getTodo()!= null){ // 이전에 저장한 아이템 수정하는 경우
+                this.item = listener.getCurrentItem();
+                setView();
+            }
+        }
     }
 
     @Override
@@ -152,20 +158,25 @@ public class NewItemDetailFragment extends Fragment {
             return true;
         }
         if (folder.getText().toString().equals("폴더선택")) {
-            Toast.makeText(getContext(), "포함될 폴더를 선택해주세요", Toast.LENGTH_LONG).show();
-            return true;
+            item.setFolder(getResources().getString(R.string.folder_default0));
+            return false;
         }
         return false;
     }
 
     void saveData(){
+        realm.beginTransaction();
+
         item.setTodo(todo.getText().toString());
         item.setAlarm(isAlarm);
         item.setFolder(folder.getText().toString());
+
+        realm.commitTransaction();
     }
 
     void setView(){
 
+        todo.setText(item.getTodo());
         folder.setText(item.getFolder());
         setBtnColor(status);
 
@@ -214,11 +225,8 @@ public class NewItemDetailFragment extends Fragment {
     }
 
     void initData(){
-        Realm.init(getActivity());
-        RealmConfiguration config = new RealmConfiguration.Builder().build();
-        Realm.setDefaultConfiguration(config);
 
-        realm = Realm.getDefaultInstance();
+        realm = RealmHelper.getInstance(getActivity());
         realmResults = realm.where(FolderItem.class).findAll();
 
         folderList = ImmutableList.copyOf(Collections2.transform(realmResults, new Function<FolderItem, String>(){

@@ -20,13 +20,24 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.common.base.Function;
+import com.google.common.collect.Collections2;
+import com.google.common.collect.ImmutableList;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.annotation.Nullable;
+
 import io.realm.Realm;
-import io.realm.RealmConfiguration;
 import io.realm.RealmResults;
 import project.boostcamp.final_project.Adapter.FolderItemAdapter;
 import project.boostcamp.final_project.Interface.RecyclerItemClickListener;
@@ -48,14 +59,20 @@ import static project.boostcamp.final_project.Util.SharedPreferencesService.PROP
 import static project.boostcamp.final_project.Util.SharedPreferencesService.PROP_NAME;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener,
+        AdapterView.OnItemSelectedListener{
+
+    public static BindingService bindingService;
 
     RealmResults<TodoItem> itemList;
     RealmResults<FolderItem> folderList;
+    List<String> spinnerList = new ArrayList<>();
     RecyclerView recyclerView;
+    Spinner spinner;
+
     TodoItemAdapter todoItemAdapter;
+    ArrayAdapter<String> spinnerAdapter;
     AlertDialog.Builder dialog;
-    public static BindingService bindingService;
 
     DrawerLayout drawer;
     RecyclerView drawer_list;
@@ -69,7 +86,7 @@ public class MainActivity extends AppCompatActivity
     FolderItem folder = new FolderItem();
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) { //todo 스피너 추가
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -80,6 +97,7 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(MainActivity.this, NewItemActivity.class);
+                intent.putExtra("id",-1);
                 startActivity(intent);
             }
         });
@@ -97,9 +115,16 @@ public class MainActivity extends AppCompatActivity
 
     }
 
-    void init(){
+    @Override
+    public void onResume(){
+        super.onResume();
+        setProfile();
+        updateData(); //todo 위치 변경
 
-        bindingService =  new BindingService(this);
+        bindingService =  new BindingService(this);//todo 체크
+    }
+
+    void init(){
 
         initData();
         dialog = new AlertDialog.Builder(MainActivity.this);
@@ -107,16 +132,34 @@ public class MainActivity extends AppCompatActivity
         nav_name = (TextView)findViewById(R.id.nav_name);
         nav_img = (ImageView)findViewById(R.id.nav_img);
         writeIcon = (ImageView)findViewById(R.id.writeIcon);
+        spinner = (Spinner)findViewById(R.id.main_spinner);
 
         writeIcon.setOnClickListener(clickListener);
         nav_name.setOnClickListener(clickListener);
         nav_img.setOnClickListener(clickListener);
+
+        setSpinner();
 
         setFolderItemList();
 
         setProfile();
 
         setTodoItemList();
+    }
+
+    void setSpinner(){
+
+        spinner.setOnItemSelectedListener(this);
+
+        spinnerList =  FolderItem.getFolderList(folderList);
+
+        spinnerList.add(0,"모두 보기");
+
+        spinnerAdapter = new ArrayAdapter<>(
+                this, android.R.layout.simple_spinner_item, spinnerList);
+
+        spinner.setAdapter(spinnerAdapter);
+
     }
 
     void setFolderItemList(){
@@ -129,9 +172,14 @@ public class MainActivity extends AppCompatActivity
             public void onItemClick(View view, int position) {
                 DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
                 drawer.closeDrawer(GravityCompat.START);
-                Intent intent = new Intent(MainActivity.this, FolderItemActivity.class);
-                intent.putExtra("folder", folderList.get(position).getFolder());
-                startActivity(intent);
+
+                if (position == 0)
+                    itemList = realm.where(TodoItem.class).findAll();
+                else {
+                    itemList = realm.where(TodoItem.class).equalTo("folder", spinnerList.get(position)).findAll();
+                }
+
+                setTodoItemList();
             }
 
             @Override
@@ -157,20 +205,19 @@ public class MainActivity extends AppCompatActivity
         recyclerView = (RecyclerView)findViewById(R.id.recyclerView);
         todoItemAdapter = new TodoItemAdapter(this, itemList, R.layout.item_todo, new TodoMainClickListener() {
             @Override
-            public void onItemClick(View view, int position) {
+            public void onItemClick(View view, final int position) {
                 Intent intent = new Intent(MainActivity.this, ItemDetailActivity.class); // 선택한애정보가지고갈거야
                 intent.putExtra("id", itemList.get(position).getId());
                 startActivity(intent);
             }
 
             @Override
-            public void onLongClick(View view, int position) {
+            public void onLongClick(View view, final int position) {
                 removeItemDialogBox(position);
             }
         }, new TodoCheckClickListener() {
             @Override
-            public void onClick(final int position) { //todo real 데이터 수정
-                Log.e("item id", itemList.get(position)+ "  po" + position);
+            public void onClick(final int position) {
 
                 realm.beginTransaction();
 
@@ -193,14 +240,8 @@ public class MainActivity extends AppCompatActivity
 
     }
 
-    @Override
-    public void onResume(){
-        super.onResume();
-        setProfile();
-        updateData(); //todo 위치 변경
-    }
-
     void updateData(){
+
         realm.executeTransaction(new Realm.Transaction() {
             @Override
             public void execute(Realm realm) {
@@ -346,5 +387,25 @@ public class MainActivity extends AppCompatActivity
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         return true;
+    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+        if (position == 0)
+            itemList = realm.where(TodoItem.class).findAll();
+        else {
+            itemList = realm.where(TodoItem.class).equalTo("folder", spinnerList.get(position)).findAll();
+        }
+
+        setTodoItemList();
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+
+        itemList = realm.where(TodoItem.class).findAll();
+        todoItemAdapter.notifyDataSetChanged();
+
     }
 }

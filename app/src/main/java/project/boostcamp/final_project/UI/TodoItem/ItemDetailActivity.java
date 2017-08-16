@@ -18,18 +18,21 @@ import org.w3c.dom.Text;
 import io.realm.Realm;
 import project.boostcamp.final_project.Model.TodoItem;
 import project.boostcamp.final_project.R;
+import project.boostcamp.final_project.UI.NewItem.NewItemActivity;
 import project.boostcamp.final_project.Util.GeofencingService;
 import project.boostcamp.final_project.Util.GeofencingService.GeoBinder;
 import project.boostcamp.final_project.Util.RealmHelper;
 
 public class ItemDetailActivity extends AppCompatActivity {
 
-    Intent intent;
-    TodoItem item = new TodoItem();
-    Realm realm;
+    private Intent intent;
+    private TodoItem item = new TodoItem();
+    private Realm realm;
 
-    TextView todo, address, folder;
-    ImageView back, ok;
+    private TextView todo, address, folder;
+    private ImageView back, ok;
+
+    private int position;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,16 +52,22 @@ public class ItemDetailActivity extends AppCompatActivity {
         folder = (TextView)findViewById(R.id.folder);
         back = (ImageView)findViewById(R.id.back);
         ok = (ImageView)findViewById(R.id.ok);
+        ok.setVisibility(View.INVISIBLE);
 
         back.setOnClickListener(clickListener);
         ok.setOnClickListener(clickListener);
 
         intent = getIntent();
-        int position = intent.getExtras().getInt("id"); // 아이템 받아와서 세팅하면 될 듯!!
+        position = intent.getExtras().getInt("id"); // 아이템 받아와서 세팅하면 될 듯!!
 
-        item = realm.where(TodoItem.class).equalTo("id", position).findAll().get(0);
+        item = realm.where(TodoItem.class).equalTo("id", position).findFirst();
         setLayout();
 
+    }
+
+    public void onResume(){
+        super.onResume();
+        setLayout();
     }
 
     View.OnClickListener clickListener = new ImageView.OnClickListener(){
@@ -82,6 +91,15 @@ public class ItemDetailActivity extends AppCompatActivity {
         todo.setText(item.getTodo());
         address.setText(item.getAddress());
         folder.setText(item.getFolder());
+    }
+
+    public void onClick(View view){
+        switch (view.getId()){
+            case R.id.to_update :
+                Intent intent = new Intent(this, NewItemActivity.class);
+                intent.putExtra("id", position);
+                startActivity(intent);
+        }
     }
 
 }

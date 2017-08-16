@@ -110,12 +110,4 @@ public class GeofenceService extends IntentService {
         mNotificationManager.notify(0, builder.build()); //노티 날린다
     }
 
-    private String getTransitionString(int transitionType) {    //전환 상태 제공
-        switch (transitionType) {
-            case Geofence.GEOFENCE_TRANSITION_ENTER:
-                return getString(R.string.geofence_transition_entered);
-            default:
-                return getString(R.string.unknown_geofence_transition);
-        }
-    }
 }

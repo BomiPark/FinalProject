@@ -1,10 +1,13 @@
 package project.boostcamp.final_project.UI.NewItem;
 
+import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.FrameLayout;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.model.LatLng;
 
@@ -17,6 +20,7 @@ import project.boostcamp.final_project.R;
 import project.boostcamp.final_project.Util.LocationService;
 import project.boostcamp.final_project.Util.RealmHelper;
 
+import static android.media.CamcorderProfile.get;
 import static project.boostcamp.final_project.Model.Constant.SAVE;
 import static project.boostcamp.final_project.Util.BindingService.geofencingService;
 
@@ -63,6 +67,13 @@ public class NewItemActivity extends AppCompatActivity implements FragmentChange
         STATUS = Constant.DETAIL;
         detailFragment = new NewItemDetailFragment();
 
+        realm = RealmHelper.getInstance(this);
+
+        Log.e("newItem", getIntent().getExtras().getInt("id")+"" ); //todo 로그
+
+        if( getIntent().getExtras().getInt("id") != -1)
+            todoItem = realm.where(TodoItem.class).equalTo("id", getIntent().getExtras().getInt("id")).findFirst();
+
         getSupportFragmentManager().beginTransaction().replace(R.id.container, detailFragment).commit();
 
     }
@@ -80,7 +91,7 @@ public class NewItemActivity extends AppCompatActivity implements FragmentChange
             getSupportFragmentManager().beginTransaction().replace(R.id.container,newInstance(now, to)).addToBackStack(null).commit(); // detail 저장
         } else if(to == Constant.DETAIL && item == null) {
             getSupportFragmentManager().popBackStack();
-        } else if( to == Constant.DETAIL && item != null) {
+        } else if( to == Constant.DETAIL) {
             getSupportFragmentManager().popBackStack();
             todoItem = item;
         } else if(to == Constant.END){ // 아이템 저장안하고 종료하는 경우
@@ -100,13 +111,14 @@ public class NewItemActivity extends AppCompatActivity implements FragmentChange
         return STATUS;
     }
 
-    void setData(TodoItem item){
-
-        realm = RealmHelper.getInstance(this);
+    void setData(TodoItem item){ //todo 그냥 저장하는 경우와 수정하는 경우 구분하여 처리하기
 
         realm.beginTransaction();
-        item.setId(RealmHelper.getNextTodoId());
-        realm.copyToRealm(item);
+
+        if(item.getId()  == 0) {
+            item.setId(RealmHelper.getNextTodoId());
+            realm.copyToRealm(item);
+        }
 
         realm.commitTransaction();
 

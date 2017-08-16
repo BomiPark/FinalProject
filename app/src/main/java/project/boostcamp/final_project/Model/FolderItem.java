@@ -1,7 +1,10 @@
 package project.boostcamp.final_project.Model;
 
-import io.realm.RealmObject;
+import java.util.ArrayList;
+import java.util.List;
 
+import io.realm.RealmObject;
+import io.realm.RealmResults;
 
 public class FolderItem  extends RealmObject {
 
@@ -28,5 +31,16 @@ public class FolderItem  extends RealmObject {
 
     public void setFolder(String folder) {
         this.folder = folder;
+    }
+
+    public static List<String> getFolderList(RealmResults<FolderItem> list){
+
+        List<String> folderList = new ArrayList<>();
+
+        for(FolderItem item : list){
+            folderList.add(item.getFolder());
+        }
+
+        return folderList;
     }
 }

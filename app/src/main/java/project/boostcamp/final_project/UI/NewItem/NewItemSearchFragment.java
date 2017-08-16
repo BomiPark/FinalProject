@@ -37,20 +37,21 @@ import retrofit2.Response;
 
 public class NewItemSearchFragment  extends Fragment {
 
-    static View view;
-    EditText editSearch;
-    ImageView searchIcon, back, ok;
-    ArrayList<SearchItem> searchItemList;
+    private static View view;
+    private EditText editSearch;
+    private ImageView searchIcon, back, ok;
+    private ArrayList<SearchItem> searchItemList;
 
-    RecyclerView recyclerView;
-    LinearLayoutManager linearLayoutManager;
-    SearchItemAdapter adapter;
+    private RecyclerView recyclerView;
+    private LinearLayoutManager linearLayoutManager;
+    private SearchItemAdapter adapter;
 
-    NaverService naverService;
-    FragmentChangeListener listener;
+    private NaverService naverService;
+    private FragmentChangeListener listener;
 
-    int beforeSelected = -1;
-    Geocoder geoCoder;
+    private TodoItem item = new TodoItem();
+    private int beforeSelected = -1;
+    private Geocoder geoCoder;
 
     public NewItemSearchFragment(){}
 
@@ -76,12 +77,17 @@ public class NewItemSearchFragment  extends Fragment {
         recyclerView.setAdapter(adapter);
         recyclerView.addOnItemTouchListener(new RecyclerItemClickListener(getActivity(), recyclerView, new RecyclerItemClickListener.OnItemClickListener() {
             @Override
-            public void onItemClick(View view, int position) {
-                if(beforeSelected > -1) {
+            public void onItemClick(View view, final int position) {
+                if(beforeSelected > -1) { // 이전에 선택한 아이템이 있는 경우 체크 해제
                     searchItemList.get(beforeSelected).setSelected(false);}
-                searchItemList.get(position).setSelected(true);
-                adapter.notifyDataSetChanged();
-                beforeSelected = position;
+                if(position > -1) {
+                    searchItemList.get(position).setSelected(true);
+                    Log.e(" newItem ", "position =" + position + "before= " + beforeSelected);
+                    if (beforeSelected != position)
+                        adapter.notifyDataSetChanged();
+                    beforeSelected = position;
+                    item = setLatLng(searchItemList.get(position)); // todo 속도 노앤서.. 스레드 만들어야할 듯
+                }
             }
 
             @Override
@@ -144,7 +150,7 @@ public class NewItemSearchFragment  extends Fragment {
             imm.hideSoftInputFromWindow(editSearch.getWindowToken(), 0);    //hide keyboard
         }
         else
-            Toast.makeText(getActivity(), "검색어를 입력해주새요", Toast.LENGTH_LONG).show();
+            Toast.makeText(getActivity(), "검색어를 입력해주세요", Toast.LENGTH_LONG).show();
     }
 
     void getSearchList(String query){
@@ -197,18 +203,18 @@ public class NewItemSearchFragment  extends Fragment {
         if(beforeSelected < 0)
             Toast.makeText(getActivity(), "지점을 선택해주세요 ", Toast.LENGTH_LONG).show();
         else{
-            TodoItem item = new TodoItem();
             item.setAddress(searchItemList.get(beforeSelected).getAddress());
-            item = setLatLng(item); //todo 이거 다른 곳에서 하기!
+            if(item.getLatitude() == 0)
+                item = setLatLng(searchItemList.get(beforeSelected)); //todo 이거 다른 곳에서 하기!
 
             listener.changeFragment(Constant.SEARCH, Constant.DETAIL,item);}
     }
 
-    public TodoItem setLatLng(TodoItem item){
+    public TodoItem setLatLng(SearchItem searchItem){
 
         List<Address> list = null;
         try {
-            list = geoCoder.getFromLocationName(item.getAddress(), 1);
+            list = geoCoder.getFromLocationName(searchItem.getAddress(), 1);
             item.setLatitude(list.get(0).getLatitude());
             item.setLongitude(list.get(0).getLongitude());
         } catch (Exception e) {

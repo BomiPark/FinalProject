@@ -28,6 +28,7 @@
     <string name="ok_eng">OK</string>
     <string name="cancel_eng">CANCEL</string>
     <string name="saved">저장되었습니다 </string>
+    <string name="folder_default0">기본 폴더</string>
     <string name="folder_default1">사야할 것</string>
     <string name="folder_default2">해야할 것</string>
     <string name="folder_default3">봐야할 것</string>
