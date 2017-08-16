@@ -1,27 +1,22 @@
 package project.boostcamp.final_project.UI.TodoItem;
 
-import android.content.ComponentName;
-import android.content.Context;
 import android.content.Intent;
-import android.content.ServiceConnection;
-import android.os.IBinder;
+import android.graphics.Color;
+import android.renderscript.Byte2;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import org.w3c.dom.Text;
 
 import io.realm.Realm;
 import project.boostcamp.final_project.Model.TodoItem;
 import project.boostcamp.final_project.R;
 import project.boostcamp.final_project.UI.NewItem.NewItemActivity;
-import project.boostcamp.final_project.Util.GeofencingService;
-import project.boostcamp.final_project.Util.GeofencingService.GeoBinder;
 import project.boostcamp.final_project.Util.RealmHelper;
+
+import static project.boostcamp.final_project.R.id.toSearch;
 
 public class ItemDetailActivity extends AppCompatActivity {
 
@@ -31,6 +26,7 @@ public class ItemDetailActivity extends AppCompatActivity {
 
     private TextView todo, address, folder;
     private ImageView back, ok;
+    private Button on, off, completed, not_completed;
 
     private int position;
 
@@ -53,9 +49,16 @@ public class ItemDetailActivity extends AppCompatActivity {
         back = (ImageView)findViewById(R.id.back);
         ok = (ImageView)findViewById(R.id.ok);
         ok.setVisibility(View.INVISIBLE);
+        on = (Button) findViewById(R.id.on);
+        off = (Button)findViewById(R.id.off);
+        completed = (Button)findViewById(R.id.completed);
+        not_completed = (Button)findViewById(R.id.not_completed);
+
 
         back.setOnClickListener(clickListener);
         ok.setOnClickListener(clickListener);
+        completed.setOnClickListener(clickListener);
+        not_completed.setOnClickListener(clickListener);
 
         intent = getIntent();
         position = intent.getExtras().getInt("id"); // 아이템 받아와서 세팅하면 될 듯!!
@@ -80,7 +83,19 @@ public class ItemDetailActivity extends AppCompatActivity {
                         startActivity(new Intent(ItemDetailActivity.this, MainActivity.class));
                     finish();
                     break;
-                case R.id.ok :
+                case R.id.ok : //todo 삭제 예정
+                    break;
+                case R.id.on :
+
+                    break;
+                case R.id.off :
+
+                    break;
+                case R.id.completed :
+
+                    break;
+                case R.id.not_completed :
+
                     break;
             }
         }
@@ -91,6 +106,22 @@ public class ItemDetailActivity extends AppCompatActivity {
         todo.setText(item.getTodo());
         address.setText(item.getAddress());
         folder.setText(item.getFolder());
+        if(item.isCompleted()) {
+            completed.setTextColor(Color.parseColor("#E35757"));
+            not_completed.setTextColor(Color.parseColor("#767676"));
+        }
+        else{
+            completed.setTextColor(Color.parseColor("#E35757"));
+            not_completed.setTextColor(Color.parseColor("#767676"));
+        }
+        if(item.isAlarm()){
+            on.setTextColor(Color.parseColor("#E35757"));
+            off.setTextColor(Color.parseColor("#767676"));
+        }
+        else{
+            on.setTextColor(Color.parseColor("#767676"));
+            off.setTextColor(Color.parseColor("#E35757"));
+        }
     }
 
     public void onClick(View view){

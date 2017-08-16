@@ -11,10 +11,11 @@
     <FrameLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
+
         <include
-            android:layout_height="46dp"
+            layout="@layout/tool_bar"
             android:layout_width="match_parent"
-            layout="@layout/tool_bar" />
+            android:layout_height="46dp" />
     </FrameLayout>
 
     <TextView

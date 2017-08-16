@@ -55,6 +55,7 @@ import project.boostcamp.final_project.Util.RealmHelper;
 import project.boostcamp.final_project.Util.SharedPreferencesService;
 
 import static project.boostcamp.final_project.Util.BindingService.geofencingService;
+import static project.boostcamp.final_project.Util.SharedPreferencesService.IS_BOUND;
 import static project.boostcamp.final_project.Util.SharedPreferencesService.PROP_IMG;
 import static project.boostcamp.final_project.Util.SharedPreferencesService.PROP_NAME;
 
@@ -89,6 +90,7 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -156,7 +158,7 @@ public class MainActivity extends AppCompatActivity
         spinnerList.add(0,"모두 보기");
 
         spinnerAdapter = new ArrayAdapter<>(
-                this, android.R.layout.simple_spinner_item, spinnerList);
+                this, android.R.layout.simple_list_item_1, spinnerList);
 
         spinner.setAdapter(spinnerAdapter);
 
@@ -193,6 +195,8 @@ public class MainActivity extends AppCompatActivity
     void setProfile(){
 
         SharedPreferencesService.getInstance().load(getApplicationContext());
+        SharedPreferencesService.getInstance().setPrefData(IS_BOUND, false); // todo 임시
+
         int prop_img = SharedPreferencesService.getInstance().getPrefIntData(PROP_IMG);
         if(prop_img != 1){
             nav_img.setImageResource(prop_img);}

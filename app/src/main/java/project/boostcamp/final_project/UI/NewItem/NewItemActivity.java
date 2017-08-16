@@ -69,8 +69,6 @@ public class NewItemActivity extends AppCompatActivity implements FragmentChange
 
         realm = RealmHelper.getInstance(this);
 
-        Log.e("newItem", getIntent().getExtras().getInt("id")+"" ); //todo 로그
-
         if( getIntent().getExtras().getInt("id") != -1)
             todoItem = realm.where(TodoItem.class).equalTo("id", getIntent().getExtras().getInt("id")).findFirst();
 
@@ -111,7 +109,7 @@ public class NewItemActivity extends AppCompatActivity implements FragmentChange
         return STATUS;
     }
 
-    void setData(TodoItem item){ //todo 그냥 저장하는 경우와 수정하는 경우 구분하여 처리하기
+    void setData(TodoItem item){
 
         realm.beginTransaction();
 

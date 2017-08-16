@@ -30,10 +30,13 @@ import static project.boostcamp.final_project.Util.SharedPreferencesService.IS_B
 public class SettingActivity extends AppCompatActivity {
 
     Button on, off;
-    ImageView back;
+    ImageView back, ok;
     Switch swich;
     SeekBar radiusBar;
     TextView radiusValue;
+
+    boolean isAlarm;
+    int radius;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +46,8 @@ public class SettingActivity extends AppCompatActivity {
         on = (Button)findViewById(R.id.on);
         off = (Button)findViewById(R.id.off);
         back=(ImageView)findViewById(R.id.back);
+        ok = (ImageView)findViewById(R.id.ok);
+        ok.setOnClickListener(clickListener);
         on.setOnClickListener(clickListener);
         off.setOnClickListener(clickListener);
         back.setOnClickListener(new ImageView.OnClickListener(){
@@ -54,6 +59,8 @@ public class SettingActivity extends AppCompatActivity {
         swich = (Switch)findViewById(R.id.switchBar);
         radiusBar = (SeekBar)findViewById(R.id.radiusBar);
         radiusValue = (TextView)findViewById(R.id.radiusValue);
+
+        setView();
 
         swich.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -69,8 +76,9 @@ public class SettingActivity extends AppCompatActivity {
 
         radiusBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() { //todo 채우기
             @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) { //todo 변화 없는 경우 반영
                 radiusValue.setText(progress + " M");
+                radius = progress;
             }
 
             @Override
@@ -85,6 +93,14 @@ public class SettingActivity extends AppCompatActivity {
 
     }
 
+    void setView() { //todo 세팅
+
+    }
+
+    void saveStatus(){ //todo 알람 여부 반경
+
+    }
+
 
     View.OnClickListener clickListener =new View.OnClickListener() {
         @Override
@@ -95,6 +111,12 @@ public class SettingActivity extends AppCompatActivity {
                     break;
                 case R.id.off :
                     setAlarmOn(false);
+                    break;
+                case R.id.back :
+                    finish();
+                    break;
+                case R.id.ok :
+                    saveStatus();
                     break;
             }
         }

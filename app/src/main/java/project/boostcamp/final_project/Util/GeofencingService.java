@@ -111,7 +111,7 @@ public class GeofencingService extends Service{
                         .setCircularRegion( // 지오펜스 근처에 영역 지정
                                 item.getLatitude(),
                                 item.getLongitude(),
-                                Constant.GEOFENCE_RADIUS_IN_METERS
+                                Constant.GEOFENCE_RADIUS_IN_METERS //todo shared 에서 받아오는 것 고려
                         )
                         .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER)
                         .setExpirationDuration(Geofence.NEVER_EXPIRE)

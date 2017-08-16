@@ -17,6 +17,7 @@ public class RealmHelper {
     private static Realm realm;
 
     public static Realm getInstance(Context context){
+
         Realm.init(context);
         RealmConfiguration config = new RealmConfiguration.Builder().build();
         Realm.setDefaultConfiguration(config);
@@ -31,7 +32,7 @@ public class RealmHelper {
         int nextID =0;
 
         if(realm.where(TodoItem.class).findAll().size() > 0)
-            nextID = realm.where(TodoItem.class).findAll().last().getId() + 1;
+            nextID = realm.where(TodoItem.class).findAllSorted("id").last().getId() + 1;
 
         return nextID;
     }

@@ -130,7 +130,7 @@ public class NewItemDetailFragment extends Fragment {
                     break;
                 case R.id.ok :
                     item = listener.getCurrentItem();
-                    if(isItemEmpty(item) == false){
+                    if(!isItemEmpty(item)){
                         saveData();
                         listener.changeFragment(Constant.DETAIL, Constant.SAVE, item);}
                     break;
@@ -158,18 +158,22 @@ public class NewItemDetailFragment extends Fragment {
             return true;
         }
         if (folder.getText().toString().equals("폴더선택")) {
+            realm.beginTransaction();
             item.setFolder(getResources().getString(R.string.folder_default0));
+            realm.commitTransaction();
             return false;
         }
         return false;
     }
 
     void saveData(){
+
         realm.beginTransaction();
 
         item.setTodo(todo.getText().toString());
         item.setAlarm(isAlarm);
-        item.setFolder(folder.getText().toString());
+        if(!folder.getText().toString().equals("폴더선택"))
+            item.setFolder(folder.getText().toString());
 
         realm.commitTransaction();
     }
@@ -177,7 +181,10 @@ public class NewItemDetailFragment extends Fragment {
     void setView(){
 
         todo.setText(item.getTodo());
-        folder.setText(item.getFolder());
+        if(item.getFolder() == null)
+            folder.setText("폴더 선택");
+        else
+            folder.setText(item.getFolder());
         setBtnColor(status);
 
         if(item.isAlarm() == true)
@@ -216,7 +223,9 @@ public class NewItemDetailFragment extends Fragment {
                     @Override
                     public boolean onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
                         folder.setText(folderList.get(which));//todo 이거 안이쁨 수정
+                        realm.beginTransaction();
                         item.setFolder(folderList.get(which));
+                        realm.commitTransaction();
                         return true;
                     }
                 })
@@ -227,6 +236,7 @@ public class NewItemDetailFragment extends Fragment {
     void initData(){
 
         realm = RealmHelper.getInstance(getActivity());
+
         realmResults = realm.where(FolderItem.class).findAll();
 
         folderList = ImmutableList.copyOf(Collections2.transform(realmResults, new Function<FolderItem, String>(){

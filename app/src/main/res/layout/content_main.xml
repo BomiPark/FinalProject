@@ -11,7 +11,7 @@
     tools:showIn="@layout/app_bar_main">
 
     <Spinner
-        android:layout_width="135dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="right"
         android:id="@+id/main_spinner">

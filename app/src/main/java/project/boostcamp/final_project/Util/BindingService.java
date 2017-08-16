@@ -29,7 +29,7 @@ public class BindingService {
         intent = new Intent(context, GeofencingService.class);
         SharedPreferencesService.getInstance().load(context);
 
-        if(!SharedPreferencesService.getInstance().getPrefBooleanData(IS_BOUND)) {
+        if(!SharedPreferencesService.getInstance().getPrefBooleanData(IS_BOUND)) {  //todo  수정
             context.bindService(intent, connection, Context.BIND_AUTO_CREATE);
         }
 
