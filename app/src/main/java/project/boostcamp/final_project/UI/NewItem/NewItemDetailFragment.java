@@ -174,6 +174,8 @@ public class NewItemDetailFragment extends Fragment {
         item.setAlarm(isAlarm);
         if(!folder.getText().toString().equals("폴더선택"))
             item.setFolder(folder.getText().toString());
+        else
+            item.setFolder("기본 폴더");
 
         realm.commitTransaction();
     }

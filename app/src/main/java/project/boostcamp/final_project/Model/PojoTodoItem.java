@@ -102,4 +102,11 @@ public class PojoTodoItem {
     public void setCompleted(boolean completed) {
         isCompleted = completed;
     }
+
+    public static TodoItem toRealm(PojoTodoItem item){
+        TodoItem todo = new TodoItem(item.id, item.todo, item.address, item.latitude, item.longitude, item.date,
+                item.folder, item.alarm, item.isAlarm());
+
+        return todo;
+    }
 }

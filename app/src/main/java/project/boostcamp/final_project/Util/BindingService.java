@@ -39,14 +39,15 @@ public class BindingService {
         @Override
         public void onServiceConnected(ComponentName componentName, IBinder service) {
 
-            Toast.makeText(context, "Service Connected", Toast.LENGTH_LONG).show();
+            SharedPreferencesService.getInstance().setPrefData(IS_BOUND, true);
 
             geoBinder = (GeoBinder) service;
             geofencingService = geoBinder.getService();
-            SharedPreferencesService.getInstance().setPrefData(IS_BOUND, true);
             isBound = true;
 
-            bindingService.startService();
+            if(!SharedPreferencesService.getInstance().getPrefBooleanData(IS_BOUND)) {  //todo  수정
+                bindingService.startService();
+            }
 
         }
 
@@ -55,7 +56,7 @@ public class BindingService {
 
             geofencingService = null;
             geoBinder = null;
-            SharedPreferencesService.getInstance().setPrefData(IS_BOUND, false);
+            //SharedPreferencesService.getInstance().setPrefData(IS_BOUND, false);
         }
     };
 

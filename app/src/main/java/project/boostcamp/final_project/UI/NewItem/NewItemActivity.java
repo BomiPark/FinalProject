@@ -1,6 +1,5 @@
 package project.boostcamp.final_project.UI.NewItem;
 
-import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
@@ -26,15 +25,15 @@ import static project.boostcamp.final_project.Util.BindingService.geofencingServ
 
 public class NewItemActivity extends AppCompatActivity implements FragmentChangeListener {
 
-    FrameLayout container;
-    FragmentManager fragmentManager;
-    NewItemDetailFragment detailFragment;
-    LocationService locationService;
+    private FrameLayout container;
+    private FragmentManager fragmentManager;
+    private NewItemDetailFragment detailFragment;
+    private LocationService locationService;
 
-    Realm realm;
-    TodoItem todoItem;
+    private Realm realm;
+    private TodoItem todoItem;
 
-    int STATUS = Constant.DETAIL;
+    private int STATUS = Constant.DETAIL;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

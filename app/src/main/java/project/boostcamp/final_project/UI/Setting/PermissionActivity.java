@@ -90,6 +90,8 @@ public class PermissionActivity extends AppCompatActivity {
 
     public void signUp(String email, String pwd){
 
+        startActivity(new Intent(this, MainActivity.class)); //todo 고치기
+
         auth.createUserWithEmailAndPassword(email, pwd)
                 .addOnCompleteListener(PermissionActivity.this, new OnCompleteListener<AuthResult>() {
                     @Override

@@ -3,7 +3,9 @@ package project.boostcamp.final_project.UI.NewItem;
 import android.content.Context;
 import android.location.Address;
 import android.location.Geocoder;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.annotation.IntegerRes;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -86,7 +88,7 @@ public class NewItemSearchFragment  extends Fragment {
                     if (beforeSelected != position)
                         adapter.notifyDataSetChanged();
                     beforeSelected = position;
-                    item = setLatLng(searchItemList.get(position)); // todo 속도 노앤서.. 스레드 만들어야할 듯
+                    new BackAsyncTask().execute(item.getAddress());
                 }
             }
 
@@ -205,7 +207,7 @@ public class NewItemSearchFragment  extends Fragment {
         else{
             item.setAddress(searchItemList.get(beforeSelected).getAddress());
             if(item.getLatitude() == 0)
-                item = setLatLng(searchItemList.get(beforeSelected)); //todo 이거 다른 곳에서 하기!
+                new BackAsyncTask().execute(item.getAddress());
 
             listener.changeFragment(Constant.SEARCH, Constant.DETAIL,item);}
     }
@@ -221,5 +223,14 @@ public class NewItemSearchFragment  extends Fragment {
 
         }
         return item;
+    }
+
+    class BackAsyncTask extends AsyncTask<String, Integer, String> {
+
+        @Override
+        protected String doInBackground(String... params) {
+            item = setLatLng(searchItemList.get(beforeSelected));
+            return null;
+        }
     }
 }
