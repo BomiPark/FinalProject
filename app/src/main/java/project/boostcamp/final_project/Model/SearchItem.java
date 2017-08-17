@@ -8,16 +8,16 @@ import com.google.gson.annotations.Expose;
 
 public class SearchItem {
 
-    String title;
-    String address;
-    String roadAddress;
-    String telephone;
+    private String title;
+    private String address;
+    private String roadAddress;
+    private String telephone;
     @Expose
-    boolean selected = false;
+    private boolean selected = false;
     @Expose //object 중 해당 값이 null일 경우, json으로 만들 필드를 자동 생략
-    Double latitude;
+    private Double latitude;
     @Expose
-    Double longitude;
+    private Double longitude;
 
     public boolean isSelected() {
         return selected;

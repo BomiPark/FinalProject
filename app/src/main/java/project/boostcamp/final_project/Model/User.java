@@ -6,8 +6,8 @@ package project.boostcamp.final_project.Model;
 
 public class User {
 
-    String email;
-    String pwd;
+    private String email;
+    private String pwd;
 
     public User(){}
 

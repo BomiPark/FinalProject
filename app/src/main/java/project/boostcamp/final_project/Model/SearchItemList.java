@@ -12,8 +12,8 @@ import java.util.List;
 public class SearchItemList {
 
     @SerializedName("items")
-    List<SearchItem> searchItems;
-    int display; // 반환된 검색 결과 갯수 -> 0이면 처리
+    private List<SearchItem> searchItems;
+    private int display; // 반환된 검색 결과 갯수 -> 0이면 처리
 
     public int getDisplay() {
         return display;

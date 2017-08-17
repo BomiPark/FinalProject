@@ -28,15 +28,8 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.common.base.Function;
-import com.google.common.collect.Collections2;
-import com.google.common.collect.ImmutableList;
-
 import java.util.ArrayList;
 import java.util.List;
-
-import javax.annotation.Nullable;
-
 import io.realm.Realm;
 import io.realm.RealmResults;
 import project.boostcamp.final_project.Adapter.FolderItemAdapter;

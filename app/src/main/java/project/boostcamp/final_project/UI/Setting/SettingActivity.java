@@ -4,6 +4,7 @@ package project.boostcamp.final_project.UI.Setting;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
@@ -11,11 +12,27 @@ import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.common.base.Function;
+import com.google.common.collect.Collections2;
+import com.google.common.collect.ImmutableList;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
+import java.util.List;
+
+import javax.annotation.Nullable;
+
+import io.realm.RealmResults;
+import project.boostcamp.final_project.Model.PojoTodoItem;
+import project.boostcamp.final_project.Model.TodoItem;
+import project.boostcamp.final_project.Model.User;
 import project.boostcamp.final_project.R;
+import project.boostcamp.final_project.Util.RealmHelper;
 
 
 public class SettingActivity extends AppCompatActivity {
@@ -140,13 +157,40 @@ public class SettingActivity extends AppCompatActivity {
         }
     }
 
-    public void onClick(View view){
-
+    public void settingClick(View view){
         switch(view.getId()){
             case R.id.to_login :
                 startActivity(new Intent(this, PermissionActivity.class));
                 break;
             case R.id.to_backup :
+                Toast.makeText(getApplicationContext(), "backup", Toast.LENGTH_LONG).show();
+
+                RealmResults<TodoItem> realmResults = RealmHelper.getInstance(this).where(TodoItem.class).findAll();
+                List<PojoTodoItem> todoList = ImmutableList.copyOf(Collections2.transform(realmResults, new Function<TodoItem, PojoTodoItem>() {
+                    @Nullable
+                    @Override
+                    public PojoTodoItem apply(@Nullable TodoItem input) {
+                        return TodoItem.toPojo(input);
+                    }
+                }));
+                databaseRef.child("test").setValue(todoList); // todo 사용자 이메일로 바꾸기!!!!!
+                break;
+            case R.id.get_data :
+                databaseRef.child("test").addListenerForSingleValueEvent(
+                        new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                                Log.e("받아온 데이터 확인", dataSnapshot.toString());
+                            }
+
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+
+                                Log.e("받아온 데이터 확인","fail");
+                            }
+                        });
+                break;
 
         }
     }

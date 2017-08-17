@@ -8,8 +8,8 @@ import io.realm.RealmResults;
 
 public class FolderItem  extends RealmObject {
 
-    int id;
-    String folder;
+    private int id;
+    private String folder;
 
     public FolderItem(){}
 
@@ -40,7 +40,12 @@ public class FolderItem  extends RealmObject {
         for(FolderItem item : list){
             folderList.add(item.getFolder());
         }
-
         return folderList;
+    }
+
+    public static PojoFolderItem toPojo(FolderItem item){
+        PojoFolderItem pojo = new PojoFolderItem(item.id, item.folder);
+
+        return pojo;
     }
 }
