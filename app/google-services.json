@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "645265741472",
+    "firebase_url": "https://final-project-dce58.firebaseio.com",
+    "project_id": "final-project-dce58",
+    "storage_bucket": "final-project-dce58.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:645265741472:android:8840807bd7c2f82d",
+        "android_client_info": {
+          "package_name": "project.boostcamp.final_project"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "645265741472-uh9m4i6ampep42vmj0pju8q4pmh271dg.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBKqPtzukTpsEeoCLjMFEnCGuVpxmT9egM"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

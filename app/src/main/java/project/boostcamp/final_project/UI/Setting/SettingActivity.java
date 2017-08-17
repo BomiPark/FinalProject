@@ -1,13 +1,9 @@
 package project.boostcamp.final_project.UI.Setting;
 
-import android.content.ComponentName;
-import android.content.Context;
+
 import android.content.Intent;
-import android.content.ServiceConnection;
-import android.os.IBinder;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
@@ -15,17 +11,12 @@ import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.Switch;
 import android.widget.TextView;
-import android.widget.Toast;
-import io.realm.Realm;
-import io.realm.RealmConfiguration;
-import project.boostcamp.final_project.Model.TodoItem;
-import project.boostcamp.final_project.R;
-import project.boostcamp.final_project.Util.GeofencingService;
-import project.boostcamp.final_project.Util.GeofencingService.GeoBinder;
-import project.boostcamp.final_project.Util.SharedPreferencesService;
 
-import static project.boostcamp.final_project.Util.BindingService.geofencingService;
-import static project.boostcamp.final_project.Util.SharedPreferencesService.IS_BOUND;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
+import project.boostcamp.final_project.R;
+
 
 public class SettingActivity extends AppCompatActivity {
 
@@ -37,6 +28,8 @@ public class SettingActivity extends AppCompatActivity {
 
     boolean isAlarm;
     int radius;
+
+    DatabaseReference databaseRef;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +54,8 @@ public class SettingActivity extends AppCompatActivity {
         radiusValue = (TextView)findViewById(R.id.radiusValue);
 
         setView();
+
+        databaseRef = FirebaseDatabase.getInstance().getReference();
 
         swich.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -145,4 +140,14 @@ public class SettingActivity extends AppCompatActivity {
         }
     }
 
+    public void onClick(View view){
+
+        switch(view.getId()){
+            case R.id.to_login :
+                startActivity(new Intent(this, PermissionActivity.class));
+                break;
+            case R.id.to_backup :
+
+        }
+    }
 }
