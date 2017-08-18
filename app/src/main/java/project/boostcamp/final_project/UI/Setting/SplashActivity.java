@@ -9,6 +9,7 @@ import project.boostcamp.final_project.R;
 import project.boostcamp.final_project.UI.TodoItem.MainActivity;
 import project.boostcamp.final_project.Util.SharedPreferencesService;
 
+import static project.boostcamp.final_project.Util.SharedPreferencesService.IS_ALARM;
 import static project.boostcamp.final_project.Util.SharedPreferencesService.IS_SETTING;
 
 public class SplashActivity extends AppCompatActivity {
@@ -25,6 +26,7 @@ public class SplashActivity extends AppCompatActivity {
 
         if(isSetting == false){
             SharedPreferencesService.getInstance().setPrefData(IS_SETTING, true);
+            SharedPreferencesService.getInstance().setPrefData(IS_ALARM, true);
             intent = new Intent(this, PermissionActivity.class);}
         else{
             intent = new Intent(this, MainActivity.class);

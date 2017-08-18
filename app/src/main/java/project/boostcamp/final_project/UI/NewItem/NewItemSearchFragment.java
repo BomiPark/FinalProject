@@ -84,7 +84,6 @@ public class NewItemSearchFragment  extends Fragment {
                     searchItemList.get(beforeSelected).setSelected(false);}
                 if(position > -1) {
                     searchItemList.get(position).setSelected(true);
-                    Log.e(" newItem ", "position =" + position + "before= " + beforeSelected);
                     if (beforeSelected != position)
                         adapter.notifyDataSetChanged();
                     beforeSelected = position;

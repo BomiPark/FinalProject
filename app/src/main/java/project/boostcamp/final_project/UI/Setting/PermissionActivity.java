@@ -49,11 +49,8 @@ import static project.boostcamp.final_project.R.string.settings;
 import static project.boostcamp.final_project.Util.SharedPreferencesService.EMAIL;
 import static project.boostcamp.final_project.Util.SharedPreferencesService.IS_SETTING;
 
-//https://developer.android.com/training/permissions/requesting.html?hl=ko 디벨로퍼 문서
-// 앱 설치 시 거절-> 세팅창으로 이동, 거절 후 다시 어플리케이션 시작-> 확인 누르면 퍼미션 창 다시 뜬다
 public class PermissionActivity extends AppCompatActivity
         implements GoogleApiClient.OnConnectionFailedListener {
-
 
     private static final int REQUEST_PERMISSIONS_REQUEST_CODE = 34;
     private Realm realm;
@@ -253,6 +250,9 @@ public class PermissionActivity extends AppCompatActivity
                                     Toast.LENGTH_SHORT).show();
                         }
                         // hideProgressDialog(); todo
+
+                        startActivity(new Intent(PermissionActivity.this, MainActivity.class));
+                        finish();
                     }
                 });
     }

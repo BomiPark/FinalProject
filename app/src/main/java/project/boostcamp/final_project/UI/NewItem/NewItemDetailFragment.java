@@ -25,6 +25,7 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
+import es.dmoral.toasty.Toasty;
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
 import io.realm.RealmResults;
@@ -80,6 +81,7 @@ public class NewItemDetailFragment extends Fragment {
         folder.setOnClickListener(clickListener);
 
         return view;
+
     }
 
     @Override
@@ -150,11 +152,11 @@ public class NewItemDetailFragment extends Fragment {
     boolean isItemEmpty(TodoItem item) {
 
         if (todo.getText().toString().equals("")) {
-            Toast.makeText(getContext(), "TODO List를 입력해주세요", Toast.LENGTH_LONG).show();
+            Toasty.info(getContext(), getResources().getString(R.string.input_todo), Toast.LENGTH_LONG, true).show();
             return true;
         }
         if (item.getAddress() == null) {
-            Toast.makeText(getContext(), "알람이 울릴 지점을 선택해주세요", Toast.LENGTH_LONG).show();
+            Toasty.info(getContext(),  getResources().getString(R.string.input_where), Toast.LENGTH_LONG).show();
             return true;
         }
         if (folder.getText().toString().equals("폴더선택")) {

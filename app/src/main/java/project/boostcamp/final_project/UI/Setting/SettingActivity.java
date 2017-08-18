@@ -1,10 +1,8 @@
 package project.boostcamp.final_project.UI.Setting;
 
 
-import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
@@ -26,6 +24,7 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
+import es.dmoral.toasty.Toasty;
 import io.realm.Realm;
 import io.realm.RealmResults;
 import project.boostcamp.final_project.Model.FolderItem;
@@ -37,6 +36,7 @@ import project.boostcamp.final_project.Util.RealmHelper;
 import project.boostcamp.final_project.Util.SharedPreferencesService;
 
 import static project.boostcamp.final_project.Util.SharedPreferencesService.EMAIL;
+import static project.boostcamp.final_project.Util.SharedPreferencesService.IS_ALARM;
 
 
 public class SettingActivity extends AppCompatActivity {
@@ -47,7 +47,7 @@ public class SettingActivity extends AppCompatActivity {
     private SeekBar radiusBar;
     private TextView radiusValue;
 
-    private boolean isAlarm;
+    private boolean alarm;
     private int radius;
 
     private Realm realm;
@@ -69,6 +69,16 @@ public class SettingActivity extends AppCompatActivity {
     }
 
     void setView() { //todo 세팅
+
+        alarm = SharedPreferencesService.getInstance().getPrefBooleanData(IS_ALARM);
+        if(alarm) {
+            on.setTextColor(getResources().getColor(R.color.click_back));
+            off.setTextColor(getResources().getColor(R.color.gray));
+        }
+        else{
+            on.setTextColor(getResources().getColor(R.color.gray));
+            off.setTextColor(getResources().getColor(R.color.click_back));
+        }
 
     }
 
@@ -122,11 +132,8 @@ public class SettingActivity extends AppCompatActivity {
 
     public void settingClick(View view){
         switch(view.getId()){
-            case R.id.to_login :
-                startActivity(new Intent(this, PermissionActivity.class));
-                break;
+
             case R.id.to_backup : // 백업
-                Toast.makeText(getApplicationContext(), "backup", Toast.LENGTH_LONG).show();
 
                 todoRealmResults = RealmHelper.getInstance(this).where(TodoItem.class).findAll();
                 List<PojoTodoItem> todoList = ImmutableList.copyOf(Collections2.transform(todoRealmResults, new Function<TodoItem, PojoTodoItem>() {
@@ -149,25 +156,32 @@ public class SettingActivity extends AppCompatActivity {
                 databaseRef.child(SharedPreferencesService.getInstance().getPrefStringData(EMAIL)).child("todo").setValue(todoList);
                 databaseRef.child(SharedPreferencesService.getInstance().getPrefStringData(EMAIL)).child("folder").setValue(folderList);
 
+                Toasty.info(getApplicationContext(), getResources().getString(R.string.backup), Toast.LENGTH_LONG).show();
+
                 break;
             case R.id.get_data :
 
-                Log.e("uid", SharedPreferencesService.getInstance().getPrefStringData(EMAIL));
+                // 확인 창 복구하시겠습니까 이전의 데이터는 날라갑니다 todo 다이얼로그
 
                 realm.beginTransaction();
-
                 realm.deleteAll();
+                realm.commitTransaction();
+
 
                 databaseRef.child(SharedPreferencesService.getInstance().getPrefStringData(EMAIL)).child("todo").addListenerForSingleValueEvent(
                         new ValueEventListener() {
                             @Override
                             public void onDataChange(DataSnapshot dataSnapshot) {
 
+                                realm.beginTransaction();
+
                                 for (DataSnapshot messageSnapshot: dataSnapshot.getChildren()) {
                                     pojoTodoItem = messageSnapshot.getValue(PojoTodoItem.class);
                                     todoItem = PojoTodoItem.toRealm(pojoTodoItem);
                                     realm.copyToRealm(todoItem);
                                 }
+
+                                realm.commitTransaction();
                             }
                             @Override
                             public void onCancelled(DatabaseError databaseError) {
@@ -178,6 +192,8 @@ public class SettingActivity extends AppCompatActivity {
                         new ValueEventListener() {
                             @Override
                             public void onDataChange(DataSnapshot dataSnapshot) {
+
+                                realm.beginTransaction();
 
                                 for (DataSnapshot messageSnapshot: dataSnapshot.getChildren()) {
                                     pojoFolderItem = messageSnapshot.getValue(PojoFolderItem.class);
@@ -192,6 +208,9 @@ public class SettingActivity extends AppCompatActivity {
 
                             }
                         });
+
+                Toasty.info(getApplicationContext(), getResources().getString(R.string.restore), Toast.LENGTH_LONG).show();
+
                 break;
 
         }

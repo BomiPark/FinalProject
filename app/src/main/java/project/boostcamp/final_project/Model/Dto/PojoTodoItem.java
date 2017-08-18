@@ -107,7 +107,7 @@ public class PojoTodoItem {
 
     public static TodoItem toRealm(PojoTodoItem item){
         TodoItem todo = new TodoItem(item.id, item.todo, item.address, item.latitude, item.longitude, item.date,
-                item.folder, item.alarm, item.isAlarm());
+                item.folder, item.alarm,item.isCompleted);
 
         return todo;
     }

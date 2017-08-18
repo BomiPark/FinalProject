@@ -15,6 +15,7 @@ public class FolderItem  extends RealmObject {
     public FolderItem(){}
 
     public FolderItem(int id, String folder){
+        this.id = id;
         this.folder = folder;
     }
 

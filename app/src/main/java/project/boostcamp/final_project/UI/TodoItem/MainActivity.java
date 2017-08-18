@@ -4,6 +4,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.annotation.ColorInt;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
@@ -30,6 +31,8 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import es.dmoral.toasty.Toasty;
 import io.realm.Realm;
 import io.realm.RealmResults;
 import project.boostcamp.final_project.Adapter.FolderItemAdapter;
@@ -47,6 +50,8 @@ import project.boostcamp.final_project.Util.BindingService;
 import project.boostcamp.final_project.Util.RealmHelper;
 import project.boostcamp.final_project.Util.SharedPreferencesService;
 
+import static android.R.attr.typeface;
+import static project.boostcamp.final_project.R.id.prop_name;
 import static project.boostcamp.final_project.Util.BindingService.geofencingService;
 import static project.boostcamp.final_project.Util.SharedPreferencesService.IS_BOUND;
 import static project.boostcamp.final_project.Util.SharedPreferencesService.PROP_IMG;
@@ -110,6 +115,10 @@ public class MainActivity extends AppCompatActivity
 
         init();
 
+        Toasty.Config.getInstance()
+                .setSuccessColor(getResources().getColor(R.color.blue)) // optional
+                .apply(); // required
+
     }
 
     @Override
@@ -169,9 +178,9 @@ public class MainActivity extends AppCompatActivity
                 drawer.closeDrawer(GravityCompat.START);
 
                 if (position == 0)
-                    itemList = realm.where(TodoItem.class).findAll();
+                    itemList = realm.where(TodoItem.class).findAll().sort("id");
                 else {
-                    itemList = realm.where(TodoItem.class).equalTo("folder", spinnerList.get(position)).findAll();
+                    itemList = realm.where(TodoItem.class).equalTo("folder", spinnerList.get(position)).findAll().sort("id");
                 }
 
                 setTodoItemList();
@@ -191,8 +200,10 @@ public class MainActivity extends AppCompatActivity
         SharedPreferencesService.getInstance().setPrefData(IS_BOUND, false); // todo 임시
 
         int prop_img = SharedPreferencesService.getInstance().getPrefIntData(PROP_IMG);
-        if(prop_img != 1){
-            nav_img.setImageResource(prop_img);}
+        if(prop_img == 0){
+            nav_img.setImageResource(R.drawable.prop_img1);}
+        else
+            nav_img.setImageResource(prop_img);
         String prop_name = SharedPreferencesService.getInstance().getPrefStringData(PROP_NAME);
         if(prop_name != null)
             nav_name.setText(prop_name);
@@ -232,8 +243,8 @@ public class MainActivity extends AppCompatActivity
 
         realm = RealmHelper.getInstance(this);
 
-        itemList = realm.where(TodoItem.class).findAll();
-        folderList = realm.where(FolderItem.class).findAll();
+        itemList = realm.where(TodoItem.class).findAll().sort("id");
+        folderList = realm.where(FolderItem.class).findAll().sort("id");
 
     }
 
@@ -243,7 +254,7 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void execute(Realm realm) {
                 itemList = null;
-                itemList = realm.where(TodoItem.class).findAll();
+                itemList = realm.where(TodoItem.class).findAll().sort("id");
                 todoItemAdapter.notifyDataSetChanged();
             }
         });
@@ -359,10 +370,10 @@ public class MainActivity extends AppCompatActivity
         folder.setFolder(folderName);
         realm.copyToRealm(folder);
 
-        realm.commitTransaction();
-
-        folderList= realm.where(FolderItem.class).findAll();
+        folderList= realm.where(FolderItem.class).findAll().sort("id");
         folderItemAdapter.notifyDataSetChanged();
+
+        realm.commitTransaction();
     }
 
     View.OnClickListener clickListener = new ImageView.OnClickListener(){
@@ -390,9 +401,9 @@ public class MainActivity extends AppCompatActivity
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
         if (position == 0)
-            itemList = realm.where(TodoItem.class).findAll();
+            itemList = realm.where(TodoItem.class).findAll().sort("id");
         else {
-            itemList = realm.where(TodoItem.class).equalTo("folder", spinnerList.get(position)).findAll();
+            itemList = realm.where(TodoItem.class).equalTo("folder", spinnerList.get(position)).findAll().sort("id");
         }
 
         setTodoItemList();

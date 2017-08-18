@@ -15,6 +15,8 @@
     <string name="add_folder">Add folder</string>
     <string name="select_folder">폴더선택</string>
     <string name="input_folder"> 추가할 폴더 이름을 입력해주세요 </string>
+    <string name="input_todo"> TODO List를 입력해주세요</string>
+    <string name="input_where"> 알람이 울릴 지점을 선택해주세요 </string>
     <string name="setting_push">알림</string>
     <string name="on">On</string>
     <string name="off">Off</string>
@@ -32,6 +34,8 @@
     <string name="folder_default1">사야할 것</string>
     <string name="folder_default2">해야할 것</string>
     <string name="folder_default3">봐야할 것</string>
+    <string name="backup">Backup Completed</string>
+    <string name="restore">Restore Completed</string>
 
     <!-- 퍼미션 관련 -->
     <string name="permission_rationale">어플리케이션 기능 상 위치 정보 접근이 필요합니다.</string>

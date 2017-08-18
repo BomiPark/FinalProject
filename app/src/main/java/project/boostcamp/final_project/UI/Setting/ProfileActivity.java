@@ -23,7 +23,6 @@ public class ProfileActivity extends AppCompatActivity {
 
     int save_img;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,7 +47,10 @@ public class ProfileActivity extends AppCompatActivity {
 
     void saveProfile(){
 
-        SharedPreferencesService.getInstance().setPrefStringData(PROP_NAME, prop_name.getText().toString());
+        if(prop_name.getText().toString() != null)
+            SharedPreferencesService.getInstance().setPrefStringData(PROP_NAME, prop_name.getText().toString());
+        else
+            SharedPreferencesService.getInstance().setPrefStringData(PROP_NAME, getResources().getString(R.string.name));
         SharedPreferencesService.getInstance().setPrefIntData(PROP_IMG, save_img);
 
     }
