@@ -17,9 +17,9 @@ import static project.boostcamp.final_project.Util.SharedPreferencesService.IS_B
 
 public class BindingService {
 
-    Intent intent;
-    GeoBinder geoBinder;
-    Context context;
+    private Intent intent;
+    private GeoBinder geoBinder;
+    private Context context;
     public static GeofencingService geofencingService;
     public static boolean isBound;
 

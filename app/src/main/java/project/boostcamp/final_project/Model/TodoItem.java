@@ -5,10 +5,7 @@ import java.util.Date;
 
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
-import io.realm.annotations.Required;
-
-import static android.R.attr.format;
-import static android.icu.lang.UCharacter.GraphemeClusterBreak.T;
+import project.boostcamp.final_project.Model.Dto.PojoTodoItem;
 
 public class TodoItem extends RealmObject{
 
@@ -24,9 +21,10 @@ public class TodoItem extends RealmObject{
     private boolean isCompleted;
 
     public TodoItem(){
+        this.id = -1;
         this.date = getCurrentDate();
-        isCompleted = false;
-        alarm = true;
+        this.isCompleted = false;
+        this.alarm = true;
     }
 
     public TodoItem(int id, String todo, String address, double latitude, double longitude, String date,
@@ -44,8 +42,9 @@ public class TodoItem extends RealmObject{
     }
 
     public TodoItem(String todo, String address, double latitude, double longitude, String folder){
+        this.id= -1;
         this.date = getCurrentDate();
-        isCompleted = false;
+        this.isCompleted = false;
         this.todo = todo;
         this.address = address;
         this.alarm = true;

@@ -5,6 +5,7 @@ import java.util.List;
 
 import io.realm.RealmObject;
 import io.realm.RealmResults;
+import project.boostcamp.final_project.Model.Dto.PojoFolderItem;
 
 public class FolderItem  extends RealmObject {
 

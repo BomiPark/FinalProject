@@ -79,11 +79,12 @@ public class ItemDetailActivity extends AppCompatActivity {
         public void onClick(View view) {
             switch (view.getId()){
                 case R.id.back :
-                    if(getParentActivityIntent() == null)
-                        startActivity(new Intent(ItemDetailActivity.this, MainActivity.class));
+                    if(getParentActivityIntent() == null){
+                        intent = new Intent(ItemDetailActivity.this, MainActivity.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        startActivity(intent);
+                    }
                     finish();
-                    break;
-                case R.id.ok : //todo 삭제 예정
                     break;
                 case R.id.on :
 

@@ -1,4 +1,6 @@
-package project.boostcamp.final_project.Model;
+package project.boostcamp.final_project.Model.Dto;
+
+import project.boostcamp.final_project.Model.TodoItem;
 
 /**
  * Created by qkrqh on 2017-08-17.

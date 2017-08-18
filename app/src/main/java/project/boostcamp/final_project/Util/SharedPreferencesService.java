@@ -10,6 +10,7 @@ public class SharedPreferencesService {
     public static final String PROP_NAME = "prop_name";
     public static final String PROP_IMG = "prop_img";
     public static final String IS_BOUND = "is_bound";
+    public static final String EMAIL = "email";
 
     private static SharedPreferencesService sharedPreferencesManager;
     private SharedPreferences pref;

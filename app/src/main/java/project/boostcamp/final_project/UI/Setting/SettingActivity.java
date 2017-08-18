@@ -28,10 +28,15 @@ import javax.annotation.Nullable;
 
 import io.realm.Realm;
 import io.realm.RealmResults;
-import project.boostcamp.final_project.Model.PojoTodoItem;
+import project.boostcamp.final_project.Model.FolderItem;
+import project.boostcamp.final_project.Model.Dto.PojoFolderItem;
+import project.boostcamp.final_project.Model.Dto.PojoTodoItem;
 import project.boostcamp.final_project.Model.TodoItem;
 import project.boostcamp.final_project.R;
 import project.boostcamp.final_project.Util.RealmHelper;
+import project.boostcamp.final_project.Util.SharedPreferencesService;
+
+import static project.boostcamp.final_project.Util.SharedPreferencesService.EMAIL;
 
 
 public class SettingActivity extends AppCompatActivity {
@@ -46,10 +51,13 @@ public class SettingActivity extends AppCompatActivity {
     private int radius;
 
     private Realm realm;
-    private RealmResults<TodoItem> realmResults;
+    private RealmResults<TodoItem> todoRealmResults;
+    private RealmResults<FolderItem> folderRealmResults;
     private DatabaseReference databaseRef;
     private TodoItem todoItem = new TodoItem();
+    private FolderItem folderItem = new FolderItem();
     private PojoTodoItem pojoTodoItem;
+    private PojoFolderItem pojoFolderItem;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -120,34 +128,65 @@ public class SettingActivity extends AppCompatActivity {
             case R.id.to_backup : // 백업
                 Toast.makeText(getApplicationContext(), "backup", Toast.LENGTH_LONG).show();
 
-                realmResults = RealmHelper.getInstance(this).where(TodoItem.class).findAll();
-                List<PojoTodoItem> todoList = ImmutableList.copyOf(Collections2.transform(realmResults, new Function<TodoItem, PojoTodoItem>() {
+                todoRealmResults = RealmHelper.getInstance(this).where(TodoItem.class).findAll();
+                List<PojoTodoItem> todoList = ImmutableList.copyOf(Collections2.transform(todoRealmResults, new Function<TodoItem, PojoTodoItem>() {
                     @Nullable
                     @Override
                     public PojoTodoItem apply(@Nullable TodoItem input) {
                         return TodoItem.toPojo(input);
                     }
                 }));
-                databaseRef.child("test").setValue(todoList); // todo 사용자 이메일로 바꾸기!!!!!
+
+                folderRealmResults = RealmHelper.getInstance(this).where(FolderItem.class).findAll();
+                List<PojoFolderItem> folderList = ImmutableList.copyOf(Collections2.transform(folderRealmResults, new Function<FolderItem, PojoFolderItem>() {
+                    @Nullable
+                    @Override
+                    public PojoFolderItem apply(@Nullable FolderItem input) {
+                        return FolderItem.toPojo(input);
+                    }
+                }));
+
+                databaseRef.child(SharedPreferencesService.getInstance().getPrefStringData(EMAIL)).child("todo").setValue(todoList);
+                databaseRef.child(SharedPreferencesService.getInstance().getPrefStringData(EMAIL)).child("folder").setValue(folderList);
+
                 break;
             case R.id.get_data :
-                databaseRef.child("test").addListenerForSingleValueEvent( //todo 사용자 이메일로
+
+                Log.e("uid", SharedPreferencesService.getInstance().getPrefStringData(EMAIL));
+
+                realm.beginTransaction();
+
+                realm.deleteAll();
+
+                databaseRef.child(SharedPreferencesService.getInstance().getPrefStringData(EMAIL)).child("todo").addListenerForSingleValueEvent(
                         new ValueEventListener() {
                             @Override
                             public void onDataChange(DataSnapshot dataSnapshot) {
-
-                                realm.beginTransaction();
 
                                 for (DataSnapshot messageSnapshot: dataSnapshot.getChildren()) {
                                     pojoTodoItem = messageSnapshot.getValue(PojoTodoItem.class);
                                     todoItem = PojoTodoItem.toRealm(pojoTodoItem);
                                     realm.copyToRealm(todoItem);
+                                }
+                            }
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+                            }
+                        });
+
+                databaseRef.child(SharedPreferencesService.getInstance().getPrefStringData(EMAIL)).child("folder").addListenerForSingleValueEvent(
+                        new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                                for (DataSnapshot messageSnapshot: dataSnapshot.getChildren()) {
+                                    pojoFolderItem = messageSnapshot.getValue(PojoFolderItem.class);
+                                    folderItem = PojoFolderItem.toRealm(pojoFolderItem);
+                                    realm.copyToRealm(folderItem);
 
                                 }
-
                                 realm.commitTransaction();
                             }
-
                             @Override
                             public void onCancelled(DatabaseError databaseError) {
 
@@ -176,6 +215,8 @@ public class SettingActivity extends AppCompatActivity {
         swich = (Switch)findViewById(R.id.switchBar);
         radiusBar = (SeekBar)findViewById(R.id.radiusBar);
         radiusValue = (TextView)findViewById(R.id.radiusValue);
+
+        SharedPreferencesService.getInstance().load(getApplicationContext());
 
         setView();
 

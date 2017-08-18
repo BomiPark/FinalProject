@@ -112,7 +112,7 @@ public class NewItemActivity extends AppCompatActivity implements FragmentChange
 
         realm.beginTransaction();
 
-        if(item.getId()  == 0) {
+        if(item.getId() == -1) {
             item.setId(RealmHelper.getNextTodoId());
             realm.copyToRealm(item);
         }

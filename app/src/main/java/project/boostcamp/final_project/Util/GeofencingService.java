@@ -24,8 +24,8 @@ public class GeofencingService extends Service{
 
     private final IBinder binder = new GeoBinder();
 
-    RealmResults<TodoItem> itemList;
-    Realm realm;
+    private RealmResults<TodoItem> itemList;
+    private Realm realm;
 
     private GeofencingClient mGeofencingClient; // Geofencing API 에 접근하게 해준다
     private ArrayList<Geofence> mGeofenceList; // 알람 울리게 관리하는 지역 리스트

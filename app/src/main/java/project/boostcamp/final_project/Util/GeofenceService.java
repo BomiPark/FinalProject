@@ -19,11 +19,16 @@ import com.google.android.gms.location.GeofencingEvent;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import io.realm.Realm;
+import project.boostcamp.final_project.Model.TodoItem;
 import project.boostcamp.final_project.R;
 import project.boostcamp.final_project.UI.TodoItem.ItemDetailActivity;
 
 // 로케이션 서비스로부터 지오펜스 전환 이벤트를 받고 이에 관한 전환 처리. 그 결과로서 notification 반환
 public class GeofenceService extends IntentService {
+
+    private Realm realm;
 
     public final static String TAG = "GeofenceService";
 
@@ -72,24 +77,22 @@ public class GeofenceService extends IntentService {
         Log.e("geo84", notificationDetails + "");
         notificationIntent.putExtra("id", notificationDetails);
 
-        // Construct a task stack.
         TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
 
-        // Add the main Activity to the task stack as the parent.
         stackBuilder.addParentStack(ItemDetailActivity.class);
 
-        // Push the content Intent onto the stack.
         stackBuilder.addNextIntent(notificationIntent);
 
-        // Get a PendingIntent containing the entire back stack.
         PendingIntent notificationPendingIntent =
                 stackBuilder.getPendingIntent(0, PendingIntent.FLAG_ONE_SHOT);
 
-        // Get a notification builder that's compatible with platform versions >= 4
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this);
 
-        RemoteViews customView = new RemoteViews((getApplicationContext()).getPackageName(), R.layout.item_notification);
+        realm= RealmHelper.getInstance(getApplicationContext());
+        String todo = realm.where(TodoItem.class).equalTo("id", notificationDetails).findFirst().getTodo();
 
+        RemoteViews customView = new RemoteViews((getApplicationContext()).getPackageName(), R.layout.item_notification);
+        customView.setTextViewText(R.id.noti_text, todo);
         builder.setSmallIcon(R.drawable.app_icon)   // 메시지 내용 동적으로 변경 고려
                 .setLargeIcon(BitmapFactory.decodeResource(getResources(),
                         R.drawable.app_icon))
@@ -97,17 +100,15 @@ public class GeofenceService extends IntentService {
                 .setDefaults(Notification.DEFAULT_SOUND)
                 .setVibrate(new long[]{1000, 1000, 200, 200})
                 .setLights(0xff00ff00, 500, 500)
-                //.setContentTitle(notificationDetails)
-                //.setContentText(수행해야할텍스트내용! )
                 .setContent(customView)
                 .setContentIntent(notificationPendingIntent);
 
-        builder.setAutoCancel(true);            // Dismiss notification once the user touches it.
+        builder.setAutoCancel(true);
 
-        NotificationManager mNotificationManager =   //노티 매니저
+        NotificationManager mNotificationManager =
                 (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
-        mNotificationManager.notify(0, builder.build()); //노티 날린다
+        mNotificationManager.notify(0, builder.build());
     }
 
 }

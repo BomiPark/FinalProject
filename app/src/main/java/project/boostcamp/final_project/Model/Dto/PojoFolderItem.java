@@ -1,4 +1,6 @@
-package project.boostcamp.final_project.Model;
+package project.boostcamp.final_project.Model.Dto;
+
+import project.boostcamp.final_project.Model.FolderItem;
 
 public class PojoFolderItem {
 
@@ -26,5 +28,10 @@ public class PojoFolderItem {
 
     public void setFolder(String folder) {
         this.folder = folder;
+    }
+
+    public static FolderItem toRealm(PojoFolderItem item){
+        FolderItem realm = new FolderItem(item.id, item.folder);
+        return realm;
     }
 }

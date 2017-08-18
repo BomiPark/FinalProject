@@ -84,6 +84,8 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        bindingService =  new BindingService(this);//todo 체크
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -115,8 +117,6 @@ public class MainActivity extends AppCompatActivity
         super.onResume();
         setProfile();
         updateData(); //todo 위치 변경
-
-        bindingService =  new BindingService(this);//todo 체크
     }
 
     void init(){
