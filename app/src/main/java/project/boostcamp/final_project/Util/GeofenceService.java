@@ -89,7 +89,7 @@ public class GeofenceService extends IntentService {
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this);
 
         realm= RealmHelper.getInstance(getApplicationContext());
-        String todo = realm.where(TodoItem.class).equalTo("id", notificationDetails).findFirst().getTodo();
+        String todo = realm.where(TodoItem.class).equalTo("id", notificationDetails).findFirst().getTodo() + "를 수행할 장소입니다. ";
 
         RemoteViews customView = new RemoteViews((getApplicationContext()).getPackageName(), R.layout.item_notification);
         customView.setTextViewText(R.id.noti_text, todo);

@@ -16,10 +16,10 @@
         android:layout_width="0dp"
         android:layout_height="50dp"
         android:paddingTop="17dp"
-        android:layout_marginLeft="20dp"
+        android:layout_marginLeft="15dp"
         android:id="@+id/noti_text"
         android:textColor="@color/black"
         android:text="dd"
-        android:textSize="15sp"
+        android:textSize="14sp"
         android:layout_weight="1" />
 </LinearLayout>

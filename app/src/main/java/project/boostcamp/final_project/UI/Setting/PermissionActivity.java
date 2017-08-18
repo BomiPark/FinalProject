@@ -15,11 +15,20 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.auth.api.signin.GoogleSignInResult;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.SignInButton;
+import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -42,18 +51,22 @@ import static project.boostcamp.final_project.Util.SharedPreferencesService.IS_S
 
 //https://developer.android.com/training/permissions/requesting.html?hl=ko 디벨로퍼 문서
 // 앱 설치 시 거절-> 세팅창으로 이동, 거절 후 다시 어플리케이션 시작-> 확인 누르면 퍼미션 창 다시 뜬다
-public class PermissionActivity extends AppCompatActivity {
+public class PermissionActivity extends AppCompatActivity
+        implements GoogleApiClient.OnConnectionFailedListener {
+
 
     private static final int REQUEST_PERMISSIONS_REQUEST_CODE = 34;
     private Realm realm;
     private List<String> folderList;
     private FolderItem folder;
 
-    private EditText edit_email, edit_pwd;
+    private SignInButton sign_in_button;
 
     private DatabaseReference databaseRef;
     private FirebaseAuth auth;
     private FirebaseAuth.AuthStateListener mAuthListener;
+    private GoogleApiClient mGoogleApiClient;
+    public static final int RC_GOOGLE_SIGN_IN = 9001;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,66 +85,29 @@ public class PermissionActivity extends AppCompatActivity {
             }
         };
 
-        edit_email = (EditText) findViewById(R.id.email);
-        edit_pwd = (EditText) findViewById(R.id.pwd);
+        sign_in_button = (SignInButton)findViewById(R.id.sign_in_button);
+        sign_in_button.setOnClickListener(clickListener);
+
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(R.string.default_web_client_id))
+                .requestEmail()
+                .build();
+        mGoogleApiClient = new GoogleApiClient.Builder(this)
+                .enableAutoManage(this, this)
+                .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
+                .build();
     }
 
-    public void onClick(View view){
 
-        String email = edit_email.getText().toString();
-        String pwd = edit_pwd.getText().toString();
+    View.OnClickListener clickListener = new View.OnClickListener(){
 
-        switch(view.getId()){
-            case R.id.signUp :
-                signUp(email, pwd);
-                break;
-            case R.id.signIn :
-                signIn(email, pwd);
-                break;
-
+        @Override
+        public void onClick(View v) {
+            Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
+            startActivityForResult(signInIntent, RC_GOOGLE_SIGN_IN);
         }
-    }
+    };
 
-    public void signUp(String email, String pwd){
-
-        auth.createUserWithEmailAndPassword(email, pwd)
-                .addOnCompleteListener(PermissionActivity.this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            FirebaseUser user = task.getResult().getUser(); // signUp 성공한 유저는 데이터베이스에 저장
-                            User userModel = new User(user.getEmail());
-                            userModel.setPwd(edit_pwd.getText().toString());
-                            databaseRef.child("users").child(user.getUid()).setValue(userModel);
-                            SharedPreferencesService.getInstance().setPrefStringData(EMAIL,user.getUid());
-                            Toast.makeText(PermissionActivity.this, "signUp ok", Toast.LENGTH_SHORT).show();
-                        }
-                        if (!task.isSuccessful()) {
-                            Toast.makeText(PermissionActivity.this, "signUp failed", Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                });
-
-    }
-
-    public void signIn(String email, String pwd){
-        auth.signInWithEmailAndPassword(email, pwd)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            Toast.makeText(PermissionActivity.this, "signIn ok ", Toast.LENGTH_SHORT).show();
-                            startActivity(new Intent(PermissionActivity.this, MainActivity.class));
-
-                        }
-                        else {
-                            Toast.makeText(PermissionActivity.this, "signIn failed ",
-                                    Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                });
-
-    }
 
     @Override
     public void onStart() {
@@ -180,7 +156,7 @@ public class PermissionActivity extends AppCompatActivity {
 
     private void showSnackbar(final int mainTextStringId, final int actionStringId,  //1. 스낵바에뜰텍스트스트링인트값 2. 오른쪽뜨는 글씨 3. 클릭 리스너
                               View.OnClickListener listener) {
-        Snackbar.make( //View snackView = snackbar.getView();snackView.setBackgroundColor(Color.parseColor("#FF0000")); 배경 색 변경
+        Snackbar.make(
                 findViewById(android.R.id.content),
                 getString(mainTextStringId),
                 Snackbar.LENGTH_INDEFINITE) // 뜨는 시간 설정-> 계속 뜸
@@ -236,4 +212,48 @@ public class PermissionActivity extends AppCompatActivity {
         folderList.add(getResources().getString(R.string.folder_default3));
     }
 
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if ( requestCode == RC_GOOGLE_SIGN_IN ) {
+            GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
+            if ( result.isSuccess() ) {
+
+                GoogleSignInAccount account = result.getSignInAccount();
+                firebaseAuthWithGoogle(account);
+            }
+            else {
+            }
+        }
+    }
+
+    private void firebaseAuthWithGoogle(GoogleSignInAccount acct) {
+
+        //showProgressDialog(); todo
+
+        AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
+        auth.signInWithCredential(credential)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            // Sign in success, update UI with the signed-in user's information
+                            FirebaseUser user = auth.getCurrentUser();
+                            databaseRef.child("users").child(user.getUid()).setValue(new User(user.getEmail()));
+                            SharedPreferencesService.getInstance().setPrefStringData(EMAIL,user.getUid());
+                        } else {
+                            // If sign in fails, display a message to the user.
+                            Toast.makeText(PermissionActivity.this, "Authentication failed.",
+                                    Toast.LENGTH_SHORT).show();
+                        }
+                        // hideProgressDialog(); todo
+                    }
+                });
+    }
 }
