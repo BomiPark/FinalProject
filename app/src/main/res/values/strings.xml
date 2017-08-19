@@ -39,6 +39,8 @@
     <string name="same_folder">이미 같은 이름의 폴더가 있습니다</string>
     <string name="backup">Backup Completed</string>
     <string name="restore">Restore Completed</string>
+    <string name="sub_title">MODIFY\nWISH LIST</string>
+    <string name="move_marker">마커를 움직여 위치를 조정해주세요</string>
 
     <!-- 퍼미션 관련 -->
     <string name="permission_rationale">어플리케이션 기능 상 위치 정보 접근이 필요합니다.</string>

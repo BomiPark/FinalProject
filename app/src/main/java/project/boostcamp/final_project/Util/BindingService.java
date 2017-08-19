@@ -49,7 +49,7 @@ public class BindingService {
             geofencingService = geoBinder.getService();
             isBound = true;
 
-            if(!SharedPreferencesService.getInstance().getPrefBooleanData(IS_BOUND)) {  //todo  수정
+            if(!isBound) {  //todo  수정
                 bindingService.startService();
             }
 

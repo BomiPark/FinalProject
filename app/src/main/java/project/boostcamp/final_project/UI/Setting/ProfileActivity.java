@@ -22,6 +22,7 @@ public class ProfileActivity extends AppCompatActivity {
     EditText prop_name;
 
     int save_img;
+    int prop_img_value;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,10 +36,10 @@ public class ProfileActivity extends AppCompatActivity {
     void setProfile(){
         SharedPreferencesService.getInstance().load(getApplicationContext());
 
-        int prop_img_value = SharedPreferencesService.getInstance().getPrefIntData(PROP_IMG);
+        prop_img_value = SharedPreferencesService.getInstance().getPrefIntData(PROP_IMG);
         String prop_name_value = SharedPreferencesService.getInstance().getPrefStringData(PROP_NAME);
 
-        if(prop_img_value != 1){
+        if(prop_img_value != 0){
             prop_img.setImageResource(prop_img_value);}
         if(prop_name_value != null){
             prop_name.setText(prop_name_value);
@@ -47,7 +48,7 @@ public class ProfileActivity extends AppCompatActivity {
 
     void saveProfile(){
 
-        if(prop_name.getText().toString() != null)
+        if(!prop_name.getText().toString().equals(""))
             SharedPreferencesService.getInstance().setPrefStringData(PROP_NAME, prop_name.getText().toString());
         else
             SharedPreferencesService.getInstance().setPrefStringData(PROP_NAME, getResources().getString(R.string.name));

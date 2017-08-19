@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import io.realm.Realm;
 import project.boostcamp.final_project.Model.TodoItem;
@@ -16,6 +17,7 @@ import project.boostcamp.final_project.R;
 import project.boostcamp.final_project.UI.NewItem.NewItemActivity;
 import project.boostcamp.final_project.Util.RealmHelper;
 
+import static project.boostcamp.final_project.R.id.btn_completed;
 import static project.boostcamp.final_project.R.id.toSearch;
 
 public class ItemDetailActivity extends AppCompatActivity {
@@ -26,7 +28,7 @@ public class ItemDetailActivity extends AppCompatActivity {
 
     private TextView todo, address, folder;
     private ImageView back, ok,update;
-    private Button on, off;
+    private Button on, off, btnCompleted;
 
     private int position;
 
@@ -48,6 +50,7 @@ public class ItemDetailActivity extends AppCompatActivity {
         folder = (TextView)findViewById(R.id.folder);
         back = (ImageView)findViewById(R.id.back);
         ok = (ImageView)findViewById(R.id.ok);
+        btnCompleted = (Button)findViewById(btn_completed);
         update = (ImageView)findViewById(R.id.to_update);
         on = (Button) findViewById(R.id.on);
         off = (Button)findViewById(R.id.off);
@@ -55,6 +58,7 @@ public class ItemDetailActivity extends AppCompatActivity {
 
         back.setOnClickListener(clickListener);
         ok.setOnClickListener(clickListener);
+        btnCompleted.setOnClickListener(clickListener);
 
         intent = getIntent();
         position = intent.getExtras().getInt("id"); // 아이템 받아와서 세팅하면 될 듯!!
@@ -87,6 +91,13 @@ public class ItemDetailActivity extends AppCompatActivity {
                 case R.id.off :
 
                     break;
+                case btn_completed :
+                    Toast.makeText(ItemDetailActivity.this, "completed", Toast.LENGTH_SHORT).show();
+                    realm.beginTransaction();
+                    item.setCompleted(true);
+                    realm.commitTransaction();
+
+                    btnCompleted.setVisibility(View.INVISIBLE);
             }
         }
     };
@@ -97,6 +108,10 @@ public class ItemDetailActivity extends AppCompatActivity {
         todo.setText(item.getTodo());
         address.setText(item.getAddress());
         folder.setText(item.getFolder());
+        if(item.isCompleted())
+            btnCompleted.setVisibility(View.GONE);
+        else
+            btnCompleted.setVisibility(View.VISIBLE);
         if(item.isAlarm()){
             on.setTextColor(Color.parseColor("#E35757"));
             off.setTextColor(Color.parseColor("#767676"));

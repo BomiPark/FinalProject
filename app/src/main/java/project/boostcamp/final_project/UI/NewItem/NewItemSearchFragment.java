@@ -23,6 +23,7 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
+import es.dmoral.toasty.Toasty;
 import project.boostcamp.final_project.Interface.RecyclerItemClickListener;
 import project.boostcamp.final_project.Adapter.SearchItemAdapter;
 import project.boostcamp.final_project.Interface.FragmentChangeListener;
@@ -39,7 +40,7 @@ import retrofit2.Response;
 
 public class NewItemSearchFragment  extends Fragment {
 
-    private static View view;
+    static View view;
     private EditText editSearch;
     private ImageView searchIcon, back, ok;
     private ArrayList<SearchItem> searchItemList;
@@ -49,7 +50,7 @@ public class NewItemSearchFragment  extends Fragment {
     private SearchItemAdapter adapter;
 
     private NaverService naverService;
-    private FragmentChangeListener listener;
+    FragmentChangeListener listener;
 
     private TodoItem item = new TodoItem();
     private int beforeSelected = -1;
@@ -181,7 +182,7 @@ public class NewItemSearchFragment  extends Fragment {
                     }
 
                     else{
-                        Toast.makeText(getActivity(), "검색 결과가 없습니다." , Toast.LENGTH_LONG).show(); //todo 토스티로
+                        Toasty.info(getActivity(), "검색 결과가 없습니다." , Toast.LENGTH_LONG).show();
                     }
                 }else {
                     int statusCode  = response.code();

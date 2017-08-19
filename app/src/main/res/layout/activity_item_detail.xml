@@ -22,7 +22,7 @@
         android:textColor="@color/click_back"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="19dp"
+        android:layout_marginTop="25dp"
         android:id="@+id/new_wish_list"
         android:textSize="20sp"
         android:textStyle="bold"
@@ -37,9 +37,9 @@
         <TextView
             android:id="@+id/todo"
             android:layout_width="300dp"
-            android:layout_height="130dp"
+            android:layout_height="140dp"
             android:layout_gravity="center"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="5dp"
             android:background="@color/white"
             android:gravity="center"
             android:text="todo content" />
@@ -47,12 +47,12 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:layout_marginTop="20dp"
+            android:layout_height="55dp"
+            android:layout_marginTop="15dp"
             android:orientation="horizontal">
 
             <ImageView
-                android:layout_width="18dp"
+                android:layout_width="21dp"
                 android:layout_marginLeft="41dp"
                 android:layout_marginRight="41dp"
                 android:layout_height="match_parent"
@@ -67,17 +67,16 @@
                 android:text="@string/folder"
                 android:textSize="12sp"/>
 
-
         </LinearLayout>
 
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="65dp"
+            android:layout_height="55dp"
             android:orientation="horizontal">
 
             <ImageView
-                android:layout_width="20dp"
+                android:layout_width="24dp"
                 android:layout_marginLeft="40dp"
                 android:layout_marginRight="40dp"
                 android:layout_height="match_parent"
@@ -96,11 +95,11 @@
         </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="65dp"
+            android:layout_height="60dp"
             android:orientation="horizontal">
 
             <ImageView
-                android:layout_width="20dp"
+                android:layout_width="24dp"
                 android:layout_marginLeft="40dp"
                 android:layout_marginRight="40dp"
                 android:layout_height="match_parent"
@@ -113,6 +112,7 @@
                 android:layout_gravity="center_vertical"
                 android:gravity="center"
                 android:text="@string/on"
+                android:clickable="false"
                 android:textColor="@drawable/btn_selector"
                 android:textSize="13sp"
                 style="@style/Widget.AppCompat.Button.Borderless.Colored" />
@@ -121,6 +121,7 @@
                 android:id="@+id/off"
                 android:layout_width="60dp"
                 android:layout_height="match_parent"
+                android:clickable="false"
                 android:layout_gravity="center_vertical"
                 android:gravity="center"
                 android:text="@string/off"
@@ -136,6 +137,18 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:orientation="vertical">
+
+            <Button
+                android:id="@+id/btn_completed"
+                android:layout_width="100dp"
+                android:layout_height="30dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/folder_select"
+                android:gravity="center"
+                android:text="수행완료"
+                android:textColor="@color/white" />
+
         </LinearLayout>
 
     </LinearLayout>

@@ -4,11 +4,9 @@
     android:id="@+id/activity_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:background="@color/background"
-    android:paddingTop="@dimen/activity_vertical_margin"
     android:orientation="vertical">
 
     <FrameLayout
@@ -21,22 +19,22 @@
             android:layout_marginTop="20dp"
             android:layout_height="104dp">
 
-            <TextView
+            <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="18dp"
                 android:text="@string/app_name"
                 android:gravity="center"
-                android:layout_marginBottom="498.8dp"
+                android:src="@drawable/app_title"
+                android:layout_marginBottom="498dp"
                 android:layout_marginTop="80dp"/>
 
             <ImageView
                 android:layout_width="65dp"
-                android:layout_height="70dp"
-                android:layout_marginLeft="130dp"
+                android:layout_height="75dp"
+                android:layout_marginLeft="140dp"
                 android:layout_marginBottom="528.8dp"
                 android:src="@drawable/app_icon"
-                android:id="@+id/logo_image"
-                />
+                android:id="@+id/logo_image" />
 
         </FrameLayout>
     </FrameLayout>
@@ -44,6 +42,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
         android:orientation="vertical">
 
         <RelativeLayout
@@ -62,8 +61,8 @@
                 android:layout_centerHorizontal="true"/>
 
             <ImageView
-                android:layout_width="140dp"
-                android:layout_height="140dp"
+                android:layout_width="135dp"
+                android:layout_height="135dp"
                 android:id="@+id/prop_image"
                 android:layout_marginLeft="90.5dp"
                 android:layout_marginTop="10dp"
@@ -72,7 +71,6 @@
                 android:layout_alignBottom="@+id/circle_img"
                 android:layout_centerHorizontal="true"/>
         </RelativeLayout>
-
     </LinearLayout>
 
     <LinearLayout
@@ -83,7 +81,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="40dp"
+            android:layout_marginTop="30dp"
             android:orientation="horizontal">
 
             <ImageView
@@ -151,7 +149,7 @@
             android:layout_width="175dp"
             android:layout_height="35dp"
             android:layout_marginLeft="85dp"
-            android:layout_marginTop="35dp"
+            android:layout_marginTop="28dp"
             android:background="@drawable/folder_select"
             android:gravity="center"
             android:onClick="onClick"

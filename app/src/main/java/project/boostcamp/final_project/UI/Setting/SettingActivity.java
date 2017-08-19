@@ -119,6 +119,7 @@ public class SettingActivity extends AppCompatActivity {
                     break;
                 case R.id.ok :
                     saveStatus();
+                    finish();
                     break;
             }
         }
@@ -190,7 +191,7 @@ public class SettingActivity extends AppCompatActivity {
 
     void restoreDialogBox(){
         dialog = new AlertDialog.Builder(SettingActivity.this);
-        dialog.setTitle("Restore Dialog").setMessage( "확인 창 복구하시겠습니까 이전의 데이터는 날라갑니다")
+        dialog.setTitle("Restore Dialog").setMessage( "확인 창 복구하시겠습니까 이전의 데이터는 지워집니다. ")
                 .setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {

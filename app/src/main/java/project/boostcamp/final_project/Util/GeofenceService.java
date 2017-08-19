@@ -41,7 +41,6 @@ public class GeofenceService extends IntentService {
     }
 
     private String getGeofenceTransitionDetails( // 이벤트 발생 상태 하나의 문자열로 변환
-                                                 int geofenceTransition, // 지오펜스 전환 타입
                                                  List<Geofence> triggeringGeofences) { //발생된 지오펜스
 
         ArrayList<String> triggeringGeofencesIdsList = new ArrayList<>();
@@ -62,7 +61,7 @@ public class GeofenceService extends IntentService {
 
             List<Geofence> triggeringGeofences = geofencingEvent.getTriggeringGeofences(); // 이벤트 발생한 지오펜스 획득. 하나의 이벤트가 여러개의 지오펜스와 관련되어있을 수도 있다
 
-            String geofenceTransitionDetails = getGeofenceTransitionDetails(geofenceTransition, triggeringGeofences); // 상태 하나의 문자열로 변환
+            String geofenceTransitionDetails = getGeofenceTransitionDetails(triggeringGeofences); // 상태 하나의 문자열로 변환
 
             int position = Integer.parseInt(geofenceTransitionDetails);
 
@@ -92,7 +91,7 @@ public class GeofenceService extends IntentService {
 
         String todo = null;
         if( realm.where(TodoItem.class).equalTo("id", notificationDetails).findFirst() != null) {
-            todo = realm.where(TodoItem.class).equalTo("id", notificationDetails).findFirst().getTodo() + "를 수행할 장소입니다. ";
+            todo = " '" + realm.where(TodoItem.class).equalTo("id", notificationDetails).findFirst().getTodo() + "'를 수행할 장소입니다. ";
 
             RemoteViews customView = new RemoteViews((getApplicationContext()).getPackageName(), R.layout.item_notification);
             customView.setTextViewText(R.id.noti_text, todo);

@@ -6,33 +6,23 @@
     tools:context="project.boostcamp.final_project.UI.Setting.SplashActivity">
 
     <ImageView
-        android:layout_width="100dp"
-        android:layout_height="100dp"
+        android:layout_width="110dp"
+        android:layout_height="140dp"
         android:src="@drawable/app_icon"
         android:layout_gravity="center"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="193dp"
+        android:layout_marginTop="170dp"
         android:id="@+id/splash_icon" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="43dp"
-        android:textSize="20sp"
-        android:gravity="center"
-        android:text="@string/app_name"
-        android:layout_below="@+id/splash_icon"
-        android:layout_alignEnd="@+id/splash_icon" />
-
-    <FrameLayout
+    <ImageView
         android:layout_width="match_parent"
         android:layout_height="30dp"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentStart="true"
-        android:background="@color/click_back">
-
-    </FrameLayout>
+        android:layout_marginTop="20dp"
+        android:gravity="center"
+        android:src="@drawable/app_title"
+        android:layout_below="@+id/splash_icon"
+        android:layout_alignParentEnd="true" />
 
 
 </RelativeLayout>

@@ -18,6 +18,7 @@ public class SplashActivity extends AppCompatActivity {
 
     public static BindingService bindingService;
     private Intent intent;
+    private boolean isBound, isSetting;
 
 
     @Override
@@ -26,10 +27,13 @@ public class SplashActivity extends AppCompatActivity {
         setContentView(R.layout.activity_splash);
 
         SharedPreferencesService.getInstance().load(getApplicationContext());
-        boolean isSetting = SharedPreferencesService.getInstance().getPrefBooleanData(IS_SETTING);
         SharedPreferencesService.getInstance().setPrefData(IS_BOUND, false);
 
-        bindingService =  new BindingService(this);//todo 체크
+        isBound = true;
+        isSetting = SharedPreferencesService.getInstance().getPrefBooleanData(IS_SETTING);
+
+        if(isBound)
+            bindingService =  new BindingService(this);//todo 체크
 
         if(isSetting == false){
             SharedPreferencesService.getInstance().setPrefData(IS_ALARM, true);

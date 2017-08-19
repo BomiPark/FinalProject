@@ -6,11 +6,26 @@
     android:orientation="vertical"
     android:background="@color/background">
 
+    <ImageView
+        android:layout_width="100dp"
+        android:layout_height="140dp"
+        android:src="@drawable/app_icon"
+        android:layout_gravity="center"
+        android:layout_marginTop="60dp"
+        android:id="@+id/splash_icon" />
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:layout_marginTop="10dp"
+        android:gravity="center"
+        android:src="@drawable/app_title"/>
+
     <com.google.android.gms.common.SignInButton
         android:id="@+id/sign_in_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="350dp"
+        android:layout_marginTop="130dp"
         android:layout_gravity="center"
         android:onClick="onClick"/>
 

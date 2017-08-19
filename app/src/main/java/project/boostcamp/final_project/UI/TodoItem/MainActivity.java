@@ -48,6 +48,7 @@ import project.boostcamp.final_project.Util.RealmHelper;
 import project.boostcamp.final_project.Util.SharedPreferencesService;
 
 import static android.media.CamcorderProfile.get;
+import static project.boostcamp.final_project.UI.Setting.SplashActivity.bindingService;
 import static project.boostcamp.final_project.Util.BindingService.geofencingService;
 import static project.boostcamp.final_project.Util.SharedPreferencesService.PROP_IMG;
 import static project.boostcamp.final_project.Util.SharedPreferencesService.PROP_NAME;
@@ -146,7 +147,7 @@ public class MainActivity extends AppCompatActivity
 
         spinner.setOnItemSelectedListener(this);
 
-        spinnerList =  FolderItem.getFolderList(folderList);
+        spinnerList =  FolderItem.getFolderList(realm.where(FolderItem.class).findAll().sort("id"));
 
         spinnerList.add(0,"모두 보기");
 
@@ -295,7 +296,7 @@ public class MainActivity extends AppCompatActivity
                         });
                         todoItemAdapter.notifyDataSetChanged();
                         if(geofencingService != null)
-                            geofencingService.updateGeofence();
+                            bindingService.upDateService();
                     }
                 })
                 .setNegativeButton(getString(R.string.cancel),

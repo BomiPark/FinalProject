@@ -26,6 +26,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import java.io.IOException;
 import java.util.List;
 
+import es.dmoral.toasty.Toasty;
 import project.boostcamp.final_project.Interface.FragmentChangeListener;
 import project.boostcamp.final_project.Model.Constant;
 import project.boostcamp.final_project.Model.TodoItem;
@@ -42,7 +43,6 @@ public class NewItemMapFragment extends Fragment {
     LatLng latLng;
 
     TodoItem item;
-
     Marker marker;
     MarkerOptions options;
 
@@ -73,6 +73,8 @@ public class NewItemMapFragment extends Fragment {
         ok.setOnClickListener(clickListener);
         toSearch.setOnClickListener(clickListener);
 
+        Toasty.info(getActivity(), getResources().getString(R.string.move_marker), Toast.LENGTH_LONG).show();
+
         return view;
     }
 
@@ -100,7 +102,6 @@ public class NewItemMapFragment extends Fragment {
         public void onMapReady(GoogleMap Map) {
 
             googleMap = Map;
-
             googleMap.clear();
 
             LatLng loc = listener.getCurrentLocation();
@@ -110,11 +111,10 @@ public class NewItemMapFragment extends Fragment {
             changedLatLng = baseLatlng; // 초기화
 
             options = new MarkerOptions();
-            options.icon(BitmapDescriptorFactory.fromResource(R.drawable.marker)); // 마커 위치
+            options.icon(BitmapDescriptorFactory.fromResource(R.drawable.marker_current)); // 마커 위치
             options.position(baseLatlng);
+            options.draggable(true);
             marker = googleMap.addMarker(options);
-
-            marker.setDraggable(true);
 
             googleMap.setOnMarkerDragListener(makerDragListener);
         }
@@ -132,9 +132,14 @@ public class NewItemMapFragment extends Fragment {
         @Override
         public void onMarkerDragEnd(Marker marker) {
 
+            googleMap.clear();
+
             changedLatLng = marker.getPosition();
 
-            marker.setDraggable(true);
+            options.icon(BitmapDescriptorFactory.fromResource(R.drawable.marker_select)); // 마커 위치
+            options.position(changedLatLng);
+            googleMap.addMarker(options);
+
             googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(changedLatLng, 12));
         }
     };
@@ -181,7 +186,7 @@ public class NewItemMapFragment extends Fragment {
             imm.hideSoftInputFromWindow(editSearch.getWindowToken(), 0);    //hide keyboard
         }
         else
-            Toast.makeText(getActivity(), "이동할 장소를 입력해주세요", Toast.LENGTH_LONG).show();
+            Toast.makeText(getActivity(), "이동할 장소를 입력해주세요", Toast.LENGTH_SHORT).show();
     }
 
     void move(String query){
@@ -190,6 +195,7 @@ public class NewItemMapFragment extends Fragment {
 
             marker.remove();
             options.position(latLng);
+            options.icon(BitmapDescriptorFactory.fromResource(R.drawable.marker_select));
             marker = googleMap.addMarker(options);
 
             googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 12));
