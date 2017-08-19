@@ -21,15 +21,15 @@ import static project.boostcamp.final_project.Util.BindingService.geofencingServ
 
 public class NewItemActivity extends AppCompatActivity implements FragmentChangeListener {
 
-    FrameLayout container;
-    FragmentManager fragmentManager;
+    private FrameLayout container;
+    private FragmentManager fragmentManager;
     private NewItemDetailFragment detailFragment;
     private LocationService locationService;
 
     private Realm realm;
     private TodoItem todoItem;
 
-    int STATUS = Constant.DETAIL;
+    private int STATUS = Constant.DETAIL;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

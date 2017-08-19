@@ -40,7 +40,7 @@ import retrofit2.Response;
 
 public class NewItemSearchFragment  extends Fragment {
 
-    static View view;
+    private static View view;
     private EditText editSearch;
     private ImageView searchIcon, back, ok;
     private ArrayList<SearchItem> searchItemList;
@@ -50,7 +50,7 @@ public class NewItemSearchFragment  extends Fragment {
     private SearchItemAdapter adapter;
 
     private NaverService naverService;
-    FragmentChangeListener listener;
+    private FragmentChangeListener listener;
 
     private TodoItem item = new TodoItem();
     private int beforeSelected = -1;

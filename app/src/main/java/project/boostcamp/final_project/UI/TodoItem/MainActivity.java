@@ -47,7 +47,6 @@ import project.boostcamp.final_project.UI.NewItem.NewItemActivity;
 import project.boostcamp.final_project.Util.RealmHelper;
 import project.boostcamp.final_project.Util.SharedPreferencesService;
 
-import static android.media.CamcorderProfile.get;
 import static project.boostcamp.final_project.UI.Setting.SplashActivity.bindingService;
 import static project.boostcamp.final_project.Util.BindingService.geofencingService;
 import static project.boostcamp.final_project.Util.SharedPreferencesService.PROP_IMG;

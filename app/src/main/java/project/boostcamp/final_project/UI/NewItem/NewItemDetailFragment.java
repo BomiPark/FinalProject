@@ -1,9 +1,7 @@
 package project.boostcamp.final_project.UI.NewItem;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.graphics.Color;
-import android.media.Image;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
@@ -144,7 +142,9 @@ public class NewItemDetailFragment extends Fragment {
                 case R.id.ok :
                     item = listener.getCurrentItem();
                     if(!isItemEmpty(item)){
-                        saveData();}
+                        saveData();
+                        listener.changeFragment(Constant.DETAIL, Constant.SAVE, item);
+                    }
                     break;
                 case R.id.on :
                     isAlarm = true;
@@ -155,10 +155,12 @@ public class NewItemDetailFragment extends Fragment {
                 case R.id.folder :
                     getDialog();
                     break;
-                case R.id.img_plus :/*
+                case R.id.img_plus :
                     item = listener.getCurrentItem();
-                    if(!isItemEmpty(item))
-                        saveData();*/
+                    if(!isItemEmpty(item)) {
+                        listener.changeFragment(Constant.DETAIL, Constant.SAVE, item);
+                        saveData();
+                    }
                     break;
             }
         }
@@ -195,8 +197,6 @@ public class NewItemDetailFragment extends Fragment {
             item.setFolder("기본 폴더");
 
         realm.commitTransaction();
-
-        listener.changeFragment(Constant.DETAIL, Constant.SAVE, item);
     }
 
     void setView(){

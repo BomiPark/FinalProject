@@ -35,8 +35,8 @@ import project.boostcamp.final_project.Util.LocationService;
 
 public class NewItemMapFragment extends Fragment {
 
-    GoogleMap googleMap;
     static View view;
+    GoogleMap googleMap;
     ImageView back, ok, toSearch;
     EditText editSearch;
     Geocoder geoCoder;
