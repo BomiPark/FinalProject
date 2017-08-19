@@ -4,14 +4,11 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.FrameLayout;
-import android.widget.Toast;
 
 import com.google.android.gms.maps.model.LatLng;
 
 import io.realm.Realm;
-import io.realm.RealmConfiguration;
 import project.boostcamp.final_project.Interface.FragmentChangeListener;
 import project.boostcamp.final_project.Model.Constant;
 import project.boostcamp.final_project.Model.TodoItem;
@@ -19,7 +16,6 @@ import project.boostcamp.final_project.R;
 import project.boostcamp.final_project.Util.LocationService;
 import project.boostcamp.final_project.Util.RealmHelper;
 
-import static android.media.CamcorderProfile.get;
 import static project.boostcamp.final_project.Model.Constant.SAVE;
 import static project.boostcamp.final_project.Util.BindingService.geofencingService;
 

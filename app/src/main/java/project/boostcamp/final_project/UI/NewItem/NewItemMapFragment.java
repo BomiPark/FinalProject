@@ -101,6 +101,8 @@ public class NewItemMapFragment extends Fragment {
 
             googleMap = Map;
 
+            googleMap.clear();
+
             LatLng loc = listener.getCurrentLocation();
             LatLng baseLatlng = new LatLng(loc.latitude, loc.longitude);
             googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(baseLatlng, 12));
@@ -108,9 +110,8 @@ public class NewItemMapFragment extends Fragment {
             changedLatLng = baseLatlng; // 초기화
 
             options = new MarkerOptions();
-            options.icon(BitmapDescriptorFactory.fromResource(R.drawable.marker)); //todo 이거 바꾸기
+            options.icon(BitmapDescriptorFactory.fromResource(R.drawable.marker)); // 마커 위치
             options.position(baseLatlng);
-            options.snippet("현재위치");
             marker = googleMap.addMarker(options);
 
             marker.setDraggable(true);

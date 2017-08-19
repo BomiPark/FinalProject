@@ -48,6 +48,7 @@ import project.boostcamp.final_project.Util.SharedPreferencesService;
 import static project.boostcamp.final_project.R.string.settings;
 import static project.boostcamp.final_project.Util.SharedPreferencesService.EMAIL;
 import static project.boostcamp.final_project.Util.SharedPreferencesService.IS_SETTING;
+import static project.boostcamp.final_project.Util.SharedPreferencesService.PROP_IMG;
 
 public class PermissionActivity extends AppCompatActivity
         implements GoogleApiClient.OnConnectionFailedListener {
@@ -252,6 +253,8 @@ public class PermissionActivity extends AppCompatActivity
                         // hideProgressDialog(); todo
 
                         startActivity(new Intent(PermissionActivity.this, MainActivity.class));
+                        SharedPreferencesService.getInstance().setPrefData(IS_SETTING, true);
+                        SharedPreferencesService.getInstance().setPrefIntData(PROP_IMG, R.drawable.prop_img);
                         finish();
                     }
                 });

@@ -4,13 +4,11 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.annotation.ColorInt;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -46,22 +44,17 @@ import project.boostcamp.final_project.R;
 import project.boostcamp.final_project.UI.Setting.ProfileActivity;
 import project.boostcamp.final_project.UI.Setting.SettingActivity;
 import project.boostcamp.final_project.UI.NewItem.NewItemActivity;
-import project.boostcamp.final_project.Util.BindingService;
 import project.boostcamp.final_project.Util.RealmHelper;
 import project.boostcamp.final_project.Util.SharedPreferencesService;
 
-import static android.R.attr.typeface;
-import static project.boostcamp.final_project.R.id.prop_name;
+import static android.media.CamcorderProfile.get;
 import static project.boostcamp.final_project.Util.BindingService.geofencingService;
-import static project.boostcamp.final_project.Util.SharedPreferencesService.IS_BOUND;
 import static project.boostcamp.final_project.Util.SharedPreferencesService.PROP_IMG;
 import static project.boostcamp.final_project.Util.SharedPreferencesService.PROP_NAME;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
         AdapterView.OnItemSelectedListener{
-
-    public static BindingService bindingService;
 
     RealmResults<TodoItem> itemList;
     RealmResults<FolderItem> folderList;
@@ -88,8 +81,6 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        bindingService =  new BindingService(this);//todo 체크
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -187,8 +178,9 @@ public class MainActivity extends AppCompatActivity
             }
 
             @Override
-            public void onItemLongClick(View view, int position) { //todo 삭제도 구현해야 할 듯
-
+            public void onItemLongClick(View view, int position) {
+                removeFolderDialogBox(position);
+                setSpinner();
             }
         }));
 
@@ -197,12 +189,8 @@ public class MainActivity extends AppCompatActivity
     void setProfile(){
 
         SharedPreferencesService.getInstance().load(getApplicationContext());
-        SharedPreferencesService.getInstance().setPrefData(IS_BOUND, false); // todo 임시
 
         int prop_img = SharedPreferencesService.getInstance().getPrefIntData(PROP_IMG);
-        if(prop_img == 0){
-            nav_img.setImageResource(R.drawable.prop_img1);}
-        else
             nav_img.setImageResource(prop_img);
         String prop_name = SharedPreferencesService.getInstance().getPrefStringData(PROP_NAME);
         if(prop_name != null)
@@ -283,7 +271,6 @@ public class MainActivity extends AppCompatActivity
 
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             startActivity(new Intent(this, SettingActivity.class));
             return true;
@@ -294,7 +281,7 @@ public class MainActivity extends AppCompatActivity
 
     void removeItemDialogBox(final int position){
         dialog = new AlertDialog.Builder(MainActivity.this);
-        dialog.setTitle(R.string.dialog_title).setMessage(itemList.get(position).getTodo())
+        dialog.setTitle(R.string.dialog_title).setMessage( " \n'" +itemList.get(position).getTodo() + "' 를 삭제하시겠습니까")
                 .setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -309,6 +296,34 @@ public class MainActivity extends AppCompatActivity
                         todoItemAdapter.notifyDataSetChanged();
                         if(geofencingService != null)
                             geofencingService.updateGeofence();
+                    }
+                })
+                .setNegativeButton(getString(R.string.cancel),
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                // negative button logic
+                            }
+                        });
+        AlertDialog dialogCreate = dialog.create();
+        dialogCreate.show();
+    }
+
+    void removeFolderDialogBox(final int position){
+        dialog = new AlertDialog.Builder(MainActivity.this);
+        dialog.setTitle(R.string.dialog_folder).setMessage( " \n'" +folderList.get(position).getFolder() + "' 를 삭제하시겠습니까")
+                .setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        realm.executeTransaction(new Realm.Transaction() {
+                            @Override
+                            public void execute(Realm realm) {
+
+                                FolderItem item = folderList.get(position);
+                                item.deleteFromRealm();
+                            }
+                        });
+                        folderItemAdapter.notifyDataSetChanged();
                     }
                 })
                 .setNegativeButton(getString(R.string.cancel),
@@ -343,7 +358,6 @@ public class MainActivity extends AppCompatActivity
                             OpenFolderDialogBox();
                         } else {
                             saveFolder(newFolderText);
-                            Toast.makeText(getApplicationContext(), R.string.saved, Toast.LENGTH_SHORT).show();
                         }
                     }
                 }
@@ -365,15 +379,24 @@ public class MainActivity extends AppCompatActivity
 
     void saveFolder(String folderName){
 
-        realm.beginTransaction();
-        folder.setId(RealmHelper.getNextFolderId());
-        folder.setFolder(folderName);
-        realm.copyToRealm(folder);
+        if(!RealmHelper.isSmameName(folderName)) {
 
-        folderList= realm.where(FolderItem.class).findAll().sort("id");
-        folderItemAdapter.notifyDataSetChanged();
+            realm.beginTransaction();
+            folder.setId(RealmHelper.getNextFolderId());
+            folder.setFolder(folderName);
+            realm.copyToRealm(folder);
 
-        realm.commitTransaction();
+            folderList = realm.where(FolderItem.class).findAll().sort("id");
+            folderItemAdapter.notifyDataSetChanged();
+
+            realm.commitTransaction();
+
+            Toast.makeText(getApplicationContext(), R.string.saved, Toast.LENGTH_SHORT).show();
+            setSpinner();
+        }
+        else{
+            Toast.makeText(getApplicationContext(), getResources().getString(R.string.same_folder), Toast.LENGTH_SHORT).show();
+        }
     }
 
     View.OnClickListener clickListener = new ImageView.OnClickListener(){

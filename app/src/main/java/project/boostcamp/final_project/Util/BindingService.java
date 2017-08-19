@@ -1,7 +1,6 @@
 package project.boostcamp.final_project.Util;
 
 import io.realm.Realm;
-import io.realm.RealmConfiguration;
 import project.boostcamp.final_project.Model.TodoItem;
 import project.boostcamp.final_project.Util.GeofencingService.GeoBinder;
 
@@ -10,9 +9,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.IBinder;
-import android.widget.Toast;
 
-import static project.boostcamp.final_project.UI.TodoItem.MainActivity.bindingService;
+import static project.boostcamp.final_project.UI.Setting.SplashActivity.bindingService;
 import static project.boostcamp.final_project.Util.SharedPreferencesService.IS_BOUND;
 
 public class BindingService {
@@ -29,9 +27,15 @@ public class BindingService {
         intent = new Intent(context, GeofencingService.class);
         SharedPreferencesService.getInstance().load(context);
 
+        /*
         if(!SharedPreferencesService.getInstance().getPrefBooleanData(IS_BOUND)) {  //todo  수정
             context.bindService(intent, connection, Context.BIND_AUTO_CREATE);
         }
+*/
+        if(!isBound)
+            context.bindService(intent, connection, Context.BIND_AUTO_CREATE);
+
+        isBound = true;
 
     }
 
@@ -62,16 +66,18 @@ public class BindingService {
 
     public void startService(){
 
-        if(isEmpty() != true && geofencingService != null) {
-            Toast.makeText(context, "service start", Toast.LENGTH_LONG).show();
+        if(!isEmpty() && geofencingService != null) {
             geofencingService.startGeofence();
         }
     }
 
     public void stopService(){
-        Toast.makeText(context, "service stop", Toast.LENGTH_LONG).show();
         geofencingService.stopGeofence();//
         isBound = false;
+    }
+
+    public void upDateService(){
+        geofencingService.updateGeofence();
     }
 
     boolean isEmpty(){

@@ -10,6 +10,7 @@ public class SharedPreferencesService {
     public static final String IS_ALARM = "isAlarm"; // 앱 처음 설치한 것인지 확인
     public static final String PROP_NAME = "prop_name";
     public static final String PROP_IMG = "prop_img";
+    public static final String RADIUS = "radius";
     public static final String IS_BOUND = "is_bound";
     public static final String EMAIL = "email";
 

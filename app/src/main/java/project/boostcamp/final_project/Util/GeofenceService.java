@@ -89,26 +89,30 @@ public class GeofenceService extends IntentService {
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this);
 
         realm= RealmHelper.getInstance(getApplicationContext());
-        String todo = realm.where(TodoItem.class).equalTo("id", notificationDetails).findFirst().getTodo() + "를 수행할 장소입니다. ";
 
-        RemoteViews customView = new RemoteViews((getApplicationContext()).getPackageName(), R.layout.item_notification);
-        customView.setTextViewText(R.id.noti_text, todo);
-        builder.setSmallIcon(R.drawable.app_icon)   // 메시지 내용 동적으로 변경 고려
-                .setLargeIcon(BitmapFactory.decodeResource(getResources(),
-                        R.drawable.app_icon))
-                .setColor(Color.RED)
-                .setDefaults(Notification.DEFAULT_SOUND)
-                .setVibrate(new long[]{1000, 1000, 200, 200})
-                .setLights(0xff00ff00, 500, 500)
-                .setContent(customView)
-                .setContentIntent(notificationPendingIntent);
+        String todo = null;
+        if( realm.where(TodoItem.class).equalTo("id", notificationDetails).findFirst() != null) {
+            todo = realm.where(TodoItem.class).equalTo("id", notificationDetails).findFirst().getTodo() + "를 수행할 장소입니다. ";
 
-        builder.setAutoCancel(true);
+            RemoteViews customView = new RemoteViews((getApplicationContext()).getPackageName(), R.layout.item_notification);
+            customView.setTextViewText(R.id.noti_text, todo);
+            builder.setSmallIcon(R.drawable.app_icon)   // 메시지 내용 동적으로 변경 고려
+                    .setLargeIcon(BitmapFactory.decodeResource(getResources(),
+                            R.drawable.app_icon))
+                    .setColor(Color.RED)
+                    .setDefaults(Notification.DEFAULT_SOUND)
+                    .setVibrate(new long[]{1000, 1000, 200, 200})
+                    .setLights(0xff00ff00, 500, 500)
+                    .setContent(customView)
+                    .setContentIntent(notificationPendingIntent);
 
-        NotificationManager mNotificationManager =
-                (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+            builder.setAutoCancel(true);
 
-        mNotificationManager.notify(0, builder.build());
+            NotificationManager mNotificationManager =
+                    (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+
+            mNotificationManager.notify(0, builder.build());
+        }
     }
 
 }

@@ -1,6 +1,8 @@
 package project.boostcamp.final_project.UI.Setting;
 
 
+import android.content.DialogInterface;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -32,11 +34,13 @@ import project.boostcamp.final_project.Model.Dto.PojoFolderItem;
 import project.boostcamp.final_project.Model.Dto.PojoTodoItem;
 import project.boostcamp.final_project.Model.TodoItem;
 import project.boostcamp.final_project.R;
+import project.boostcamp.final_project.UI.TodoItem.MainActivity;
 import project.boostcamp.final_project.Util.RealmHelper;
 import project.boostcamp.final_project.Util.SharedPreferencesService;
 
 import static project.boostcamp.final_project.Util.SharedPreferencesService.EMAIL;
 import static project.boostcamp.final_project.Util.SharedPreferencesService.IS_ALARM;
+import static project.boostcamp.final_project.Util.SharedPreferencesService.RADIUS;
 
 
 public class SettingActivity extends AppCompatActivity {
@@ -46,6 +50,8 @@ public class SettingActivity extends AppCompatActivity {
     private Switch swich;
     private SeekBar radiusBar;
     private TextView radiusValue;
+
+    private AlertDialog.Builder dialog;
 
     private boolean alarm;
     private int radius;
@@ -68,21 +74,32 @@ public class SettingActivity extends AppCompatActivity {
 
     }
 
-    void setView() { //todo 세팅
+    void setView() { //seekbar 설정 todo
 
         alarm = SharedPreferencesService.getInstance().getPrefBooleanData(IS_ALARM);
         if(alarm) {
             on.setTextColor(getResources().getColor(R.color.click_back));
             off.setTextColor(getResources().getColor(R.color.gray));
+            swich.setChecked(true);
         }
         else{
             on.setTextColor(getResources().getColor(R.color.gray));
             off.setTextColor(getResources().getColor(R.color.click_back));
+            swich.setChecked(false);
         }
+
+        radius = SharedPreferencesService.getInstance().getPrefIntData(RADIUS);
+        if(radius != 0)
+            radiusValue.setText(radius + "M");
 
     }
 
-    void saveStatus(){ //todo 알람 여부 반경
+    void saveStatus(){
+
+        SharedPreferencesService.getInstance().setPrefData(IS_ALARM, alarm);
+        SharedPreferencesService.getInstance().setPrefIntData(RADIUS, radius);
+
+        Toasty.info(getApplicationContext(), getResources().getString(R.string.saved), Toast.LENGTH_LONG).show();
 
     }
 
@@ -108,7 +125,9 @@ public class SettingActivity extends AppCompatActivity {
     };
 
     void setAlarmOn(boolean on){
-        if(on == true){ //todo 추가추가
+
+        alarm = on;
+        if(on){ //todo 추가추가
             swich.setChecked(true);
             setTextColor(true);
 
@@ -120,7 +139,7 @@ public class SettingActivity extends AppCompatActivity {
     }
 
     void setTextColor(boolean alarmOn){
-        if(alarmOn == true){
+        if(alarmOn){
             on.setTextColor(getResources().getColor(R.color.click_back));
             off.setTextColor(getResources().getColor(R.color.gray));
         }
@@ -135,85 +154,136 @@ public class SettingActivity extends AppCompatActivity {
 
             case R.id.to_backup : // 백업
 
-                todoRealmResults = RealmHelper.getInstance(this).where(TodoItem.class).findAll();
-                List<PojoTodoItem> todoList = ImmutableList.copyOf(Collections2.transform(todoRealmResults, new Function<TodoItem, PojoTodoItem>() {
-                    @Nullable
-                    @Override
-                    public PojoTodoItem apply(@Nullable TodoItem input) {
-                        return TodoItem.toPojo(input);
-                    }
-                }));
-
-                folderRealmResults = RealmHelper.getInstance(this).where(FolderItem.class).findAll();
-                List<PojoFolderItem> folderList = ImmutableList.copyOf(Collections2.transform(folderRealmResults, new Function<FolderItem, PojoFolderItem>() {
-                    @Nullable
-                    @Override
-                    public PojoFolderItem apply(@Nullable FolderItem input) {
-                        return FolderItem.toPojo(input);
-                    }
-                }));
-
-                databaseRef.child(SharedPreferencesService.getInstance().getPrefStringData(EMAIL)).child("todo").setValue(todoList);
-                databaseRef.child(SharedPreferencesService.getInstance().getPrefStringData(EMAIL)).child("folder").setValue(folderList);
-
-                Toasty.info(getApplicationContext(), getResources().getString(R.string.backup), Toast.LENGTH_LONG).show();
+                backupDialogBox();
 
                 break;
             case R.id.get_data :
 
-                // 확인 창 복구하시겠습니까 이전의 데이터는 날라갑니다 todo 다이얼로그
-
-                realm.beginTransaction();
-                realm.deleteAll();
-                realm.commitTransaction();
-
-
-                databaseRef.child(SharedPreferencesService.getInstance().getPrefStringData(EMAIL)).child("todo").addListenerForSingleValueEvent(
-                        new ValueEventListener() {
-                            @Override
-                            public void onDataChange(DataSnapshot dataSnapshot) {
-
-                                realm.beginTransaction();
-
-                                for (DataSnapshot messageSnapshot: dataSnapshot.getChildren()) {
-                                    pojoTodoItem = messageSnapshot.getValue(PojoTodoItem.class);
-                                    todoItem = PojoTodoItem.toRealm(pojoTodoItem);
-                                    realm.copyToRealm(todoItem);
-                                }
-
-                                realm.commitTransaction();
-                            }
-                            @Override
-                            public void onCancelled(DatabaseError databaseError) {
-                            }
-                        });
-
-                databaseRef.child(SharedPreferencesService.getInstance().getPrefStringData(EMAIL)).child("folder").addListenerForSingleValueEvent(
-                        new ValueEventListener() {
-                            @Override
-                            public void onDataChange(DataSnapshot dataSnapshot) {
-
-                                realm.beginTransaction();
-
-                                for (DataSnapshot messageSnapshot: dataSnapshot.getChildren()) {
-                                    pojoFolderItem = messageSnapshot.getValue(PojoFolderItem.class);
-                                    folderItem = PojoFolderItem.toRealm(pojoFolderItem);
-                                    realm.copyToRealm(folderItem);
-
-                                }
-                                realm.commitTransaction();
-                            }
-                            @Override
-                            public void onCancelled(DatabaseError databaseError) {
-
-                            }
-                        });
-
-                Toasty.info(getApplicationContext(), getResources().getString(R.string.restore), Toast.LENGTH_LONG).show();
+                restoreDialogBox();
 
                 break;
 
         }
+    }
+
+    void backupDialogBox(){
+        dialog = new AlertDialog.Builder(SettingActivity.this);
+        dialog.setTitle("Backup Dialog").setMessage( "현재 데이터를 서버에 저장하시겠습니까 ")
+                .setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        backupData();
+
+                    }
+                })
+                .setNegativeButton(getString(R.string.cancel),
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                Toast.makeText(getApplicationContext(), "취소되었습니다", Toast.LENGTH_LONG).show();
+                            }
+                        });
+        AlertDialog dialogCreate = dialog.create();
+        dialogCreate.show();
+    }
+
+    void restoreDialogBox(){
+        dialog = new AlertDialog.Builder(SettingActivity.this);
+        dialog.setTitle("Restore Dialog").setMessage( "확인 창 복구하시겠습니까 이전의 데이터는 날라갑니다")
+                .setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        restoreData();
+
+                    }
+                })
+                .setNegativeButton(getString(R.string.cancel),
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                Toast.makeText(getApplicationContext(), "취소되었습니다", Toast.LENGTH_LONG).show();
+                            }
+                        });
+        AlertDialog dialogCreate = dialog.create();
+        dialogCreate.show();
+    }
+
+
+    void backupData(){
+        todoRealmResults = RealmHelper.getInstance(this).where(TodoItem.class).findAll();
+        List<PojoTodoItem> todoList = ImmutableList.copyOf(Collections2.transform(todoRealmResults, new Function<TodoItem, PojoTodoItem>() {
+            @Nullable
+            @Override
+            public PojoTodoItem apply(@Nullable TodoItem input) {
+                return TodoItem.toPojo(input);
+            }
+        }));
+
+        folderRealmResults = RealmHelper.getInstance(this).where(FolderItem.class).findAll();
+        List<PojoFolderItem> folderList = ImmutableList.copyOf(Collections2.transform(folderRealmResults, new Function<FolderItem, PojoFolderItem>() {
+            @Nullable
+            @Override
+            public PojoFolderItem apply(@Nullable FolderItem input) {
+                return FolderItem.toPojo(input);
+            }
+        }));
+
+        databaseRef.child(SharedPreferencesService.getInstance().getPrefStringData(EMAIL)).child("todo").setValue(todoList);
+        databaseRef.child(SharedPreferencesService.getInstance().getPrefStringData(EMAIL)).child("folder").setValue(folderList);
+
+        Toasty.info(getApplicationContext(), getResources().getString(R.string.backup), Toast.LENGTH_LONG).show();
+    }
+
+    void restoreData(){
+        realm.beginTransaction();
+        realm.deleteAll();
+        realm.commitTransaction();
+
+
+        databaseRef.child(SharedPreferencesService.getInstance().getPrefStringData(EMAIL)).child("todo").addListenerForSingleValueEvent(
+                new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+
+                        realm.beginTransaction();
+
+                        for (DataSnapshot messageSnapshot: dataSnapshot.getChildren()) {
+                            pojoTodoItem = messageSnapshot.getValue(PojoTodoItem.class);
+                            todoItem = PojoTodoItem.toRealm(pojoTodoItem);
+                            realm.copyToRealm(todoItem);
+                        }
+
+                        realm.commitTransaction();
+                    }
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                    }
+                });
+
+        databaseRef.child(SharedPreferencesService.getInstance().getPrefStringData(EMAIL)).child("folder").addListenerForSingleValueEvent(
+                new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+
+                        realm.beginTransaction();
+
+                        for (DataSnapshot messageSnapshot: dataSnapshot.getChildren()) {
+                            pojoFolderItem = messageSnapshot.getValue(PojoFolderItem.class);
+                            folderItem = PojoFolderItem.toRealm(pojoFolderItem);
+                            realm.copyToRealm(folderItem);
+
+                        }
+                        realm.commitTransaction();
+                        Toasty.info(getApplicationContext(), getResources().getString(R.string.restore), Toast.LENGTH_LONG).show();
+
+                    }
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
     }
 
     void init(){
@@ -245,7 +315,7 @@ public class SettingActivity extends AppCompatActivity {
         swich.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(isChecked == true) {
+                if(isChecked) {
                     setAlarmOn(true);
                 }
                 else{

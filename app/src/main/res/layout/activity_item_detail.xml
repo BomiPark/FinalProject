@@ -37,78 +37,78 @@
         <TextView
             android:id="@+id/todo"
             android:layout_width="300dp"
-            android:layout_height="70dp"
+            android:layout_height="130dp"
             android:layout_gravity="center"
             android:layout_marginTop="20dp"
             android:background="@color/white"
             android:gravity="center"
             android:text="todo content" />
 
+
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="40dp"
+            android:layout_height="60dp"
             android:layout_marginTop="20dp"
             android:orientation="horizontal">
 
-            <TextView
-                android:layout_width="100dp"
+            <ImageView
+                android:layout_width="18dp"
+                android:layout_marginLeft="41dp"
+                android:layout_marginRight="41dp"
                 android:layout_height="match_parent"
-                android:gravity="center"
-                android:text="장소" />
+                android:src="@drawable/folder_icon" />
+
+            <TextView
+                android:id="@+id/folder"
+                android:layout_marginLeft="15dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:text="@string/folder"
+                android:textSize="12sp"/>
+
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="65dp"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_marginLeft="40dp"
+                android:layout_marginRight="40dp"
+                android:layout_height="match_parent"
+                android:src="@drawable/ic_location" />
 
             <TextView
                 android:id="@+id/address"
                 android:layout_width="200dp"
-                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:gravity="center_vertical"
+                android:layout_height="match_parent"
                 android:text="@string/address"
                 android:lines="2"
                 android:textSize="12sp"/>
 
         </LinearLayout>
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="65dp"
-            android:layout_marginTop="10dp"
             android:orientation="horizontal">
 
-            <TextView
-                android:id="@+id/folder_explain"
-                android:layout_width="100dp"
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_marginLeft="40dp"
+                android:layout_marginRight="40dp"
                 android:layout_height="match_parent"
-                android:gravity="center"
-                android:text="@string/folder"
-                android:textSize="13sp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/folder"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/folder"
-                android:textSize="12sp"/>
-
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="65dp"
-            android:orientation="horizontal">
-
-            <TextView
-                android:id="@+id/clock"
-                android:layout_width="100dp"
-                android:layout_height="65dp"
-                android:layout_gravity="center_vertical"
-                android:gravity="center"
-                android:text="@string/setting_push"
-                android:textSize="13sp"
-                android:textStyle="bold" />
+                android:src="@drawable/ic_alarm" />
 
             <Button
                 android:id="@+id/on"
-                android:layout_width="70dp"
+                android:layout_width="60dp"
                 android:layout_height="match_parent"
                 android:layout_gravity="center_vertical"
                 android:gravity="center"
@@ -119,7 +119,7 @@
 
             <Button
                 android:id="@+id/off"
-                android:layout_width="70dp"
+                android:layout_width="60dp"
                 android:layout_height="match_parent"
                 android:layout_gravity="center_vertical"
                 android:gravity="center"
@@ -130,45 +130,12 @@
 
         </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <TextView
-                android:layout_width="100dp"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="수행여부" />
-
-            <Button
-                android:id="@+id/completed"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                style="@style/Widget.AppCompat.Button.Borderless.Colored"
-                android:textColor="@color/gray"
-                android:text="completed" />
-
-            <Button
-                android:id="@+id/not_completed"
-                style="@style/Widget.AppCompat.Button.Borderless.Colored"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="not"
-                android:textColor="@color/gray" />
-
-        </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
             android:orientation="vertical">
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/to_update"
-                android:onClick="onClick"
-                android:text="수정하기"/>
         </LinearLayout>
 
     </LinearLayout>

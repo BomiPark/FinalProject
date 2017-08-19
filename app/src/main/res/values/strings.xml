@@ -8,14 +8,15 @@
     <string name="to_api_setting">매장검색</string>
     <string name="setting_location">위치설정</string>
     <string name="setting">SETTING</string>
-    <string name="new_list">NEW\nTODO LIST</string>
-    <string name="todo">TODO\nLIST</string>
+    <string name="new_list">NEW\nWISH LIST</string>
+    <string name="wish">WISH </string>
+    <string name="todo">WISH\nLIST</string>
     <string name="folder">폴더</string>
     <string name="folder_eng">FOLDER</string>
     <string name="add_folder">Add folder</string>
     <string name="select_folder">폴더선택</string>
     <string name="input_folder"> 추가할 폴더 이름을 입력해주세요 </string>
-    <string name="input_todo"> TODO List를 입력해주세요</string>
+    <string name="input_todo"> WISH List를 입력해주세요</string>
     <string name="input_where"> 알람이 울릴 지점을 선택해주세요 </string>
     <string name="setting_push">알림</string>
     <string name="on">On</string>
@@ -25,6 +26,7 @@
     <string name="meter">200M</string>
     <string name="name">오리너구리</string>
     <string name="dialog_title">Delete Item</string>
+    <string name="dialog_folder">Delete Folder</string>
     <string name="ok">확인</string>
     <string name="cancel">취소</string>
     <string name="ok_eng">OK</string>
@@ -34,6 +36,7 @@
     <string name="folder_default1">사야할 것</string>
     <string name="folder_default2">해야할 것</string>
     <string name="folder_default3">봐야할 것</string>
+    <string name="same_folder">이미 같은 이름의 폴더가 있습니다</string>
     <string name="backup">Backup Completed</string>
     <string name="restore">Restore Completed</string>
 

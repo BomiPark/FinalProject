@@ -1,6 +1,7 @@
 package project.boostcamp.final_project.Util;
 
 import android.content.Context;
+import android.util.Log;
 
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
@@ -44,5 +45,15 @@ public class RealmHelper {
             nextID = realm.where(FolderItem.class).findAllSorted("id").last().getId() + 1;
 
         return nextID;
+    }
+
+    public static boolean isSmameName(String folderName){
+
+        FolderItem folderItem = null;
+        folderItem = realm.where(FolderItem.class).equalTo("folder", folderName).findFirst();
+
+        if(folderItem != null)
+            return true;
+        return false;
     }
 }

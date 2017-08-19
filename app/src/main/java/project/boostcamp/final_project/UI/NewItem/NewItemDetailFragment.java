@@ -104,6 +104,9 @@ public class NewItemDetailFragment extends Fragment {
                 setView();
             }
         }
+
+        initData();
+
     }
 
     @Override
@@ -191,7 +194,7 @@ public class NewItemDetailFragment extends Fragment {
             folder.setText(item.getFolder());
         setBtnColor(status);
 
-        if(item.isAlarm() == true)
+        if(item.isAlarm())
             setBtnColor(R.id.on);
         else
             setBtnColor(R.id.off);
@@ -223,10 +226,10 @@ public class NewItemDetailFragment extends Fragment {
         new MaterialDialog.Builder(getActivity())
                 .title("폴더선택")
                 .items(folderList)
-                .itemsCallbackSingleChoice(-1, new MaterialDialog.ListCallbackSingleChoice() {
+                .itemsCallbackSingleChoice(0, new MaterialDialog.ListCallbackSingleChoice() {
                     @Override
                     public boolean onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
-                        folder.setText(folderList.get(which));//todo 이거 안이쁨 수정
+                        folder.setText(folderList.get(which));
                         realm.beginTransaction();
                         item.setFolder(folderList.get(which));
                         realm.commitTransaction();

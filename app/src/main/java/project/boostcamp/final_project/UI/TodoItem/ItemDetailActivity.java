@@ -25,8 +25,8 @@ public class ItemDetailActivity extends AppCompatActivity {
     private Realm realm;
 
     private TextView todo, address, folder;
-    private ImageView back, ok;
-    private Button on, off, completed, not_completed;
+    private ImageView back, ok,update;
+    private Button on, off;
 
     private int position;
 
@@ -48,21 +48,16 @@ public class ItemDetailActivity extends AppCompatActivity {
         folder = (TextView)findViewById(R.id.folder);
         back = (ImageView)findViewById(R.id.back);
         ok = (ImageView)findViewById(R.id.ok);
-        ok.setVisibility(View.INVISIBLE);
+        update = (ImageView)findViewById(R.id.to_update);
         on = (Button) findViewById(R.id.on);
         off = (Button)findViewById(R.id.off);
-        completed = (Button)findViewById(R.id.completed);
-        not_completed = (Button)findViewById(R.id.not_completed);
 
 
         back.setOnClickListener(clickListener);
         ok.setOnClickListener(clickListener);
-        completed.setOnClickListener(clickListener);
-        not_completed.setOnClickListener(clickListener);
 
         intent = getIntent();
         position = intent.getExtras().getInt("id"); // 아이템 받아와서 세팅하면 될 듯!!
-
         item = realm.where(TodoItem.class).equalTo("id", position).findFirst();
         setLayout();
 
@@ -92,29 +87,16 @@ public class ItemDetailActivity extends AppCompatActivity {
                 case R.id.off :
 
                     break;
-                case R.id.completed :
-
-                    break;
-                case R.id.not_completed :
-
-                    break;
             }
         }
     };
 
     void setLayout(){
-
+        update.setVisibility(View.VISIBLE);
+        ok.setVisibility(View.GONE);
         todo.setText(item.getTodo());
         address.setText(item.getAddress());
         folder.setText(item.getFolder());
-        if(item.isCompleted()) {
-            completed.setTextColor(Color.parseColor("#E35757"));
-            not_completed.setTextColor(Color.parseColor("#767676"));
-        }
-        else{
-            completed.setTextColor(Color.parseColor("#E35757"));
-            not_completed.setTextColor(Color.parseColor("#767676"));
-        }
         if(item.isAlarm()){
             on.setTextColor(Color.parseColor("#E35757"));
             off.setTextColor(Color.parseColor("#767676"));
@@ -132,6 +114,12 @@ public class ItemDetailActivity extends AppCompatActivity {
                 intent.putExtra("id", position);
                 startActivity(intent);
         }
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        update.setVisibility(View.INVISIBLE);
     }
 
 }

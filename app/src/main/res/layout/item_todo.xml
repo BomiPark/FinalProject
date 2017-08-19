@@ -9,7 +9,7 @@
         android:id="@+id/item_main"
         android:layout_width="0dp"
         android:layout_height="82dp"
-        android:layout_gravity="center"
+        android:layout_marginTop="5dp"
         android:layout_marginLeft="15dp"
         android:background="@drawable/ellipse"
         android:orientation="vertical"
@@ -79,7 +79,7 @@
         android:layout_marginRight="15dp"
         android:orientation="horizontal"
         android:id="@+id/item_check"
-        android:layout_gravity="center">
+        android:layout_marginTop="30dp">
 
         <ImageView
             android:layout_width="17dp"
@@ -93,7 +93,6 @@
             android:layout_gravity="center"
             android:id="@+id/todo_check"
             android:src="@drawable/no_check"/>
-
     </LinearLayout>
 
 </LinearLayout>
