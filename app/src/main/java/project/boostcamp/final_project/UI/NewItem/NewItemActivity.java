@@ -1,6 +1,5 @@
 package project.boostcamp.final_project.UI.NewItem;
 
-import android.content.SharedPreferences;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
@@ -14,11 +13,11 @@ import project.boostcamp.final_project.Interface.FragmentChangeListener;
 import project.boostcamp.final_project.Model.Constant;
 import project.boostcamp.final_project.Model.TodoItem;
 import project.boostcamp.final_project.R;
+import project.boostcamp.final_project.Util.BindingService;
 import project.boostcamp.final_project.Util.LocationService;
 import project.boostcamp.final_project.Util.RealmHelper;
 
 import static project.boostcamp.final_project.Model.Constant.SAVE;
-import static project.boostcamp.final_project.Util.BindingService.geofencingService;
 
 public class NewItemActivity extends AppCompatActivity implements FragmentChangeListener {
 
@@ -93,8 +92,7 @@ public class NewItemActivity extends AppCompatActivity implements FragmentChange
         } else if(to == SAVE){
             todoItem = item;
             setData(item);
-            if(geofencingService != null)
-                geofencingService.updateGeofence();
+            BindingService.getInstance(getApplicationContext()).upDateService(); //todo set
             finish();
         }
     }

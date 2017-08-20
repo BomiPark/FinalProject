@@ -44,11 +44,10 @@ import project.boostcamp.final_project.R;
 import project.boostcamp.final_project.UI.Setting.ProfileActivity;
 import project.boostcamp.final_project.UI.Setting.SettingActivity;
 import project.boostcamp.final_project.UI.NewItem.NewItemActivity;
+import project.boostcamp.final_project.Util.BindingService;
 import project.boostcamp.final_project.Util.RealmHelper;
 import project.boostcamp.final_project.Util.SharedPreferencesService;
 
-import static project.boostcamp.final_project.UI.Setting.SplashActivity.bindingService;
-import static project.boostcamp.final_project.Util.BindingService.geofencingService;
 import static project.boostcamp.final_project.Util.SharedPreferencesService.PROP_IMG;
 import static project.boostcamp.final_project.Util.SharedPreferencesService.PROP_NAME;
 
@@ -294,8 +293,7 @@ public class MainActivity extends AppCompatActivity
                             }
                         });
                         todoItemAdapter.notifyDataSetChanged();
-                        if(geofencingService != null)
-                            bindingService.upDateService();
+                            BindingService.getInstance(getApplicationContext()).upDateService();
                     }
                 })
                 .setNegativeButton(getString(R.string.cancel),

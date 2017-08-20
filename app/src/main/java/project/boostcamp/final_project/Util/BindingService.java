@@ -10,32 +10,36 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.IBinder;
 
-import static project.boostcamp.final_project.UI.Setting.SplashActivity.bindingService;
 import static project.boostcamp.final_project.Util.SharedPreferencesService.IS_BOUND;
 
 public class BindingService {
 
+    private static BindingService binding;
     private Intent intent;
     private GeoBinder geoBinder;
     private Context context;
-    public static GeofencingService geofencingService;
+    private static GeofencingService geofencingService;
     public static boolean isBound;
 
-    public BindingService(Context context){
+    public static BindingService getInstance(Context context){
 
-        this.context = context;
+        if(binding == null){
+            synchronized (BindingService.class) {
+                if(binding == null)
+                    binding = new BindingService(context);
+            }
+        }
+        return binding;
+    }
+
+    private BindingService(Context context){
         intent = new Intent(context, GeofencingService.class);
         SharedPreferencesService.getInstance().load(context);
 
-        /*
-        if(!SharedPreferencesService.getInstance().getPrefBooleanData(IS_BOUND)) {  //todo  수정
-            context.bindService(intent, connection, Context.BIND_AUTO_CREATE);
-        } */
-
-        if(!isBound)
-            context.bindService(intent, connection, Context.BIND_AUTO_CREATE);
+        context.bindService(intent, connection, Context.BIND_AUTO_CREATE);
 
     }
+
 
     public void unbindService(){
         if (connection != null) {
@@ -53,7 +57,7 @@ public class BindingService {
             geofencingService = geoBinder.getService();
 
             if(!isBound) {  //todo  수정
-                bindingService.startService();
+                binding.startService();
             }
 
             isBound = true;

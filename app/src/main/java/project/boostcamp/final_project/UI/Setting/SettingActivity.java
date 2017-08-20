@@ -35,10 +35,10 @@ import project.boostcamp.final_project.Model.Dto.PojoTodoItem;
 import project.boostcamp.final_project.Model.TodoItem;
 import project.boostcamp.final_project.R;
 import project.boostcamp.final_project.UI.TodoItem.MainActivity;
+import project.boostcamp.final_project.Util.BindingService;
 import project.boostcamp.final_project.Util.RealmHelper;
 import project.boostcamp.final_project.Util.SharedPreferencesService;
 
-import static project.boostcamp.final_project.UI.Setting.SplashActivity.bindingService;
 import static project.boostcamp.final_project.Util.SharedPreferencesService.EMAIL;
 import static project.boostcamp.final_project.Util.SharedPreferencesService.IS_ALARM;
 import static project.boostcamp.final_project.Util.SharedPreferencesService.RADIUS;
@@ -109,9 +109,9 @@ public class SettingActivity extends AppCompatActivity {
         Toasty.info(getApplicationContext(), getResources().getString(R.string.saved), Toast.LENGTH_LONG).show();
 
         if(alarm)
-            bindingService.startService();
+            BindingService.getInstance(getApplicationContext()).startService();
         else
-            bindingService.stopService();
+            BindingService.getInstance(getApplicationContext()).stopService();
     }
 
     View.OnClickListener clickListener =new View.OnClickListener() {
