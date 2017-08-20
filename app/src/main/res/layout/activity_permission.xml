@@ -23,7 +23,6 @@
         android:src="@drawable/app_title"
         android:layout_below="@+id/splash_icon"
         android:layout_alignParentStart="true"
-        android:layout_marginStart="20dp"
         android:id="@+id/imageView2" />
 
 
@@ -36,7 +35,7 @@
         android:onClick="onClick"
         android:layout_below="@+id/login_progress"
         android:layout_alignEnd="@+id/splash_icon"
-        android:layout_marginTop="73dp" />
+        android:layout_marginTop="60dp" />
 
     <ProgressBar
         android:id="@+id/login_progress"

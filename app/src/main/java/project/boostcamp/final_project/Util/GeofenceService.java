@@ -25,6 +25,8 @@ import project.boostcamp.final_project.Model.TodoItem;
 import project.boostcamp.final_project.R;
 import project.boostcamp.final_project.UI.TodoItem.ItemDetailActivity;
 
+import static project.boostcamp.final_project.Util.SharedPreferencesService.IS_ALARM;
+
 // 로케이션 서비스로부터 지오펜스 전환 이벤트를 받고 이에 관한 전환 처리. 그 결과로서 notification 반환
 public class GeofenceService extends IntentService {
 
@@ -73,7 +75,7 @@ public class GeofenceService extends IntentService {
 
         Intent notificationIntent = new Intent(getApplicationContext(), ItemDetailActivity.class);
 
-        Log.e("geo84", notificationDetails + "");
+        Log.e("GeofenceService", "sendNotification" + notificationDetails);
         notificationIntent.putExtra("id", notificationDetails);
 
         TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
@@ -110,7 +112,9 @@ public class GeofenceService extends IntentService {
             NotificationManager mNotificationManager =
                     (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
-            mNotificationManager.notify(0, builder.build());
+            SharedPreferencesService.getInstance().load(getApplicationContext());
+            if(SharedPreferencesService.getInstance().getPrefBooleanData(IS_ALARM))
+                mNotificationManager.notify(0, builder.build());
         }
     }
 

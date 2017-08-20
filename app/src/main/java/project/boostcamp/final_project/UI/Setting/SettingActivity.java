@@ -34,7 +34,6 @@ import project.boostcamp.final_project.Model.Dto.PojoFolderItem;
 import project.boostcamp.final_project.Model.Dto.PojoTodoItem;
 import project.boostcamp.final_project.Model.TodoItem;
 import project.boostcamp.final_project.R;
-import project.boostcamp.final_project.UI.TodoItem.MainActivity;
 import project.boostcamp.final_project.Util.BindingService;
 import project.boostcamp.final_project.Util.RealmHelper;
 import project.boostcamp.final_project.Util.SharedPreferencesService;
