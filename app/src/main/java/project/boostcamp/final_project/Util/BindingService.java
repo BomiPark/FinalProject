@@ -30,13 +30,17 @@ public class BindingService {
         /*
         if(!SharedPreferencesService.getInstance().getPrefBooleanData(IS_BOUND)) {  //todo  수정
             context.bindService(intent, connection, Context.BIND_AUTO_CREATE);
-        }
-*/
+        } */
+
         if(!isBound)
             context.bindService(intent, connection, Context.BIND_AUTO_CREATE);
 
-        isBound = true;
+    }
 
+    public void unbindService(){
+        if (connection != null) {
+            context.unbindService(connection);
+        }
     }
 
     private ServiceConnection connection = new ServiceConnection() {
@@ -47,11 +51,12 @@ public class BindingService {
 
             geoBinder = (GeoBinder) service;
             geofencingService = geoBinder.getService();
-            isBound = true;
 
             if(!isBound) {  //todo  수정
                 bindingService.startService();
             }
+
+            isBound = true;
 
         }
 
@@ -83,7 +88,7 @@ public class BindingService {
     boolean isEmpty(){
 
         Realm realm = RealmHelper.getInstance(context);
-        if(realm.where(TodoItem.class).findAll().size() == 0)
+        if(realm.where(TodoItem.class).equalTo("alarm", true).equalTo("isCompleted", false).findAll().size() == 0)
             return true;
         else
             return false;

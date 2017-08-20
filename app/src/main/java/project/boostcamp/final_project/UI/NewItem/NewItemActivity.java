@@ -1,5 +1,6 @@
 package project.boostcamp.final_project.UI.NewItem;
 
+import android.content.SharedPreferences;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;

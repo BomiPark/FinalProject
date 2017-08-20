@@ -1,10 +1,10 @@
 package project.boostcamp.final_project.UI.Setting;
 
-
 import android.content.DialogInterface;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
@@ -38,10 +38,10 @@ import project.boostcamp.final_project.UI.TodoItem.MainActivity;
 import project.boostcamp.final_project.Util.RealmHelper;
 import project.boostcamp.final_project.Util.SharedPreferencesService;
 
+import static project.boostcamp.final_project.UI.Setting.SplashActivity.bindingService;
 import static project.boostcamp.final_project.Util.SharedPreferencesService.EMAIL;
 import static project.boostcamp.final_project.Util.SharedPreferencesService.IS_ALARM;
 import static project.boostcamp.final_project.Util.SharedPreferencesService.RADIUS;
-
 
 public class SettingActivity extends AppCompatActivity {
 
@@ -74,9 +74,16 @@ public class SettingActivity extends AppCompatActivity {
 
     }
 
-    void setView() { //seekbar 설정 todo
+    protected void onDestroy(){
+        super.onDestroy();
+        saveStatus();
+    }
+
+    void setView() {
 
         alarm = SharedPreferencesService.getInstance().getPrefBooleanData(IS_ALARM);
+        ok.setVisibility(View.INVISIBLE);
+
         if(alarm) {
             on.setTextColor(getResources().getColor(R.color.click_back));
             off.setTextColor(getResources().getColor(R.color.gray));
@@ -101,8 +108,11 @@ public class SettingActivity extends AppCompatActivity {
 
         Toasty.info(getApplicationContext(), getResources().getString(R.string.saved), Toast.LENGTH_LONG).show();
 
+        if(alarm)
+            bindingService.startService();
+        else
+            bindingService.stopService();
     }
-
 
     View.OnClickListener clickListener =new View.OnClickListener() {
         @Override
@@ -115,9 +125,6 @@ public class SettingActivity extends AppCompatActivity {
                     setAlarmOn(false);
                     break;
                 case R.id.back :
-                    finish();
-                    break;
-                case R.id.ok :
                     saveStatus();
                     finish();
                     break;
@@ -128,10 +135,9 @@ public class SettingActivity extends AppCompatActivity {
     void setAlarmOn(boolean on){
 
         alarm = on;
-        if(on){ //todo 추가추가
+        if(on){
             swich.setChecked(true);
             setTextColor(true);
-
         }
         else{
             swich.setChecked(false);
@@ -169,7 +175,7 @@ public class SettingActivity extends AppCompatActivity {
 
     void backupDialogBox(){
         dialog = new AlertDialog.Builder(SettingActivity.this);
-        dialog.setTitle("Backup Dialog").setMessage( "현재 데이터를 서버에 저장하시겠습니까 ")
+        dialog.setTitle("Backup Dialog").setMessage( "\n현재 데이터를 서버에 저장하시겠습니까 ")
                 .setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -191,7 +197,7 @@ public class SettingActivity extends AppCompatActivity {
 
     void restoreDialogBox(){
         dialog = new AlertDialog.Builder(SettingActivity.this);
-        dialog.setTitle("Restore Dialog").setMessage( "확인 창 복구하시겠습니까 이전의 데이터는 지워집니다. ")
+        dialog.setTitle("Restore Dialog").setMessage( "복구하시겠습니까 \n이전의 데이터는 지워집니다. ")
                 .setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -325,9 +331,13 @@ public class SettingActivity extends AppCompatActivity {
             }
         });
 
-        radiusBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() { //todo 채우기
+        radiusBar.setProgress(SharedPreferencesService.getInstance().getPrefIntData(RADIUS));
+
+        radiusBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) { //todo 변화 없는 경우 반영
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                if(progress == 0)
+                    radiusValue.setText(1 + " M");
                 radiusValue.setText(progress + " M");
                 radius = progress;
             }

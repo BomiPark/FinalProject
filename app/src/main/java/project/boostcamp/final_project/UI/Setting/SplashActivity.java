@@ -1,9 +1,11 @@
 package project.boostcamp.final_project.UI.Setting;
 
+import android.app.ActivityManager;
 import android.content.Intent;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 
 import project.boostcamp.final_project.R;
 import project.boostcamp.final_project.UI.TodoItem.MainActivity;
@@ -29,18 +31,21 @@ public class SplashActivity extends AppCompatActivity {
         SharedPreferencesService.getInstance().load(getApplicationContext());
         SharedPreferencesService.getInstance().setPrefData(IS_BOUND, false);
 
-        isBound = true;
         isSetting = SharedPreferencesService.getInstance().getPrefBooleanData(IS_SETTING);
 
-        if(isBound)
-            bindingService =  new BindingService(this);//todo 체크
 
-        if(isSetting == false){
+        if(bindingService == null) {
+            bindingService = new BindingService(this);//todo 체크
+        }
+
+        if(!isSetting){
             SharedPreferencesService.getInstance().setPrefData(IS_ALARM, true);
             intent = new Intent(this, PermissionActivity.class);}
         else{
             intent = new Intent(this, MainActivity.class);
         }
+
+        isBound = true;
 
         Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
@@ -52,4 +57,10 @@ public class SplashActivity extends AppCompatActivity {
             }
         }, 1000);
     }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+    }
+
 }

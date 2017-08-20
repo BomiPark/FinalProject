@@ -15,11 +15,11 @@
     <TextView
         android:layout_width="0dp"
         android:layout_height="50dp"
-        android:paddingTop="17dp"
+        android:paddingTop="19dp"
         android:layout_marginLeft="15dp"
         android:id="@+id/noti_text"
         android:textColor="@color/black"
-        android:text="dd"
+        android:text="@string/wish"
         android:textSize="14sp"
         android:layout_weight="1" />
 </LinearLayout>

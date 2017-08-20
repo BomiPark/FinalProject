@@ -9,7 +9,7 @@
 
     <TextView
         android:id="@+id/nav_name"
-        android:layout_width="180dp"
+        android:layout_width="160dp"
         android:layout_height="30dp"
         android:layout_gravity="center"
         android:layout_marginTop="50dp"

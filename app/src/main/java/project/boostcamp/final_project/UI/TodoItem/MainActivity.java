@@ -116,7 +116,7 @@ public class MainActivity extends AppCompatActivity
     public void onResume(){
         super.onResume();
         setProfile();
-        updateData(); //todo 위치 변경
+        updateData();
     }
 
     void init(){

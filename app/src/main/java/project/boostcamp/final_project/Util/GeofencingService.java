@@ -31,8 +31,7 @@ public class GeofencingService extends Service{
     private ArrayList<Geofence> mGeofenceList; // 알람 울리게 관리하는 지역 리스트
     private PendingIntent mGeofencePendingIntent; // 지오펜스를 요청하거나 삭제한 경우 사용
 
-    public GeofencingService() {
-    }
+    public GeofencingService() {}
 
     public void startGeofence(){
         addGeofences();
@@ -99,7 +98,7 @@ public class GeofencingService extends Service{
 
     void setGeofenceList(int radius) throws IllegalArgumentException { // 지오펜스 리스트 설정
 
-        itemList = realm.where(TodoItem.class).equalTo("isCompleted", false).findAll();
+        itemList = realm.where(TodoItem.class).equalTo("isCompleted", false).equalTo("alarm", true).findAll();
 
         Log.e("geofencing 아이템 갯수 ", itemList.size() + "");
 
@@ -111,7 +110,7 @@ public class GeofencingService extends Service{
                         .setCircularRegion( // 지오펜스 근처에 영역 지정
                                 item.getLatitude(),
                                 item.getLongitude(),
-                                Constant.GEOFENCE_RADIUS_IN_METERS //todo shared 에서 받아오는 것 고려
+                                Constant.GEOFENCE_RADIUS_IN_METERS
                         )
                         .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER)
                         .setExpirationDuration(Geofence.NEVER_EXPIRE)
@@ -126,7 +125,7 @@ public class GeofencingService extends Service{
                         .setCircularRegion( // 지오펜스 근처에 영역 지정
                                 item.getLatitude(),
                                 item.getLongitude(),
-                                radius
+                                radius  //todo shared 에서 받아오는 것 고려
                         )
                         .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER)
                         .setExpirationDuration(Geofence.NEVER_EXPIRE)

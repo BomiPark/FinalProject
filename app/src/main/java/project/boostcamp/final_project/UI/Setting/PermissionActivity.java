@@ -11,6 +11,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.google.android.gms.auth.api.Auth;
@@ -61,6 +62,7 @@ public class PermissionActivity extends AppCompatActivity
     private FirebaseAuth auth;
     private FirebaseAuth.AuthStateListener mAuthListener;
     private GoogleApiClient mGoogleApiClient;
+    private ProgressBar login_progress;
     public static final int RC_GOOGLE_SIGN_IN = 9001;
 
     @Override
@@ -82,6 +84,8 @@ public class PermissionActivity extends AppCompatActivity
 
         sign_in_button = (SignInButton)findViewById(R.id.sign_in_button);
         sign_in_button.setOnClickListener(clickListener);
+        login_progress = (ProgressBar)findViewById(R.id.login_progress);
+        login_progress.setVisibility(View.INVISIBLE);
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
@@ -230,7 +234,7 @@ public class PermissionActivity extends AppCompatActivity
 
     private void firebaseAuthWithGoogle(GoogleSignInAccount acct) {
 
-        //showProgressDialog(); todo
+        login_progress.setVisibility(View.VISIBLE);
 
         AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
         auth.signInWithCredential(credential)
@@ -238,20 +242,18 @@ public class PermissionActivity extends AppCompatActivity
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            // Sign in success, update UI with the signed-in user's information
                             FirebaseUser user = auth.getCurrentUser();
                             databaseRef.child("users").child(user.getUid()).setValue(new User(user.getEmail()));
                             SharedPreferencesService.getInstance().setPrefStringData(EMAIL,user.getUid());
                         } else {
-                            // If sign in fails, display a message to the user.
                             Toast.makeText(PermissionActivity.this, "Authentication failed.",
                                     Toast.LENGTH_SHORT).show();
                         }
-                        // hideProgressDialog(); todo
 
                         startActivity(new Intent(PermissionActivity.this, MainActivity.class));
                         SharedPreferencesService.getInstance().setPrefData(IS_SETTING, true);
                         SharedPreferencesService.getInstance().setPrefIntData(PROP_IMG, R.drawable.prop_img);
+
                         finish();
                     }
                 });
