@@ -100,7 +100,6 @@ public class GeofenceService extends IntentService {
             builder.setSmallIcon(R.drawable.app_icon)   // 메시지 내용 동적으로 변경 고려
                     .setLargeIcon(BitmapFactory.decodeResource(getResources(),
                             R.drawable.app_icon))
-                    .setColor(Color.RED)
                     .setDefaults(Notification.DEFAULT_SOUND)
                     .setVibrate(new long[]{1000, 1000, 200, 200})
                     .setLights(0xff00ff00, 500, 500)

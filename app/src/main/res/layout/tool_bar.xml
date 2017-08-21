@@ -9,7 +9,7 @@
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:padding="10dp"
-        android:layout_marginLeft="7dp"
+        android:layout_marginStart="7dp"
         android:layout_alignParentStart="true"
         android:layout_centerVertical="true"
         android:src="@drawable/action_back" />
@@ -20,7 +20,7 @@
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:padding="10dp"
-        android:layout_marginRight="10dp"
+        android:layout_marginEnd="10dp"
         android:layout_alignParentEnd="true"
         android:layout_centerVertical="true"
         android:src="@drawable/selector_check" />
@@ -28,7 +28,7 @@
     <ImageView
         android:layout_alignParentRight="true"
         android:layout_width="40dp"
-        android:layout_marginRight="8dp"
+        android:layout_marginEnd="8dp"
         android:padding="7dp"
         android:layout_centerVertical="true"
         android:layout_height="40dp"

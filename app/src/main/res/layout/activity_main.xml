@@ -25,8 +25,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
         <include layout="@layout/nav_header_main"
-            android:id="@+id/my"
-            />
+            android:id="@+id/my" />
 
         <LinearLayout
             android:layout_width="wrap_content"

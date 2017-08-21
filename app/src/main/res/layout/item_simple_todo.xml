@@ -15,7 +15,7 @@
         android:layout_height="wrap_content"
         android:text="@string/title"
         android:id="@+id/TextView"
-        android:layout_marginLeft="20dp"
+        android:layout_marginStart="20dp"
         android:textColor="@color/gray"
         android:textSize="15sp"
         android:layout_marginTop="14dp"/>

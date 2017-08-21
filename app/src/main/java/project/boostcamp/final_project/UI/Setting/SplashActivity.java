@@ -18,7 +18,7 @@ import static project.boostcamp.final_project.Util.SharedPreferencesService.IS_S
 
 public class SplashActivity extends AppCompatActivity {
 
-    BindingService bindingService;
+    public static BindingService bindingService;
     private Intent intent;
     private boolean isBound, isSetting;
 
@@ -34,7 +34,7 @@ public class SplashActivity extends AppCompatActivity {
         isSetting = SharedPreferencesService.getInstance().getPrefBooleanData(IS_SETTING);
 
 
-        if(bindingService == null) {
+        if(!BindingService.isBound) {
             bindingService = BindingService.getInstance(this);//todo 체크
         }
 

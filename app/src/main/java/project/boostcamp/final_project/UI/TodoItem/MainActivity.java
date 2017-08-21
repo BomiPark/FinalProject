@@ -52,29 +52,28 @@ import static project.boostcamp.final_project.Util.SharedPreferencesService.PROP
 import static project.boostcamp.final_project.Util.SharedPreferencesService.PROP_NAME;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener,
-        AdapterView.OnItemSelectedListener{
+        implements NavigationView.OnNavigationItemSelectedListener, AdapterView.OnItemSelectedListener{
 
-    RealmResults<TodoItem> itemList;
-    RealmResults<FolderItem> folderList;
-    List<String> spinnerList = new ArrayList<>();
-    RecyclerView recyclerView;
-    Spinner spinner;
+    private RealmResults<TodoItem> itemList;
+    private RealmResults<FolderItem> folderList;
+    private List<String> spinnerList = new ArrayList<>();
+    private RecyclerView recyclerView;
+    private Spinner spinner;
 
-    TodoItemAdapter todoItemAdapter;
-    ArrayAdapter<String> spinnerAdapter;
-    AlertDialog.Builder dialog;
+    private TodoItemAdapter todoItemAdapter;
+    private ArrayAdapter<String> spinnerAdapter;
+    private AlertDialog.Builder dialog;
 
-    DrawerLayout drawer;
-    RecyclerView drawer_list;
-    FolderItemAdapter folderItemAdapter;
+    private DrawerLayout drawer;
+    private RecyclerView drawer_list;
+    private FolderItemAdapter folderItemAdapter;
 
-    ImageView writeIcon, nav_img; // navigation drawer 관련 뷰
-    TextView nav_name;
+    private ImageView writeIcon, nav_img; // navigation drawer 관련 뷰
+    private TextView nav_name;
 
-    Realm realm;
-    TodoItem todo = new TodoItem();
-    FolderItem folder = new FolderItem();
+    private Realm realm;
+    private TodoItem todo = new TodoItem();
+    private FolderItem folder = new FolderItem();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -116,6 +115,8 @@ public class MainActivity extends AppCompatActivity
         super.onResume();
         setProfile();
         updateData();
+
+        BindingService.getInstance(getApplicationContext()).upDateService(); // todo 수정
     }
 
     void init(){
@@ -147,10 +148,13 @@ public class MainActivity extends AppCompatActivity
 
         spinnerList =  FolderItem.getFolderList(realm.where(FolderItem.class).findAll().sort("id"));
 
-        spinnerList.add(0,"모두 보기");
+        spinnerList.add(0,getResources().getString(R.string.all));
+        spinnerList.add(getResources().getString(R.string.completed_no));
+        spinnerList.add(getResources().getString(R.string.completed_ok));
 
         spinnerAdapter = new ArrayAdapter<>(
                 this, android.R.layout.simple_list_item_1, spinnerList);
+
 
         spinner.setAdapter(spinnerAdapter);
 
@@ -173,6 +177,7 @@ public class MainActivity extends AppCompatActivity
                     itemList = realm.where(TodoItem.class).equalTo("folder", spinnerList.get(position)).findAll().sort("id");
                 }
 
+                spinner.setSelection(position+1);
                 setTodoItemList();
             }
 
@@ -423,6 +428,10 @@ public class MainActivity extends AppCompatActivity
 
         if (position == 0)
             itemList = realm.where(TodoItem.class).findAll().sort("id");
+        else if(spinnerList.get(position).equals(getResources().getString(R.string.completed_no)))
+            itemList = realm.where(TodoItem.class).equalTo("isCompleted",false).findAll().sort("id");
+        else if(spinnerList.get(position).equals(getResources().getString(R.string.completed_ok)))
+            itemList = realm.where(TodoItem.class).equalTo("isCompleted",true).findAll().sort("id");
         else {
             itemList = realm.where(TodoItem.class).equalTo("folder", spinnerList.get(position)).findAll().sort("id");
         }

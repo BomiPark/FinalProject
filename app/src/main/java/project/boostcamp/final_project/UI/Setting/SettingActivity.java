@@ -187,7 +187,7 @@ public class SettingActivity extends AppCompatActivity {
                         new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                Toast.makeText(getApplicationContext(), "취소되었습니다", Toast.LENGTH_LONG).show();
+                                Toast.makeText(getApplicationContext(), R.string.canceled, Toast.LENGTH_LONG).show();
                             }
                         });
         AlertDialog dialogCreate = dialog.create();
@@ -209,7 +209,7 @@ public class SettingActivity extends AppCompatActivity {
                         new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                Toast.makeText(getApplicationContext(), "취소되었습니다", Toast.LENGTH_LONG).show();
+                                Toast.makeText(getApplicationContext(),R.string.canceled, Toast.LENGTH_LONG).show();
                             }
                         });
         AlertDialog dialogCreate = dialog.create();

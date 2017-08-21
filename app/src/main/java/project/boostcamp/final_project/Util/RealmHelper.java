@@ -56,4 +56,8 @@ public class RealmHelper {
             return true;
         return false;
     }
+
+    public static void setFolder(){
+
+    }
 }

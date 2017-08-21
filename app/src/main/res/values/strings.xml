@@ -21,6 +21,7 @@
     <string name="setting_push">알림</string>
     <string name="on">On</string>
     <string name="off">Off</string>
+    <string name="name_text">이름</string>
     <string name="input_address">이동할 주소를 입력해주세요</string>
     <string name="radius">알림반경</string>
     <string name="meter">200M</string>
@@ -31,6 +32,7 @@
     <string name="cancel">취소</string>
     <string name="ok_eng">OK</string>
     <string name="cancel_eng">CANCEL</string>
+    <string name="to_save">저장하기</string>
     <string name="saved">저장되었습니다 </string>
     <string name="folder_default0">기본 폴더</string>
     <string name="folder_default1">사야할 것</string>
@@ -38,9 +40,16 @@
     <string name="folder_default3">봐야할 것</string>
     <string name="same_folder">이미 같은 이름의 폴더가 있습니다</string>
     <string name="backup">Backup Completed</string>
+    <string name="canceled">취소되었습니다 </string>
     <string name="restore">Restore Completed</string>
     <string name="sub_title">MODIFY\nWISH LIST</string>
+    <string name="completed_ok">수행 완료</string>
+    <string name="completed_no">수행 이전</string>
+    <string name="restore_data">데이터 복원</string>
+    <string name="all">모두 보기</string>
     <string name="move_marker">마커를 움직여 위치를 조정해주세요</string>
+    <string name="backup_short">backup</string>
+    <string name="restore_short">restore</string>
 
     <!-- 퍼미션 관련 -->
     <string name="permission_rationale">어플리케이션 기능 상 위치 정보 접근이 필요합니다.</string>

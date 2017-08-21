@@ -19,18 +19,18 @@
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
 
-        <activity android:name=".UI.Setting.PermissionActivity"/>
+        <activity android:name=".UI$Setting.PermissionActivity"/>
         <activity
-            android:name=".UI.NewItem.NewItemActivity"
+            android:name=".UI$NewItem.NewItemActivity"
             android:screenOrientation="portrait">
         </activity>
-        <activity android:name=".UI.Setting.SettingActivity" />
-        <activity android:name=".UI.Setting.LicenseActivity" />
+        <activity android:name=".UI$Setting.SettingActivity" />
+        <activity android:name=".UI$Setting.LicenseActivity" />
         <activity
-            android:name=".UI.TodoItem.MainActivity"
+            android:name=".UI$TodoItem.MainActivity"
             android:label=""
             android:theme="@style/AppTheme" />
-        <activity android:name=".UI.TodoItem.ItemDetailActivity" />
+        <activity android:name=".UI$TodoItem.ItemDetailActivity" />
 
         <service
             android:name=".Util.GeofenceService"
@@ -42,13 +42,13 @@
             android:enabled="true"
             android:exported="true" />
 
-        <activity android:name=".UI.Setting.SplashActivity">
+        <activity android:name=".UI$Setting.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".UI.Setting.ProfileActivity"/>
+        <activity android:name=".UI$Setting.ProfileActivity"/>
     </application>
 
 </manifest>

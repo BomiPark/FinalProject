@@ -40,6 +40,12 @@ public class BindingService {
 
     }
 
+    public boolean isBound(){
+        if(connection == null)
+            return false;
+        return true;
+    }
+
 
     public void unbindService(){
         if (connection != null) {

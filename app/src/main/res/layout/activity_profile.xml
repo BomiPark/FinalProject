@@ -31,7 +31,7 @@
             <ImageView
                 android:layout_width="65dp"
                 android:layout_height="75dp"
-                android:layout_marginLeft="140dp"
+                android:layout_marginStart="140dp"
                 android:layout_marginBottom="528.8dp"
                 android:src="@drawable/app_icon"
                 android:id="@+id/logo_image" />
@@ -90,7 +90,7 @@
                 android:layout_width="0dp"
                 android:layout_height="60dp"
                 android:layout_gravity="bottom"
-                android:layout_marginLeft="18.3dp"
+                android:layout_marginStart="18.3dp"
                 android:layout_weight="1.3"
                 android:src="@drawable/prop_img1" />
 
@@ -100,7 +100,7 @@
                 android:tag="R.drawable.prop_img2"
                 android:layout_height="60dp"
                 android:layout_gravity="bottom"
-                android:layout_marginLeft="11.5dp"
+                android:layout_marginStart="11.5dp"
                 android:layout_weight="1"
                 android:src="@drawable/prop_img2" />
 
@@ -110,7 +110,7 @@
                 android:layout_width="0dp"
                 android:layout_height="59dp"
                 android:layout_gravity="bottom"
-                android:layout_marginLeft="14.8dp"
+                android:layout_marginStart="14.8dp"
                 android:layout_weight="1"
                 android:src="@drawable/prop_img3" />
 
@@ -120,7 +120,7 @@
                 android:layout_width="0dp"
                 android:layout_height="55dp"
                 android:layout_gravity="bottom"
-                android:layout_marginLeft="13dp"
+                android:layout_marginStart="13dp"
                 android:layout_weight="1"
                 android:src="@drawable/prop_img4" />
 
@@ -129,7 +129,7 @@
                 android:tag="R.drawable.prop_img5"
                 android:layout_width="0dp"
                 android:layout_height="66dp"
-                android:layout_marginLeft="14.8dp"
+                android:layout_marginStart="14.8dp"
                 android:layout_marginRight="18dp"
                 android:layout_weight="0.9"
                 android:src="@drawable/prop_img5" />
@@ -142,18 +142,18 @@
             android:layout_gravity="center"
             android:layout_marginTop="30dp"
             android:gravity="center"
-            android:hint="이름" />
+            android:hint="@string/name_text" />
 
         <Button
             android:id="@+id/prop_save"
             android:layout_width="175dp"
             android:layout_height="35dp"
-            android:layout_marginLeft="85dp"
+            android:layout_marginStart="85dp"
             android:layout_marginTop="28dp"
             android:background="@drawable/folder_select"
             android:gravity="center"
             android:onClick="onClick"
-            android:text="저장하기"
+            android:text="@string/to_save"
             android:textColor="@color/white"
             android:textStyle="bold" />
 

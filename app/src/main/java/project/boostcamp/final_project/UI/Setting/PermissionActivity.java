@@ -47,6 +47,7 @@ import static project.boostcamp.final_project.R.string.settings;
 import static project.boostcamp.final_project.Util.SharedPreferencesService.EMAIL;
 import static project.boostcamp.final_project.Util.SharedPreferencesService.IS_SETTING;
 import static project.boostcamp.final_project.Util.SharedPreferencesService.PROP_IMG;
+import static project.boostcamp.final_project.Util.SharedPreferencesService.RADIUS;
 
 public class PermissionActivity extends AppCompatActivity
         implements GoogleApiClient.OnConnectionFailedListener {
@@ -253,6 +254,7 @@ public class PermissionActivity extends AppCompatActivity
                         startActivity(new Intent(PermissionActivity.this, MainActivity.class));
                         SharedPreferencesService.getInstance().setPrefData(IS_SETTING, true);
                         SharedPreferencesService.getInstance().setPrefIntData(PROP_IMG, R.drawable.prop_img);
+                        SharedPreferencesService.getInstance().setPrefIntData(RADIUS, 1000);
 
                         finish();
                     }

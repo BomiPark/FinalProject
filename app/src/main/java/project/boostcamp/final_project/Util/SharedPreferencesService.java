@@ -52,18 +52,18 @@ public class SharedPreferencesService {
     public void setPrefData(String key, boolean value) {
         SharedPreferences.Editor editor = pref.edit();
         editor.putBoolean(key, value);
-        editor.commit();
+        editor.apply();
     }
 
     public void setPrefStringData(String key, String value) {
         SharedPreferences.Editor editor = pref.edit();
         editor.putString(key, value);
-        editor.commit();
+        editor.apply();
     }
 
     public void setPrefIntData(String key, int value) {
         SharedPreferences.Editor editor = pref.edit();
         editor.putInt(key, value);
-        editor.commit();
+        editor.apply();
     }
 }

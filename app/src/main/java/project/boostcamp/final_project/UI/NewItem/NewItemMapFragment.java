@@ -56,7 +56,7 @@ public class NewItemMapFragment extends Fragment {
             view = inflater.inflate(R.layout.fragment_new_item_map, container, false);
         } catch (InflateException e) {}
 
-        Toasty.info(getActivity(), getResources().getString(R.string.move_marker), Toast.LENGTH_LONG).show();
+        Toasty.info(getActivity(), getResources().getString(R.string.move_marker), Toast.LENGTH_SHORT).show();
 
         item = new TodoItem();
         geoCoder = new Geocoder(getContext());
