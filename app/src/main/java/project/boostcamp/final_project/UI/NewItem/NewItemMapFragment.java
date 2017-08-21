@@ -106,7 +106,7 @@ public class NewItemMapFragment extends Fragment {
 
             LatLng loc = listener.getCurrentLocation();
             LatLng baseLatlng = new LatLng(loc.latitude, loc.longitude);
-            googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(baseLatlng, 12));
+            googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(baseLatlng, 13));
 
             changedLatLng = baseLatlng; // 초기화
 
@@ -140,7 +140,7 @@ public class NewItemMapFragment extends Fragment {
             options.position(changedLatLng);
             googleMap.addMarker(options);
 
-            googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(changedLatLng, 12));
+            googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(changedLatLng, 13));
         }
     };
 

@@ -35,7 +35,7 @@ public class SplashActivity extends AppCompatActivity {
 
 
         if(!BindingService.isBound) {
-            bindingService = BindingService.getInstance(this);//todo 체크
+            bindingService = BindingService.getInstance(getApplicationContext());
         }
 
         if(!isSetting){
@@ -55,7 +55,7 @@ public class SplashActivity extends AppCompatActivity {
                 startActivity(intent);
                 finish();
             }
-        }, 1000);
+        }, 3000);
     }
 
     @Override

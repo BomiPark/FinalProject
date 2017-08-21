@@ -50,7 +50,7 @@ public class GeofenceService extends IntentService {
             triggeringGeofencesIdsList.add(geofence.getRequestId());
         }
 
-        return triggeringGeofencesIdsList.get(0).toString();
+        return triggeringGeofencesIdsList.get(0);
     }
 
     @Override
@@ -75,7 +75,6 @@ public class GeofenceService extends IntentService {
 
         Intent notificationIntent = new Intent(getApplicationContext(), ItemDetailActivity.class);
 
-        Log.e("GeofenceService", "sendNotification" + notificationDetails);
         notificationIntent.putExtra("id", notificationDetails);
 
         TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
@@ -92,8 +91,10 @@ public class GeofenceService extends IntentService {
         realm= RealmHelper.getInstance(getApplicationContext());
 
         String todo = null;
-        if( realm.where(TodoItem.class).equalTo("id", notificationDetails).findFirst() != null) {
+        if( realm.where(TodoItem.class).equalTo("id", notificationDetails).findFirst() != null ) {
             todo = " '" + realm.where(TodoItem.class).equalTo("id", notificationDetails).findFirst().getTodo() + "'를 수행할 장소입니다. ";
+
+            Log.e("GeofenceService", "알람내용 = " + todo);
 
             RemoteViews customView = new RemoteViews((getApplicationContext()).getPackageName(), R.layout.item_notification);
             customView.setTextViewText(R.id.noti_text, todo);

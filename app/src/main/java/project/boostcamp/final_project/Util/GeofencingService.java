@@ -5,8 +5,11 @@ import android.app.Service;
 import android.content.Intent;
 import android.os.Binder;
 import android.os.IBinder;
+import android.support.annotation.NonNull;
 import android.util.Log;
 
+import com.google.android.gms.common.api.ResultCallbacks;
+import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.Geofence;
 import com.google.android.gms.location.GeofencingClient;
 import com.google.android.gms.location.GeofencingRequest;
@@ -20,12 +23,15 @@ import io.realm.RealmResults;
 import project.boostcamp.final_project.Model.Constant;
 import project.boostcamp.final_project.Model.TodoItem;
 
+import static android.content.ContentValues.TAG;
+
 public class GeofencingService extends Service{
 
     private final IBinder binder = new GeoBinder();
 
     private RealmResults<TodoItem> itemList;
     private Realm realm;
+    private GeofencingRequest.Builder builder;
 
     private GeofencingClient mGeofencingClient; // Geofencing API 에 접근하게 해준다
     private ArrayList<Geofence> mGeofenceList; // 알람 울리게 관리하는 지역 리스트
@@ -73,8 +79,14 @@ public class GeofencingService extends Service{
         return PendingIntent.getService(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT); //FLAG_UPDATE_CURRENT 를 사용해서 지오펜스를 설정할 때나 해제할때나 같은 펜딩인텐트를 사용한다 .
     }
 
+    protected void unregisterFence(final String fenceKey) {
+
+
+
+    }
+
     private GeofencingRequest getGeofencingRequest() { // 지오펜스 리퀘스트 빌드, 지오펜스 리스트 빌더에 넣구 초기화
-        GeofencingRequest.Builder builder = new GeofencingRequest.Builder();
+        builder = new GeofencingRequest.Builder();
 
         builder.setInitialTrigger(GeofencingRequest.INITIAL_TRIGGER_ENTER); // 이미들어가있는경우노티티\
 

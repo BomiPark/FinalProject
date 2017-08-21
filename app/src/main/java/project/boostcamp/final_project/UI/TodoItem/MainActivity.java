@@ -45,6 +45,7 @@ import project.boostcamp.final_project.UI.Setting.ProfileActivity;
 import project.boostcamp.final_project.UI.Setting.SettingActivity;
 import project.boostcamp.final_project.UI.NewItem.NewItemActivity;
 import project.boostcamp.final_project.Util.BindingService;
+import project.boostcamp.final_project.Util.GeofencingService;
 import project.boostcamp.final_project.Util.RealmHelper;
 import project.boostcamp.final_project.Util.SharedPreferencesService;
 
@@ -116,7 +117,7 @@ public class MainActivity extends AppCompatActivity
         setProfile();
         updateData();
 
-        BindingService.getInstance(getApplicationContext()).upDateService(); // todo 수정
+       // BindingService.getInstance(getApplicationContext()).startService(); // todo 수정
     }
 
     void init(){
@@ -214,6 +215,7 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onLongClick(View view, final int position) {
                 removeItemDialogBox(position);
+                todoItemAdapter.notifyDataSetChanged();
             }
         }, new TodoCheckClickListener() {
             @Override
@@ -225,6 +227,8 @@ public class MainActivity extends AppCompatActivity
                 todo.setCompleted(!todo.isCompleted());
 
                 realm.commitTransaction();
+
+                todoItemAdapter.notifyDataSetChanged();
             }
         });
         recyclerView.setAdapter(todoItemAdapter);

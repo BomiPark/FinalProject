@@ -33,17 +33,13 @@ public class BindingService {
     }
 
     private BindingService(Context context){
+
+        isBound = true;
         intent = new Intent(context, GeofencingService.class);
         SharedPreferencesService.getInstance().load(context);
 
         context.bindService(intent, connection, Context.BIND_AUTO_CREATE);
 
-    }
-
-    public boolean isBound(){
-        if(connection == null)
-            return false;
-        return true;
     }
 
 
@@ -62,7 +58,7 @@ public class BindingService {
             geoBinder = (GeoBinder) service;
             geofencingService = geoBinder.getService();
 
-            if(!isBound) {  //todo  수정
+            if(!isBound) {
                 binding.startService();
             }
 
@@ -92,7 +88,8 @@ public class BindingService {
     }
 
     public void upDateService(){
-        geofencingService.updateGeofence();
+        if(geofencingService != null)
+            geofencingService.updateGeofence();
     }
 
     boolean isEmpty(){
