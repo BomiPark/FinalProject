@@ -27,7 +27,6 @@ import javax.annotation.Nullable;
 
 import es.dmoral.toasty.Toasty;
 import io.realm.Realm;
-import io.realm.RealmConfiguration;
 import io.realm.RealmResults;
 import project.boostcamp.final_project.Model.Constant;
 import project.boostcamp.final_project.Interface.FragmentChangeListener;
@@ -36,15 +35,12 @@ import project.boostcamp.final_project.Model.TodoItem;
 import project.boostcamp.final_project.R;
 import project.boostcamp.final_project.Util.RealmHelper;
 
-import static project.boostcamp.final_project.R.id.toSearch;
-import static project.boostcamp.final_project.UI.NewItem.NewItemMapFragment.view;
-
 public class NewItemDetailFragment extends Fragment {
 
     static View view;
     FragmentChangeListener listener;
     private TextView subTitleText;
-    private ImageView back, ok, img_plus;
+    private ImageView back, ok;
     private EditText todo;
     private Button folder, toSearch, toMap, on, off;
 
@@ -68,7 +64,6 @@ public class NewItemDetailFragment extends Fragment {
         back = (ImageView)view.findViewById(R.id.back);
         ok = (ImageView)view.findViewById(R.id.ok);
         subTitleText = (TextView)view.findViewById(R.id.sut_title);
-        img_plus = (ImageView)view.findViewById(R.id.img_plus);
         todo = (EditText)view.findViewById(R.id.todo);
         on = (Button)view.findViewById(R.id.on);
         off = (Button)view.findViewById(R.id.off);
@@ -76,7 +71,6 @@ public class NewItemDetailFragment extends Fragment {
 
         initData();
 
-        img_plus.setOnClickListener(clickListener);
         toSearch.setOnClickListener(clickListener); // 클릭리스너 연결
         toMap.setOnClickListener(clickListener);
         back.setOnClickListener(clickListener);
@@ -103,12 +97,13 @@ public class NewItemDetailFragment extends Fragment {
         if(item != null)
             setView(); // 디테일 -> 다른 프래그먼트 다녀온 경우.
         else {
-            item = new TodoItem();
             if(listener.getCurrentItem().getTodo()!= null){ // 이전에 저장한 아이템 수정하는 경우
                 this.item = listener.getCurrentItem();
                 subTitleText.setText(getResources().getString(R.string.sub_title));
                 setView();
             }
+            else
+                item = new TodoItem();
         }
 
         initData();
@@ -155,13 +150,6 @@ public class NewItemDetailFragment extends Fragment {
                 case R.id.folder :
                     getDialog();
                     break;
-                case R.id.img_plus :
-                    item = listener.getCurrentItem();
-                    if(!isItemEmpty(item)) {
-                        listener.changeFragment(Constant.DETAIL, Constant.SAVE, item);
-                        saveData();
-                    }
-                    break;
             }
         }
     };
@@ -169,11 +157,11 @@ public class NewItemDetailFragment extends Fragment {
     boolean isItemEmpty(TodoItem item) {
 
         if (todo.getText().toString().equals("")) {
-            Toasty.info(getContext(), getResources().getString(R.string.input_todo), Toast.LENGTH_LONG, true).show();
+            Toasty.info(getContext(), getResources().getString(R.string.input_todo), Toast.LENGTH_SHORT, true).show();
             return true;
         }
         if (item.getAddress() == null) {
-            Toasty.info(getContext(),  getResources().getString(R.string.input_where), Toast.LENGTH_LONG).show();
+            Toasty.info(getContext(),  getResources().getString(R.string.input_where), Toast.LENGTH_SHORT).show();
             return true;
         }
         if (folder.getText().toString().equals("폴더선택")) {

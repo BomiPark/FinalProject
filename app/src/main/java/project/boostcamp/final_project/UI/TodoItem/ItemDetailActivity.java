@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.renderscript.Byte2;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -18,7 +19,6 @@ import project.boostcamp.final_project.UI.NewItem.NewItemActivity;
 import project.boostcamp.final_project.Util.RealmHelper;
 
 import static project.boostcamp.final_project.R.id.btn_completed;
-import static project.boostcamp.final_project.R.id.toSearch;
 
 public class ItemDetailActivity extends AppCompatActivity {
 
@@ -85,22 +85,39 @@ public class ItemDetailActivity extends AppCompatActivity {
                     }
                     finish();
                     break;
-                case R.id.on :
-
-                    break;
-                case R.id.off :
-
-                    break;
                 case btn_completed :
-                    Toast.makeText(ItemDetailActivity.this, "completed", Toast.LENGTH_SHORT).show();
-                    realm.beginTransaction();
-                    item.setCompleted(true);
-                    realm.commitTransaction();
+                    if(!item.isCompleted()){
+                        realm.beginTransaction(); // case -> 수행완료
+                        item.setCompleted(true);
+                        realm.commitTransaction();
 
-                    btnCompleted.setVisibility(View.INVISIBLE);
+                        btnCompleted.setText(R.string.completed_ok);
+                    }
+                    else{
+                        realm.beginTransaction(); // case -> 수행이전
+                        item.setCompleted(false);
+                        realm.commitTransaction();
+
+                        btnCompleted.setText(R.string.completed_no);
+                    }
             }
         }
     };
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        switch (keyCode) {
+            case KeyEvent.KEYCODE_BACK:
+                if(getParentActivityIntent() == null){
+                    intent = new Intent(ItemDetailActivity.this, MainActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent);
+                }
+                finish();
+                break;
+        }
+        return true;
+    }
 
     void setLayout(){
         update.setVisibility(View.VISIBLE);
@@ -109,9 +126,9 @@ public class ItemDetailActivity extends AppCompatActivity {
         address.setText(item.getAddress());
         folder.setText(item.getFolder());
         if(item.isCompleted())
-            btnCompleted.setVisibility(View.GONE);
+            btnCompleted.setText(R.string.completed_ok);
         else
-            btnCompleted.setVisibility(View.VISIBLE);
+            btnCompleted.setText(R.string.completed_no);
         if(item.isAlarm()){
             on.setTextColor(Color.parseColor("#E35757"));
             off.setTextColor(Color.parseColor("#767676"));

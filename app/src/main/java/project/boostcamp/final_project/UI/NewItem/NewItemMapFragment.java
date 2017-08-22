@@ -15,11 +15,16 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.google.android.gms.common.api.Status;
+import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
+import com.google.android.gms.location.places.ui.PlaceSelectionListener;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
@@ -35,19 +40,17 @@ import project.boostcamp.final_project.Util.LocationService;
 
 public class NewItemMapFragment extends Fragment {
 
-    static View view;
-    GoogleMap googleMap;
-    ImageView back, ok, toSearch;
-    EditText editSearch;
-    Geocoder geoCoder;
-    LatLng latLng;
+    private static View view;
+    private GoogleMap googleMap;
+    private ImageView back, ok, toSearch;
+    private Geocoder geoCoder;
+    private PlaceAutocompleteFragment autocompleteFragment;
 
-    TodoItem item;
-    Marker marker;
-    MarkerOptions options;
+    private TodoItem item;
+    private Marker marker;
+    private MarkerOptions options;
 
-    FragmentChangeListener listener;
-
+    private FragmentChangeListener listener;
     private LatLng changedLatLng;
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -58,6 +61,25 @@ public class NewItemMapFragment extends Fragment {
 
         Toasty.info(getActivity(), getResources().getString(R.string.move_marker), Toast.LENGTH_SHORT).show();
 
+        autocompleteFragment = (PlaceAutocompleteFragment)
+                getActivity().getFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
+
+        autocompleteFragment.setBoundsBias(new LatLngBounds( //todo 하드코딩
+                new LatLng(33.2572573, 126.0331448),
+                new LatLng(38.6084671, 129.3620022)
+        ));
+        autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
+            @Override
+            public void onPlaceSelected(Place place) {
+                setSearch(place);
+            }
+
+            @Override
+            public void onError(Status status) {
+                Toast.makeText(getContext(), "다른 장소를 입력해주세요", Toast.LENGTH_LONG).show();
+            }
+        });
+
         item = new TodoItem();
         geoCoder = new Geocoder(getContext());
         com.google.android.gms.maps.MapFragment mapFragment = (com.google.android.gms.maps.MapFragment) getActivity().getFragmentManager().findFragmentById(R.id.map);
@@ -65,15 +87,10 @@ public class NewItemMapFragment extends Fragment {
 
         back = (ImageView)view.findViewById(R.id.back);
         ok = (ImageView)view.findViewById(R.id.ok);
-        editSearch = (EditText)view.findViewById(R.id.search);
-        toSearch = (ImageView)view.findViewById(R.id.toSearch);
         changedLatLng = new LatLng(0,0);
 
-        editSearch.setOnKeyListener(keyListener);
         back.setOnClickListener(clickListener);
         ok.setOnClickListener(clickListener);
-        toSearch.setOnClickListener(clickListener);
-
 
         return view;
     }
@@ -84,6 +101,7 @@ public class NewItemMapFragment extends Fragment {
 
         listener = (FragmentChangeListener) context;
         listener.setStatus(Constant.MAP);
+
     }
 
     @Override
@@ -144,25 +162,11 @@ public class NewItemMapFragment extends Fragment {
         }
     };
 
-    View.OnKeyListener keyListener = new View.OnKeyListener() {
-        @Override
-        public boolean onKey(View view, int keyCode, KeyEvent keyEvent) {
-            if ((keyEvent.getAction() == KeyEvent.ACTION_DOWN) && (keyCode == KeyEvent.KEYCODE_ENTER)) {
-                setSearch();
-                return true;
-            }
-            return false;
-        }
-    };
-
     View.OnClickListener clickListener = new View.OnClickListener(){
 
         @Override
         public void onClick(View view) {
             switch (view.getId()){
-                case R.id.toSearch :
-                    setSearch();
-                    break;
                 case R.id.back: // pop
                     listener.changeFragment(Constant.MAP, Constant.DETAIL, null);
                     break;
@@ -176,44 +180,30 @@ public class NewItemMapFragment extends Fragment {
         }
     };
 
-    void setSearch(){
 
-        String query = editSearch.getText().toString();
+    void setSearch(Place place){
 
-        if(query.length() > 0) {
-            move(query);
-            InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-            imm.hideSoftInputFromWindow(editSearch.getWindowToken(), 0);    //hide keyboard
-        }
-        else
-            Toast.makeText(getActivity(), "이동할 장소를 입력해주세요", Toast.LENGTH_SHORT).show();
+        item.setAddress(place.getAddress().toString());
+        move(place.getLatLng());
+
     }
 
-    void move(String query){
-        latLng = getLatlng(query);
+    void move(LatLng latLng){
+
         if(latLng != null){
+
+            googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 12));
 
             marker.remove();
             options.position(latLng);
             options.icon(BitmapDescriptorFactory.fromResource(R.drawable.marker_select));
             marker = googleMap.addMarker(options);
 
-            googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 12));
             changedLatLng = latLng;}
         else
             Toast.makeText(getContext(), "다른 장소를 입력해주세요", Toast.LENGTH_LONG).show();
     }
 
-    public LatLng getLatlng(String address){
-        List<Address> list = null;
-        try {
-            list = geoCoder.getFromLocationName(address, 5);
-            latLng = new LatLng(list.get(0).getLatitude(), list.get(0).getLongitude());
-        } catch (Exception e) {
-
-        }
-        return latLng;
-    }
 
     public String getAddress(LatLng latLng){
         List<Address> addressList = null;

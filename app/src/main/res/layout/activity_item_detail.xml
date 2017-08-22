@@ -31,7 +31,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="25dp"
         android:orientation="vertical">
 
         <TextView
@@ -42,7 +42,7 @@
             android:layout_marginTop="5dp"
             android:background="@color/white"
             android:gravity="center"
-            android:text="@string/title"/>
+            android:text="@string/title" />
 
 
         <LinearLayout
@@ -53,20 +53,20 @@
 
             <ImageView
                 android:layout_width="21dp"
+                android:layout_height="match_parent"
                 android:layout_marginLeft="41dp"
                 android:layout_marginRight="41dp"
                 android:contentDescription="@string/folder"
-                android:layout_height="match_parent"
                 android:src="@drawable/folder_icon" />
 
             <TextView
                 android:id="@+id/folder"
-                android:layout_marginStart="15dp"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_marginStart="15dp"
                 android:gravity="center_vertical"
                 android:text="@string/folder"
-                android:textSize="12sp"/>
+                android:textSize="12sp" />
 
         </LinearLayout>
 
@@ -78,23 +78,24 @@
 
             <ImageView
                 android:layout_width="24dp"
+                android:layout_height="match_parent"
                 android:layout_marginLeft="40dp"
                 android:layout_marginRight="40dp"
                 android:contentDescription="@string/setting_location"
-                android:layout_height="match_parent"
                 android:src="@drawable/ic_location" />
 
             <TextView
                 android:id="@+id/address"
                 android:layout_width="200dp"
+                android:layout_height="match_parent"
                 android:layout_marginStart="15dp"
                 android:gravity="center_vertical"
-                android:layout_height="match_parent"
-                android:text="@string/address"
                 android:lines="2"
-                android:textSize="12sp"/>
+                android:text="@string/address"
+                android:textSize="12sp" />
 
         </LinearLayout>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="60dp"
@@ -102,34 +103,34 @@
 
             <ImageView
                 android:layout_width="24dp"
+                android:layout_height="match_parent"
                 android:layout_marginLeft="40dp"
                 android:layout_marginRight="40dp"
-                android:layout_height="match_parent"
                 android:src="@drawable/ic_alarm" />
 
             <Button
                 android:id="@+id/on"
+                style="@style/Widget.AppCompat.Button.Borderless.Colored"
                 android:layout_width="60dp"
                 android:layout_height="match_parent"
                 android:layout_gravity="center_vertical"
+                android:clickable="false"
                 android:gravity="center"
                 android:text="@string/on"
-                android:clickable="false"
                 android:textColor="@drawable/btn_selector"
-                android:textSize="13sp"
-                style="@style/Widget.AppCompat.Button.Borderless.Colored" />
+                android:textSize="13sp" />
 
             <Button
                 android:id="@+id/off"
+                style="@style/Widget.AppCompat.Button.Borderless.Colored"
                 android:layout_width="60dp"
                 android:layout_height="match_parent"
-                android:clickable="false"
                 android:layout_gravity="center_vertical"
+                android:clickable="false"
                 android:gravity="center"
                 android:text="@string/off"
                 android:textColor="@color/gray"
-                android:textSize="13sp"
-                style="@style/Widget.AppCompat.Button.Borderless.Colored" />
+                android:textSize="13sp" />
 
         </LinearLayout>
 

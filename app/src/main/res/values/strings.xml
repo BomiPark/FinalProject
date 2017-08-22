@@ -16,7 +16,7 @@
     <string name="add_folder">Add folder</string>
     <string name="select_folder">폴더선택</string>
     <string name="input_folder"> 추가할 폴더 이름을 입력해주세요 </string>
-    <string name="input_todo"> WISH List를 입력해주세요</string>
+    <string name="input_todo"> Wish List를 입력해주세요</string>
     <string name="input_where"> 알람이 울릴 지점을 선택해주세요 </string>
     <string name="setting_push">알림</string>
     <string name="on">On</string>

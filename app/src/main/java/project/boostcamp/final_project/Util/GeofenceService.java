@@ -48,6 +48,11 @@ public class GeofenceService extends IntentService {
         ArrayList<String> triggeringGeofencesIdsList = new ArrayList<>();
         for (Geofence geofence : triggeringGeofences) {
             triggeringGeofencesIdsList.add(geofence.getRequestId());
+
+            realm= RealmHelper.getInstance(getApplicationContext());
+
+            if(realm.where(TodoItem.class).equalTo("id", Integer.parseInt(geofence.getRequestId())).equalTo("isCompleted", false).findAll() != null)
+                return geofence.getRequestId();
         }
 
         return triggeringGeofencesIdsList.get(0);
@@ -88,8 +93,6 @@ public class GeofenceService extends IntentService {
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this);
 
-        realm= RealmHelper.getInstance(getApplicationContext());
-
         String todo = null;
         if( realm.where(TodoItem.class).equalTo("id", notificationDetails).findFirst() != null ) {
             todo = " '" + realm.where(TodoItem.class).equalTo("id", notificationDetails).findFirst().getTodo() + "'를 수행할 장소입니다. ";
@@ -113,7 +116,8 @@ public class GeofenceService extends IntentService {
                     (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
             SharedPreferencesService.getInstance().load(getApplicationContext());
-            if(SharedPreferencesService.getInstance().getPrefBooleanData(IS_ALARM))
+            boolean isAlarm = SharedPreferencesService.getInstance().getPrefBooleanData(IS_ALARM);
+            if(isAlarm )
                 mNotificationManager.notify(0, builder.build());
         }
     }

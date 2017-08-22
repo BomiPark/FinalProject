@@ -63,6 +63,7 @@ public class GeofencingService extends Service{
 
         setGeofenceList(0);
         mGeofencingClient.addGeofences(getGeofencingRequest(), getGeofencePendingIntent());
+
     }
 
     private void removeGeofences() { //이것두 사용자가 퍼미션을 허락해야 사용 가능
@@ -129,6 +130,7 @@ public class GeofencingService extends Service{
                         .build()); //지오펜스 생성
             }
         }
+
         else {
             for (TodoItem item : itemList) {
 
