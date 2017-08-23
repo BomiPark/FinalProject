@@ -72,7 +72,6 @@ public class PermissionActivity extends AppCompatActivity
         setContentView(R.layout.activity_permission);
 
         SharedPreferencesService.getInstance().load(getApplicationContext());
-        setDefaultFolder();
 
         auth = FirebaseAuth.getInstance(); //FirebaseAuth의 인스턴스 가져옴
         databaseRef = FirebaseDatabase.getInstance().getReference();
@@ -97,7 +96,6 @@ public class PermissionActivity extends AppCompatActivity
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                 .build();
     }
-
 
     View.OnClickListener clickListener = new View.OnClickListener(){
 
@@ -251,11 +249,13 @@ public class PermissionActivity extends AppCompatActivity
                                     Toast.LENGTH_SHORT).show();
                         }
 
-                        startActivity(new Intent(PermissionActivity.this, MainActivity.class));
+                        setDefaultFolder();
+
                         SharedPreferencesService.getInstance().setPrefData(IS_SETTING, true);
                         SharedPreferencesService.getInstance().setPrefIntData(PROP_IMG, R.drawable.prop_img);
                         SharedPreferencesService.getInstance().setPrefIntData(RADIUS, 1000);
 
+                        startActivity(new Intent(PermissionActivity.this, MainActivity.class));
                         finish();
                     }
                 });

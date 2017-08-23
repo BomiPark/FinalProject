@@ -42,7 +42,7 @@ public class GeofenceService extends IntentService {
         super(name);
     }
 
-    private String getGeofenceTransitionDetails( // 이벤트 발생 상태 하나의 문자열로 변환
+    private String getGeofenceTransitionDetails(
                                                  List<Geofence> triggeringGeofences) { //발생된 지오펜스
 
         ArrayList<String> triggeringGeofencesIdsList = new ArrayList<>();
@@ -51,36 +51,32 @@ public class GeofenceService extends IntentService {
 
             realm= RealmHelper.getInstance(getApplicationContext());
 
-            if(realm.where(TodoItem.class).equalTo("id", Integer.parseInt(geofence.getRequestId())).equalTo("isCompleted", false).findAll() != null)
+            if(realm.where(TodoItem.class).equalTo("id", Integer.parseInt(geofence.getRequestId())).equalTo("isCompleted", false).findFirst() != null)
                 return geofence.getRequestId();
         }
 
-        return triggeringGeofencesIdsList.get(0);
+        return triggeringGeofencesIdsList.get(triggeringGeofences.size()-1);
     }
 
     @Override
     protected void onHandleIntent(@Nullable Intent intent) {
         GeofencingEvent geofencingEvent = GeofencingEvent.fromIntent(intent);
 
-        int geofenceTransition = geofencingEvent.getGeofenceTransition(); // 전환 타입을 얻는다.
+        List<Geofence> triggeringGeofences = geofencingEvent.getTriggeringGeofences(); // 이벤트 발생한 지오펜스 획득. 하나의 이벤트가 여러개의 지오펜스와 관련되어있을 수도 있다
 
-        if (geofenceTransition == Geofence.GEOFENCE_TRANSITION_ENTER ) {
+        String geofenceTransitionDetails = getGeofenceTransitionDetails(triggeringGeofences); // 상태 하나의 문자열로 변환
 
-            List<Geofence> triggeringGeofences = geofencingEvent.getTriggeringGeofences(); // 이벤트 발생한 지오펜스 획득. 하나의 이벤트가 여러개의 지오펜스와 관련되어있을 수도 있다
+        int position = Integer.parseInt(geofenceTransitionDetails);
 
-            String geofenceTransitionDetails = getGeofenceTransitionDetails(triggeringGeofences); // 상태 하나의 문자열로 변환
+        sendNotification(position);
 
-            int position = Integer.parseInt(geofenceTransitionDetails);
-
-            sendNotification(position);
-        }
     }
 
-    private void sendNotification(int notificationDetails) {
+    private void sendNotification(int position) {
 
         Intent notificationIntent = new Intent(getApplicationContext(), ItemDetailActivity.class);
 
-        notificationIntent.putExtra("id", notificationDetails);
+        notificationIntent.putExtra("id", position);
 
         TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
 
@@ -94,10 +90,10 @@ public class GeofenceService extends IntentService {
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this);
 
         String todo = null;
-        if( realm.where(TodoItem.class).equalTo("id", notificationDetails).findFirst() != null ) {
-            todo = " '" + realm.where(TodoItem.class).equalTo("id", notificationDetails).findFirst().getTodo() + "'를 수행할 장소입니다. ";
+        if( realm.where(TodoItem.class).equalTo("id", position).findFirst() != null ) {
+            todo = " '" + realm.where(TodoItem.class).equalTo("id", position).findFirst().getTodo() + "'를 수행할 장소입니다. ";
 
-            Log.e("GeofenceService", "알람내용 = " + todo);
+            Log.e(TAG, "알람내용 = " + todo);
 
             RemoteViews customView = new RemoteViews((getApplicationContext()).getPackageName(), R.layout.item_notification);
             customView.setTextViewText(R.id.noti_text, todo);
@@ -116,8 +112,9 @@ public class GeofenceService extends IntentService {
                     (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
             SharedPreferencesService.getInstance().load(getApplicationContext());
+
             boolean isAlarm = SharedPreferencesService.getInstance().getPrefBooleanData(IS_ALARM);
-            if(isAlarm )
+            if(isAlarm)
                 mNotificationManager.notify(0, builder.build());
         }
     }

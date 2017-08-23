@@ -24,10 +24,12 @@ import project.boostcamp.final_project.Model.Constant;
 import project.boostcamp.final_project.Model.TodoItem;
 
 import static android.content.ContentValues.TAG;
+import static project.boostcamp.final_project.Util.SharedPreferencesService.RADIUS;
 
 public class GeofencingService extends Service{
 
     private final IBinder binder = new GeoBinder();
+    private int radius =  Constant.GEOFENCE_RADIUS_IN_METERS;
 
     private RealmResults<TodoItem> itemList;
     private Realm realm;
@@ -54,14 +56,14 @@ public class GeofencingService extends Service{
 
     @SuppressWarnings("MissingPermission")
     public void setRadius(int radius){
-        setGeofenceList(radius);
+        setGeofenceList();
         mGeofencingClient.addGeofences(getGeofencingRequest(), getGeofencePendingIntent());
     }
 
     @SuppressWarnings("MissingPermission")
     private void addGeofences() { //사용자가 요청을 허락한 경우에만 사용 가능해서 퍼미션 요구함
 
-        setGeofenceList(0);
+        setGeofenceList();
         mGeofencingClient.addGeofences(getGeofencingRequest(), getGeofencePendingIntent());
 
     }
@@ -99,53 +101,38 @@ public class GeofencingService extends Service{
     @Override
     public IBinder onBind(Intent intent) { // 초기화 여기에서 할래
 
+        realm = RealmHelper.getInstance(getApplicationContext());
+
         mGeofenceList = new ArrayList<>(); // 리스트 초기화
         mGeofencePendingIntent = null; //
 
-        realm = RealmHelper.getInstance(getApplicationContext());
-        setGeofenceList(0);
+        setGeofenceList();
         mGeofencingClient = LocationServices.getGeofencingClient(this);
 
         return binder;
     }
 
-    void setGeofenceList(int radius) throws IllegalArgumentException { // 지오펜스 리스트 설정
+    void setGeofenceList() throws IllegalArgumentException { // 지오펜스 리스트 설정
 
         itemList = realm.where(TodoItem.class).equalTo("isCompleted", false).equalTo("alarm", true).findAll();
+        radius = SharedPreferencesService.getInstance().getPrefIntData(RADIUS);
 
         Log.e("geofencing 아이템 갯수 ", itemList.size() + "");
 
-        if (radius == 0) {
-            for (TodoItem item : itemList) {
+        for (TodoItem item : itemList) {
 
-                mGeofenceList.add(new Geofence.Builder()
-                        .setRequestId(item.getId() + "") //지오펜스 구분하기 위한 키값 설정
-                        .setCircularRegion( // 지오펜스 근처에 영역 지정
-                                item.getLatitude(),
-                                item.getLongitude(),
-                                Constant.GEOFENCE_RADIUS_IN_METERS
-                        )
-                        .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER)
-                        .setExpirationDuration(Geofence.NEVER_EXPIRE)
-                        .build()); //지오펜스 생성
-            }
+            mGeofenceList.add(new Geofence.Builder()
+                    .setRequestId(item.getId() + "") //지오펜스 구분하기 위한 키값 설정
+                    .setCircularRegion( // 지오펜스 근처에 영역 지정
+                            item.getLatitude(),
+                            item.getLongitude(),
+                            radius
+                    )
+                    .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER)
+                    .setExpirationDuration(Geofence.NEVER_EXPIRE)
+                    .build()); //지오펜스 생성
         }
 
-        else {
-            for (TodoItem item : itemList) {
-
-                mGeofenceList.add(new Geofence.Builder()
-                        .setRequestId(item.getId() + "") //지오펜스 구분하기 위한 키값 설정
-                        .setCircularRegion( // 지오펜스 근처에 영역 지정
-                                item.getLatitude(),
-                                item.getLongitude(),
-                                radius  //todo shared 에서 받아오는 것 고려
-                        )
-                        .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER)
-                        .setExpirationDuration(Geofence.NEVER_EXPIRE)
-                        .build()); //지오펜스 생성
-            }
-        }
     }
 
 

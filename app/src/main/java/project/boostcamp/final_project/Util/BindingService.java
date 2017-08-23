@@ -71,7 +71,6 @@ public class BindingService {
 
             geofencingService = null;
             geoBinder = null;
-            //SharedPreferencesService.getInstance().setPrefData(IS_BOUND, false);
         }
     };
 

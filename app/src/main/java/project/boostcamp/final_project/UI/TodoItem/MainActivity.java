@@ -117,7 +117,6 @@ public class MainActivity extends AppCompatActivity
         setProfile();
         updateData();
 
-       // BindingService.getInstance(getApplicationContext()).startService(); // todo 수정
     }
 
     void init(){
@@ -155,7 +154,6 @@ public class MainActivity extends AppCompatActivity
 
         spinnerAdapter = new ArrayAdapter<>(
                 this, android.R.layout.simple_list_item_1, spinnerList);
-
 
         spinner.setAdapter(spinnerAdapter);
 
@@ -215,20 +213,21 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onLongClick(View view, final int position) {
                 removeItemDialogBox(position);
-                todoItemAdapter.notifyDataSetChanged();
             }
         }, new TodoCheckClickListener() {
             @Override
             public void onClick(final int position) {
 
-                realm.beginTransaction();
+                realm.executeTransaction(new Realm.Transaction() {
+                    @Override
+                    public void execute(Realm realm) {
+                        todo = realm.where(TodoItem.class).equalTo("id", itemList.get(position).getId()).findFirst();
+                        todo.setCompleted(!todo.isCompleted());
+                        todoItemAdapter.notifyDataSetChanged();
+//                BindingService.getInstance(getApplicationContext()).upDateService(); todo
 
-                todo = realm.where(TodoItem.class).equalTo("id", itemList.get(position).getId()).findFirst();
-                todo.setCompleted(!todo.isCompleted());
-
-                realm.commitTransaction();
-
-                todoItemAdapter.notifyDataSetChanged();
+                    }
+                });
             }
         });
         recyclerView.setAdapter(todoItemAdapter);
@@ -251,10 +250,10 @@ public class MainActivity extends AppCompatActivity
             public void execute(Realm realm) {
                 itemList = null;
                 itemList = realm.where(TodoItem.class).findAll().sort("id");
-                todoItemAdapter.notifyDataSetChanged();
             }
         });
 
+        todoItemAdapter.notifyDataSetChanged();
     }
 
     @Override
@@ -302,7 +301,7 @@ public class MainActivity extends AppCompatActivity
                             }
                         });
                         todoItemAdapter.notifyDataSetChanged();
-                            BindingService.getInstance(getApplicationContext()).upDateService();
+                        BindingService.getInstance(getApplicationContext()).upDateService();
                     }
                 })
                 .setNegativeButton(getString(R.string.cancel),

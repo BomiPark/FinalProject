@@ -18,15 +18,15 @@
     </FrameLayout>
 
     <TextView
-        android:text="@string/todo"
-        android:textColor="@color/click_back"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="25dp"
         android:id="@+id/new_wish_list"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginTop="25dp"
+        android:gravity="center"
+        android:text="@string/wish"
+        android:textColor="@color/click_back"
         android:textSize="20sp"
-        android:textStyle="bold"
-        android:gravity="center"/>
+        android:textStyle="bold" />
 
     <LinearLayout
         android:layout_width="match_parent"
