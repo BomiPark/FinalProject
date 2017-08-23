@@ -52,7 +52,7 @@
             android:orientation="horizontal">
 
             <ImageView
-                android:layout_width="21dp"
+                android:layout_width="19dp"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="41dp"
                 android:layout_marginRight="41dp"

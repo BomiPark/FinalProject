@@ -1,6 +1,7 @@
 package project.boostcamp.final_project.UI.Setting;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -44,7 +45,7 @@ import static project.boostcamp.final_project.Util.SharedPreferencesService.RADI
 
 public class SettingActivity extends AppCompatActivity {
 
-    private Button on, off;
+    private Button on, off, btn_license;
     private ImageView back, ok;
     private Switch swich;
     private SeekBar radiusBar;
@@ -126,6 +127,9 @@ public class SettingActivity extends AppCompatActivity {
                 case R.id.back :
                     saveStatus();
                     finish();
+                    break;
+                case R.id.btn_license :
+                    startActivity(new Intent(SettingActivity.this, LicenseActivity.class));
                     break;
             }
         }
@@ -296,11 +300,13 @@ public class SettingActivity extends AppCompatActivity {
 
         on = (Button)findViewById(R.id.on);
         off = (Button)findViewById(R.id.off);
+        btn_license = (Button)findViewById(R.id.btn_license);
         back=(ImageView)findViewById(R.id.back);
         ok = (ImageView)findViewById(R.id.ok);
         ok.setOnClickListener(clickListener);
         on.setOnClickListener(clickListener);
         off.setOnClickListener(clickListener);
+        btn_license.setOnClickListener(clickListener);
         back.setOnClickListener(new ImageView.OnClickListener(){
             @Override
             public void onClick(View v) {

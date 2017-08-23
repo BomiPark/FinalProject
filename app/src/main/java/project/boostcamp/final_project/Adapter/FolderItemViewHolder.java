@@ -13,7 +13,7 @@ import project.boostcamp.final_project.R;
 
 public class FolderItemViewHolder extends RecyclerView.ViewHolder {
 
-    TextView folder;
+    private TextView folder;
 
     public FolderItemViewHolder(View view){
         super(view);

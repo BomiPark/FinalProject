@@ -55,12 +55,6 @@ public class GeofencingService extends Service{
     }
 
     @SuppressWarnings("MissingPermission")
-    public void setRadius(int radius){
-        setGeofenceList();
-        mGeofencingClient.addGeofences(getGeofencingRequest(), getGeofencePendingIntent());
-    }
-
-    @SuppressWarnings("MissingPermission")
     private void addGeofences() { //사용자가 요청을 허락한 경우에만 사용 가능해서 퍼미션 요구함
 
         setGeofenceList();
@@ -83,8 +77,6 @@ public class GeofencingService extends Service{
     }
 
     protected void unregisterFence(final String fenceKey) {
-
-
 
     }
 

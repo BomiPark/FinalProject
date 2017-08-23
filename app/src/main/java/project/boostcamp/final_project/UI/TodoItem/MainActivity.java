@@ -53,7 +53,7 @@ import static project.boostcamp.final_project.Util.SharedPreferencesService.PROP
 import static project.boostcamp.final_project.Util.SharedPreferencesService.PROP_NAME;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, AdapterView.OnItemSelectedListener{
+        implements NavigationView.OnNavigationItemSelectedListener, AdapterView.OnItemSelectedListener {
 
     private RealmResults<TodoItem> itemList;
     private RealmResults<FolderItem> folderList;
@@ -89,7 +89,7 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(MainActivity.this, NewItemActivity.class);
-                intent.putExtra("id",-1);
+                intent.putExtra("id", -1);
                 startActivity(intent);
             }
         });
@@ -112,22 +112,22 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    public void onResume(){
+    public void onResume() {
         super.onResume();
         setProfile();
         updateData();
 
     }
 
-    void init(){
+    void init() {
 
         initData();
         dialog = new AlertDialog.Builder(MainActivity.this);
         drawer_list = (RecyclerView) findViewById(R.id.drawer_list);
-        nav_name = (TextView)findViewById(R.id.nav_name);
-        nav_img = (ImageView)findViewById(R.id.nav_img);
-        writeIcon = (ImageView)findViewById(R.id.writeIcon);
-        spinner = (Spinner)findViewById(R.id.main_spinner);
+        nav_name = (TextView) findViewById(R.id.nav_name);
+        nav_img = (ImageView) findViewById(R.id.nav_img);
+        writeIcon = (ImageView) findViewById(R.id.writeIcon);
+        spinner = (Spinner) findViewById(R.id.main_spinner);
 
         writeIcon.setOnClickListener(clickListener);
         nav_name.setOnClickListener(clickListener);
@@ -142,13 +142,13 @@ public class MainActivity extends AppCompatActivity
         setTodoItemList();
     }
 
-    void setSpinner(){
+    void setSpinner() {
 
         spinner.setOnItemSelectedListener(this);
 
-        spinnerList =  FolderItem.getFolderList(realm.where(FolderItem.class).findAll().sort("id"));
+        spinnerList = FolderItem.getFolderList(realm.where(FolderItem.class).findAll().sort("id"));
 
-        spinnerList.add(0,getResources().getString(R.string.all));
+        spinnerList.add(0, getResources().getString(R.string.all));
         spinnerList.add(getResources().getString(R.string.completed_no));
         spinnerList.add(getResources().getString(R.string.completed_ok));
 
@@ -159,7 +159,7 @@ public class MainActivity extends AppCompatActivity
 
     }
 
-    void setFolderItemList(){
+    void setFolderItemList() {
         folderItemAdapter = new FolderItemAdapter(this, folderList, R.layout.item_folder);
         drawer_list.setAdapter(folderItemAdapter);
         drawer_list.setLayoutManager(new LinearLayoutManager(this));
@@ -176,7 +176,7 @@ public class MainActivity extends AppCompatActivity
                     itemList = realm.where(TodoItem.class).equalTo("folder", spinnerList.get(position)).findAll().sort("id");
                 }
 
-                spinner.setSelection(position+1);
+                spinner.setSelection(position + 1);
                 setTodoItemList();
             }
 
@@ -189,19 +189,19 @@ public class MainActivity extends AppCompatActivity
 
     }
 
-    void setProfile(){
+    void setProfile() {
 
         SharedPreferencesService.getInstance().load(getApplicationContext());
 
         int prop_img = SharedPreferencesService.getInstance().getPrefIntData(PROP_IMG);
-            nav_img.setImageResource(prop_img);
+        nav_img.setImageResource(prop_img);
         String prop_name = SharedPreferencesService.getInstance().getPrefStringData(PROP_NAME);
-        if(prop_name != null)
+        if (prop_name != null)
             nav_name.setText(prop_name);
     }
 
-    void setTodoItemList(){
-        recyclerView = (RecyclerView)findViewById(R.id.recyclerView);
+    void setTodoItemList() {
+        recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
         todoItemAdapter = new TodoItemAdapter(this, itemList, R.layout.item_todo, new TodoMainClickListener() {
             @Override
             public void onItemClick(View view, final int position) {
@@ -224,17 +224,17 @@ public class MainActivity extends AppCompatActivity
                         todo = realm.where(TodoItem.class).equalTo("id", itemList.get(position).getId()).findFirst();
                         todo.setCompleted(!todo.isCompleted());
                         todoItemAdapter.notifyDataSetChanged();
-//                BindingService.getInstance(getApplicationContext()).upDateService(); todo
-
                     }
                 });
+                if(!todo.isCompleted())
+                    BindingService.getInstance(getApplicationContext()).upDateService();
             }
         });
         recyclerView.setAdapter(todoItemAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
 
-    void initData(){
+    void initData() {
 
         realm = RealmHelper.getInstance(this);
 
@@ -243,7 +243,7 @@ public class MainActivity extends AppCompatActivity
 
     }
 
-    void updateData(){
+    void updateData() {
 
         realm.executeTransaction(new Realm.Transaction() {
             @Override
@@ -286,9 +286,9 @@ public class MainActivity extends AppCompatActivity
         return super.onOptionsItemSelected(item);
     }
 
-    void removeItemDialogBox(final int position){
+    void removeItemDialogBox(final int position) {
         dialog = new AlertDialog.Builder(MainActivity.this);
-        dialog.setTitle(R.string.dialog_title).setMessage( " \n'" +itemList.get(position).getTodo() + "' 를 삭제하시겠습니까")
+        dialog.setTitle(R.string.dialog_title).setMessage(" \n'" + itemList.get(position).getTodo() + "' 를 삭제하시겠습니까")
                 .setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -315,9 +315,9 @@ public class MainActivity extends AppCompatActivity
         dialogCreate.show();
     }
 
-    void removeFolderDialogBox(final int position){
+    void removeFolderDialogBox(final int position) {
         dialog = new AlertDialog.Builder(MainActivity.this);
-        dialog.setTitle(R.string.dialog_folder).setMessage( " \n'" +folderList.get(position).getFolder() + "' 를 삭제하시겠습니까")
+        dialog.setTitle(R.string.dialog_folder).setMessage(" \n'" + folderList.get(position).getFolder() + "' 를 삭제하시겠습니까")
                 .setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -383,9 +383,9 @@ public class MainActivity extends AppCompatActivity
 
     }
 
-    void saveFolder(String folderName){
+    void saveFolder(String folderName) {
 
-        if(!RealmHelper.isSmameName(folderName)) {
+        if (!RealmHelper.isSmameName(folderName)) {
 
             realm.beginTransaction();
             folder.setId(RealmHelper.getNextFolderId());
@@ -399,18 +399,17 @@ public class MainActivity extends AppCompatActivity
 
             Toast.makeText(getApplicationContext(), R.string.saved, Toast.LENGTH_SHORT).show();
             setSpinner();
-        }
-        else{
+        } else {
             Toast.makeText(getApplicationContext(), getResources().getString(R.string.same_folder), Toast.LENGTH_SHORT).show();
         }
     }
 
-    View.OnClickListener clickListener = new ImageView.OnClickListener(){
+    View.OnClickListener clickListener = new ImageView.OnClickListener() {
 
         @Override
         public void onClick(View v) {
-            switch (v.getId()){
-                case R.id.writeIcon :
+            switch (v.getId()) {
+                case R.id.writeIcon:
                     OpenFolderDialogBox();
                     break;
                 default:
@@ -431,10 +430,10 @@ public class MainActivity extends AppCompatActivity
 
         if (position == 0)
             itemList = realm.where(TodoItem.class).findAll().sort("id");
-        else if(spinnerList.get(position).equals(getResources().getString(R.string.completed_no)))
-            itemList = realm.where(TodoItem.class).equalTo("isCompleted",false).findAll().sort("id");
-        else if(spinnerList.get(position).equals(getResources().getString(R.string.completed_ok)))
-            itemList = realm.where(TodoItem.class).equalTo("isCompleted",true).findAll().sort("id");
+        else if (spinnerList.get(position).equals(getResources().getString(R.string.completed_no)))
+            itemList = realm.where(TodoItem.class).equalTo("isCompleted", false).findAll().sort("id");
+        else if (spinnerList.get(position).equals(getResources().getString(R.string.completed_ok)))
+            itemList = realm.where(TodoItem.class).equalTo("isCompleted", true).findAll().sort("id");
         else {
             itemList = realm.where(TodoItem.class).equalTo("folder", spinnerList.get(position)).findAll().sort("id");
         }

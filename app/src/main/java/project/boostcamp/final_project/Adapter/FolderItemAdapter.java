@@ -14,10 +14,11 @@ import project.boostcamp.final_project.Model.FolderItem;
 
 public class FolderItemAdapter extends RecyclerView.Adapter<FolderItemViewHolder> {
 
-    Context context;
-    int item_layout;
-    List<FolderItem> list = new ArrayList<>();
-    FolderItemViewHolder viewHolder;
+    private Context context;
+    private int item_layout;
+    private View view;
+    private List<FolderItem> list = new ArrayList<>();
+    private FolderItemViewHolder viewHolder;
 
     public FolderItemAdapter(Context context, RealmResults<FolderItem> list, int item_layout){
         this.context = context;
@@ -25,16 +26,8 @@ public class FolderItemAdapter extends RecyclerView.Adapter<FolderItemViewHolder
         this.item_layout = item_layout;
     }
 
-    public FolderItemAdapter(Context context, List<FolderItem> list, int item_layout){
-        this.context = context;
-        this.list = list;
-        this.item_layout = item_layout;
-    }
-
     @Override
     public FolderItemViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-
-        View view;
 
         view = LayoutInflater.from(parent.getContext()).inflate(item_layout, parent, false);
         viewHolder = new FolderItemViewHolder(view);

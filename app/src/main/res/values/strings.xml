@@ -50,6 +50,7 @@
     <string name="move_marker">마커를 움직여 위치를 조정해주세요</string>
     <string name="backup_short">backup</string>
     <string name="restore_short">restore</string>
+    <string name="license">license</string>
 
     <!-- 퍼미션 관련 -->
     <string name="permission_rationale">어플리케이션 기능 상 위치 정보 접근이 필요합니다.</string>

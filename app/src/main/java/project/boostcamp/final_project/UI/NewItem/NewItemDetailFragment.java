@@ -166,7 +166,7 @@ public class NewItemDetailFragment extends Fragment {
             imm.hideSoftInputFromWindow(todo.getWindowToken(), 0);
             return true;
         }
-        if (folder.getText().toString().equals("폴더선택")) {
+        if (folder.getText().toString().equals(getResources().getString(R.string.select_folder))) {
             realm.beginTransaction();
             item.setFolder(getResources().getString(R.string.folder_default0));
             realm.commitTransaction();
@@ -181,7 +181,7 @@ public class NewItemDetailFragment extends Fragment {
 
         item.setTodo(todo.getText().toString());
         item.setAlarm(isAlarm);
-        if(!folder.getText().toString().equals("폴더선택"))
+        if(!folder.getText().toString().equals(getResources().getString(R.string.select_folder)))
             item.setFolder(folder.getText().toString());
         else
             item.setFolder("기본 폴더");
@@ -193,7 +193,7 @@ public class NewItemDetailFragment extends Fragment {
 
         todo.setText(item.getTodo());
         if(item.getFolder() == null)
-            folder.setText("폴더 선택");
+            folder.setText(getResources().getString(R.string.select_folder));
         else
             folder.setText(item.getFolder());
         setBtnColor(status);
@@ -208,27 +208,27 @@ public class NewItemDetailFragment extends Fragment {
     void setBtnColor(int id){
         switch(id){
             case R.id.to_map :
-                toMap.setTextColor(Color.parseColor("#E35757")); // 체크된 상태
-                toSearch.setTextColor(Color.parseColor("#767676"));
+                toMap.setTextColor(getResources().getColor(R.color.click_back)); // 체크된 상태
+                toSearch.setTextColor(getResources().getColor(R.color.gray));
                 break;
             case R.id.to_search :
-                toMap.setTextColor(Color.parseColor("#767676")); // 체크
-                toSearch.setTextColor(Color.parseColor("#E35757"));
+                toMap.setTextColor(getResources().getColor(R.color.gray));
+                toSearch.setTextColor(getResources().getColor(R.color.click_back));
                 break;
             case R.id.on :
-                on.setTextColor(Color.parseColor("#E35757"));
-                off.setTextColor(Color.parseColor("#767676"));
+                on.setTextColor(getResources().getColor(R.color.click_back));
+                off.setTextColor(getResources().getColor(R.color.gray));
                 break;
             case R.id.off :
-                on.setTextColor(Color.parseColor("#767676"));
-                off.setTextColor(Color.parseColor("#E35757"));
+                on.setTextColor(getResources().getColor(R.color.gray));
+                off.setTextColor(getResources().getColor(R.color.click_back));
 
         }
     }
 
     void getDialog(){
         new MaterialDialog.Builder(getActivity())
-                .title("폴더선택")
+                .title(getResources().getString(R.string.select_folder))
                 .items(folderList)
                 .itemsCallbackSingleChoice(0, new MaterialDialog.ListCallbackSingleChoice() {
                     @Override
@@ -240,7 +240,7 @@ public class NewItemDetailFragment extends Fragment {
                         return true;
                     }
                 })
-                .positiveText("확인")
+                .positiveText(getResources().getString(R.string.ok))
                 .show();
     }
 
