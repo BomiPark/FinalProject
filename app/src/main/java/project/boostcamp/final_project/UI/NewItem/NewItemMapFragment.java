@@ -1,6 +1,7 @@
 package project.boostcamp.final_project.UI.NewItem;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.location.Address;
 import android.location.Geocoder;
 import android.os.Bundle;
@@ -22,6 +23,7 @@ import com.google.android.gms.location.places.ui.PlaceSelectionListener;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
@@ -37,6 +39,8 @@ import project.boostcamp.final_project.Model.Constant;
 import project.boostcamp.final_project.Model.TodoItem;
 import project.boostcamp.final_project.R;
 import project.boostcamp.final_project.Util.LocationService;
+
+import static com.google.android.gms.maps.model.BitmapDescriptorFactory.fromResource;
 
 public class NewItemMapFragment extends Fragment {
 
@@ -129,7 +133,8 @@ public class NewItemMapFragment extends Fragment {
             changedLatLng = baseLatlng; // 초기화
 
             options = new MarkerOptions();
-            options.icon(BitmapDescriptorFactory.fromResource(R.drawable.marker_current)); // 마커 위치
+
+            options.icon(BitmapDescriptorFactory.fromResource(R.drawable.marker_current)); // 마커 위치 todo 글씨 안보이는 것 처리
             options.position(baseLatlng);
             options.draggable(true);
             marker = googleMap.addMarker(options);
@@ -154,7 +159,7 @@ public class NewItemMapFragment extends Fragment {
 
             changedLatLng = marker.getPosition();
 
-            options.icon(BitmapDescriptorFactory.fromResource(R.drawable.marker_select)); // 마커 위치
+            options.icon(fromResource(R.drawable.marker_select)); // 마커 위치
             options.position(changedLatLng);
             googleMap.addMarker(options);
 
@@ -196,7 +201,7 @@ public class NewItemMapFragment extends Fragment {
 
             marker.remove();
             options.position(latLng);
-            options.icon(BitmapDescriptorFactory.fromResource(R.drawable.marker_select));
+            options.icon(fromResource(R.drawable.marker_select));
             marker = googleMap.addMarker(options);
 
             changedLatLng = latLng;}

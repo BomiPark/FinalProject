@@ -49,7 +49,7 @@ import static project.boostcamp.final_project.Util.SharedPreferencesService.IS_S
 import static project.boostcamp.final_project.Util.SharedPreferencesService.PROP_IMG;
 import static project.boostcamp.final_project.Util.SharedPreferencesService.RADIUS;
 
-public class PermissionActivity extends AppCompatActivity
+public class PermissionActivity extends BaseActivity
         implements GoogleApiClient.OnConnectionFailedListener {
 
     private static final int REQUEST_PERMISSIONS_REQUEST_CODE = 34;
@@ -95,6 +95,10 @@ public class PermissionActivity extends AppCompatActivity
                 .enableAutoManage(this, this)
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                 .build();
+
+        SharedPreferencesService.getInstance().setPrefData(IS_SETTING, true); //shared 세팅
+        SharedPreferencesService.getInstance().setPrefIntData(PROP_IMG, R.drawable.prop_img);
+        SharedPreferencesService.getInstance().setPrefIntData(RADIUS, 1000);
     }
 
     View.OnClickListener clickListener = new View.OnClickListener(){
@@ -250,10 +254,6 @@ public class PermissionActivity extends AppCompatActivity
                         }
 
                         setDefaultFolder();
-
-                        SharedPreferencesService.getInstance().setPrefData(IS_SETTING, true);
-                        SharedPreferencesService.getInstance().setPrefIntData(PROP_IMG, R.drawable.prop_img);
-                        SharedPreferencesService.getInstance().setPrefIntData(RADIUS, 1000);
 
                         startActivity(new Intent(PermissionActivity.this, MainActivity.class));
                         finish();

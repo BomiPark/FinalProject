@@ -1,9 +1,12 @@
 package project.boostcamp.final_project.UI.Setting;
 
+import android.content.Context;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -16,7 +19,7 @@ import project.boostcamp.final_project.Util.SharedPreferencesService;
 import static project.boostcamp.final_project.Util.SharedPreferencesService.PROP_IMG;
 import static project.boostcamp.final_project.Util.SharedPreferencesService.PROP_NAME;
 
-public class ProfileActivity extends AppCompatActivity {
+public class ProfileActivity extends BaseActivity {
 
     ImageView prop_img, prop_img1, prop_img2, prop_img3, prop_img4, prop_img5;
     EditText prop_name;
@@ -102,6 +105,20 @@ public class ProfileActivity extends AppCompatActivity {
         prop_img5.setOnClickListener(clickListener);
 
         save_img = R.drawable.prop_img1;
+
+        prop_name.setOnKeyListener(keyListener);
+
     }
 
+    View.OnKeyListener keyListener = new View.OnKeyListener() {
+        @Override
+        public boolean onKey(View view, int keyCode, KeyEvent keyEvent) {
+            if ((keyEvent.getAction() == KeyEvent.ACTION_DOWN) && (keyCode == KeyEvent.KEYCODE_ENTER)) {
+                InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(prop_name.getWindowToken(), 0);
+                return true;
+            }
+            return false;
+        }
+    };
 }

@@ -117,7 +117,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:layout_marginTop="30dp">
+        android:layout_marginTop="25dp">
 
         <Button
             android:layout_width="90dp"
@@ -137,21 +137,29 @@
             android:textColor="@color/white"
             android:layout_marginStart="30dp"
             android:text="@string/restore_short"/>
-
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:layout_marginStart="60dp">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:textColor="@color/gray"
+            android:text="@string/license_name"/>
 
         <Button
+            android:id="@+id/btn_license"
+            style="@style/Widget.AppCompat.Button.Colored"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            style="@style/Widget.AppCompat.Button.Colored"
-            android:textColor="@color/white"
+            android:gravity="center"
+            android:layout_marginEnd="70dp"
             android:text="@string/license"
-            android:id="@+id/btn_license"
-            />
+            android:textColor="@color/white" />
     </LinearLayout>
-
 </LinearLayout>

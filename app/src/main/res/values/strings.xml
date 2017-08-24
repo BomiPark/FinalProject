@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Final-Project</string>
+    <string name="app_name">위시의 위치</string>
 
     <!--  xml에서 사용하는 string -->
     <string name="title">title</string>
@@ -25,7 +25,7 @@
     <string name="input_address">이동할 주소를 입력해주세요</string>
     <string name="radius">알림반경</string>
     <string name="meter">200M</string>
-    <string name="name">오리너구리</string>
+    <string name="name">너구리</string>
     <string name="dialog_title">Delete Item</string>
     <string name="dialog_folder">Delete Folder</string>
     <string name="ok">확인</string>
@@ -51,6 +51,7 @@
     <string name="backup_short">backup</string>
     <string name="restore_short">restore</string>
     <string name="license">license</string>
+    <string name="license_name">오픈소스 라이선스</string>
 
     <!-- 퍼미션 관련 -->
     <string name="permission_rationale">어플리케이션 기능 상 위치 정보 접근이 필요합니다.</string>

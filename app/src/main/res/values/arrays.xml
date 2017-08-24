@@ -11,6 +11,8 @@
         <item>Toasty</item>
         <item>Google APIs for Android</item>
         <item>Firebase</item>
+        <item>Typekit</item>
+        <item>Naver Font</item>
     </string-array>
 
     <string-array name="license_address">
@@ -24,6 +26,8 @@
         <item>https://github.com/GrenderG/Toasty</item>
         <item>https://developers.google.com/android/guides/setup</item>
         <item>https://firebase.google.com/?hl=ko</item>
+        <item>https://github.com/tsengvn/typekit</item>
+        <item>http://help.naver.com/ops/step2/faq.nhn?faqId=15879</item>
     </string-array>
 
     <string-array name="license_copyright">
@@ -37,5 +41,7 @@
         <item>Copyright (C) 2007 Free Software Foundation, Inc.</item>
         <item>Copyright 2014 Google, Inc.</item>
         <item>Apache 2.0 License</item>
+        <item>https://github.com/tsengvn/typekit</item>
+        <item>Copyright (c) 2010, NAVER Corporation</item>
     </string-array>
 </resources>

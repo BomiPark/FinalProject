@@ -130,7 +130,7 @@
                 android:layout_width="0dp"
                 android:layout_height="66dp"
                 android:layout_marginStart="14.8dp"
-                android:layout_marginRight="18dp"
+                android:layout_marginEnd="18dp"
                 android:layout_weight="0.9"
                 android:src="@drawable/prop_img5" />
         </LinearLayout>
@@ -141,6 +141,9 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginTop="30dp"
+            android:imeOptions="actionDone"
+            android:inputType="text"
+            android:maxLines="1"
             android:gravity="center"
             android:hint="@string/name_text" />
 

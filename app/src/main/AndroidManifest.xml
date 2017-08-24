@@ -11,6 +11,7 @@
         android:icon="@drawable/app_icon"
         android:label="위시의 위치"
         android:supportsRtl="true"
+        android:name=".Util.FontApplication"
         android:theme="@style/AppTheme">
         <meta-data
             android:name="com.google.android.geo.API_KEY"
@@ -28,7 +29,7 @@
         <activity android:name=".UI.Setting.LicenseActivity" />
         <activity
             android:name=".UI.TodoItem.MainActivity"
-            android:label=""
+            android:label="위시의위치"
             android:theme="@style/AppTheme" />
         <activity android:name=".UI.TodoItem.ItemDetailActivity" />
 

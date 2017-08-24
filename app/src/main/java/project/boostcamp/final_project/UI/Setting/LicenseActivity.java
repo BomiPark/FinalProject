@@ -1,27 +1,27 @@
 package project.boostcamp.final_project.UI.Setting;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
+import android.widget.ImageView;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 import project.boostcamp.final_project.Adapter.LicenseItemAdapter;
-import project.boostcamp.final_project.Adapter.LicenseItemViewHolder;
 import project.boostcamp.final_project.Model.LicenseItem;
 import project.boostcamp.final_project.R;
 
-import static project.boostcamp.final_project.R.array.license_title;
 
 public class LicenseActivity extends AppCompatActivity {
 
     private RecyclerView recyclerView;
     private List<LicenseItem> itemList = new ArrayList<>();
-    private LicenseItemViewHolder viewHolder;
     private LicenseItemAdapter recycler_adapter;
+    private ImageView btn_back;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +37,15 @@ public class LicenseActivity extends AppCompatActivity {
         recycler_adapter = new LicenseItemAdapter(this, getData(), R.layout.item_license);
         recyclerView.setAdapter(recycler_adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        findViewById(R.id.ok).setVisibility(View.GONE);
+        btn_back = (ImageView)findViewById(R.id.back);
+        btn_back.setOnClickListener(new ImageView.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
     }
 
     List<LicenseItem> getData(){

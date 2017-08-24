@@ -43,7 +43,7 @@ import static project.boostcamp.final_project.Util.SharedPreferencesService.EMAI
 import static project.boostcamp.final_project.Util.SharedPreferencesService.IS_ALARM;
 import static project.boostcamp.final_project.Util.SharedPreferencesService.RADIUS;
 
-public class SettingActivity extends AppCompatActivity {
+public class SettingActivity extends BaseActivity {
 
     private Button on, off, btn_license;
     private ImageView back, ok;

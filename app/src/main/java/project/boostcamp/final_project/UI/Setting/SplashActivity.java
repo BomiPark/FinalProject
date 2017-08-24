@@ -16,7 +16,7 @@ import static project.boostcamp.final_project.Util.SharedPreferencesService.IS_A
 import static project.boostcamp.final_project.Util.SharedPreferencesService.IS_BOUND;
 import static project.boostcamp.final_project.Util.SharedPreferencesService.IS_SETTING;
 
-public class SplashActivity extends AppCompatActivity {
+public class SplashActivity extends BaseActivity {
 
     public static BindingService bindingService;
     private Intent intent;
@@ -55,7 +55,7 @@ public class SplashActivity extends AppCompatActivity {
                 startActivity(intent);
                 finish();
             }
-        }, 3000);
+        }, 2000);
     }
 
     @Override

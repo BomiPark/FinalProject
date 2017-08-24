@@ -2,10 +2,6 @@ package project.boostcamp.final_project.Model;
 
 import com.google.gson.annotations.Expose;
 
-/**
- * Created by qkrqh on 2017-08-02.
- */
-
 public class SearchItem {
 
     private String title;

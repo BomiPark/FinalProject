@@ -18,12 +18,13 @@ import io.realm.Realm;
 import project.boostcamp.final_project.Model.TodoItem;
 import project.boostcamp.final_project.R;
 import project.boostcamp.final_project.UI.NewItem.NewItemActivity;
+import project.boostcamp.final_project.UI.Setting.BaseActivity;
 import project.boostcamp.final_project.Util.BindingService;
 import project.boostcamp.final_project.Util.RealmHelper;
 
 import static project.boostcamp.final_project.R.id.btn_completed;
 
-public class ItemDetailActivity extends AppCompatActivity {
+public class ItemDetailActivity extends BaseActivity {
 
     private Intent intent;
     private TodoItem item = new TodoItem();

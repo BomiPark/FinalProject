@@ -13,13 +13,14 @@ import project.boostcamp.final_project.Interface.FragmentChangeListener;
 import project.boostcamp.final_project.Model.Constant;
 import project.boostcamp.final_project.Model.TodoItem;
 import project.boostcamp.final_project.R;
+import project.boostcamp.final_project.UI.Setting.BaseActivity;
 import project.boostcamp.final_project.Util.BindingService;
 import project.boostcamp.final_project.Util.LocationService;
 import project.boostcamp.final_project.Util.RealmHelper;
 
 import static project.boostcamp.final_project.Model.Constant.SAVE;
 
-public class NewItemActivity extends AppCompatActivity implements FragmentChangeListener {
+public class NewItemActivity extends BaseActivity implements FragmentChangeListener {
 
     private FrameLayout container;
     private FragmentManager fragmentManager;
