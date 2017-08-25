@@ -65,6 +65,8 @@ public class ItemDetailActivity extends BaseActivity {
         ok.setOnClickListener(clickListener);
         btnCompleted.setOnClickListener(clickListener);
         ic_delete.setOnClickListener(clickListener);
+        TextView toolbar_label = (TextView)findViewById(R.id.toolbar_label);
+        toolbar_label.setText(getResources().getString(R.string.wish));
 
         intent = getIntent();
         dialog = new AlertDialog.Builder(ItemDetailActivity.this);

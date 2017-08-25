@@ -55,7 +55,7 @@ public class GeofenceService extends IntentService {
                 return geofence.getRequestId();
         }
 
-        return triggeringGeofencesIdsList.get(triggeringGeofences.size()-1);
+        return triggeringGeofencesIdsList.get(0);
     }
 
     @Override

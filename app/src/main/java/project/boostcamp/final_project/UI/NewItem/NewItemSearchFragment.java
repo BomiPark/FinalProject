@@ -18,6 +18,7 @@ import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -67,6 +68,8 @@ public class NewItemSearchFragment  extends Fragment {
         recyclerView = (RecyclerView)view.findViewById(R.id.search_list);
         back = (ImageView)view.findViewById(R.id.back);
         ok = (ImageView)view.findViewById(R.id.ok);
+        TextView toolbar_label = (TextView)view.findViewById(R.id.toolbar_label);
+        toolbar_label.setText(getResources().getString(R.string.label_new_activity));
         searchIcon.setOnClickListener(clickListener);
         back.setOnClickListener(clickListener);
         ok.setOnClickListener(clickListener);
@@ -152,7 +155,7 @@ public class NewItemSearchFragment  extends Fragment {
             imm.hideSoftInputFromWindow(editSearch.getWindowToken(), 0);    //hide keyboard
         }
         else
-            Toast.makeText(getActivity(), "검색어를 입력해주세요", Toast.LENGTH_LONG).show();
+            Toasty.info(getActivity(), "검색어를 입력해주세요", Toast.LENGTH_LONG).show();
     }
 
     void getSearchList(String query){

@@ -321,6 +321,9 @@ public class SettingActivity extends BaseActivity {
 
         setView();
 
+        TextView toolbar_label = (TextView)findViewById(R.id.toolbar_label);
+        toolbar_label.setText(getResources().getString(R.string.label_setting));
+
         realm = RealmHelper.getInstance(this);
         databaseRef = FirebaseDatabase.getInstance().getReference();
 

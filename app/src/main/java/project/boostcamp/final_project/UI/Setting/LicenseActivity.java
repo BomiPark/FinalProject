@@ -6,6 +6,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -39,6 +40,8 @@ public class LicenseActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         findViewById(R.id.ok).setVisibility(View.GONE);
+        TextView toolbar_label = (TextView)findViewById(R.id.toolbar_label);
+        toolbar_label.setText(getResources().getString(R.string.label_license));
         btn_back = (ImageView)findViewById(R.id.back);
         btn_back.setOnClickListener(new ImageView.OnClickListener() {
             @Override

@@ -38,7 +38,7 @@ public class NewItemDetailFragment extends Fragment {
 
     static View view;
     FragmentChangeListener listener;
-    private TextView subTitleText;
+    private TextView subTitleText, toolbar_label;
     private ImageView back, ok;
     private EditText todo;
     private Button folder, toSearch, toMap, on, off;
@@ -67,7 +67,8 @@ public class NewItemDetailFragment extends Fragment {
         on = (Button)view.findViewById(R.id.on);
         off = (Button)view.findViewById(R.id.off);
         folder = (Button)view.findViewById(R.id.folder);
-
+        toolbar_label = (TextView)view.findViewById(R.id.toolbar_label);
+        toolbar_label.setText(getResources().getString(R.string.label_new_activity));
         initData();
 
         toSearch.setOnClickListener(clickListener); // 클릭리스너 연결
@@ -99,6 +100,7 @@ public class NewItemDetailFragment extends Fragment {
             if(listener.getCurrentItem().getTodo()!= null){ // 이전에 저장한 아이템 수정하는 경우
                 this.item = listener.getCurrentItem();
                 subTitleText.setText(getResources().getString(R.string.sub_title));
+                toolbar_label.setText("MODIFY WISH");
                 setView();
             }
             else
