@@ -14,6 +14,8 @@ public interface FragmentChangeListener {
 
     int setStatus(int now);
 
+    int getStatus();
+
     TodoItem getCurrentItem();
 
     LatLng getCurrentLocation();

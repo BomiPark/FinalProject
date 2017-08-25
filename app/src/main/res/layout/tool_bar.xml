@@ -5,49 +5,7 @@
     android:background="@color/white"
     android:layout_height="47dp">
 
-    <ImageView
-        android:id="@+id/back"
-        android:layout_width="43dp"
-        android:layout_height="43dp"
-        android:padding="7dp"
-        android:layout_marginStart="7dp"
-        android:layout_alignParentStart="true"
-        android:layout_centerVertical="true"
-        android:src="@drawable/ic_back" />
 
-    <ImageView
-        android:id="@+id/ok"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:padding="10dp"
-        android:layout_marginEnd="10dp"
-        android:layout_alignParentEnd="true"
-        android:layout_centerVertical="true"
-        android:src="@drawable/selector_check" />
-
-    <ImageView
-        android:layout_alignParentEnd="true"
-        android:layout_width="40dp"
-        android:layout_marginEnd="8dp"
-        android:padding="7dp"
-        android:layout_centerVertical="true"
-        android:layout_height="40dp"
-        android:visibility="invisible"
-        android:id="@+id/to_update"
-        android:src="@drawable/ic_edit"
-        android:onClick="onClick"/>
-
-    <ImageView
-        android:id="@+id/ic_delete"
-        android:layout_width="39dp"
-        android:layout_height="39dp"
-        android:layout_marginTop="3dp"
-        android:layout_marginEnd="2dp"
-        android:layout_alignBottom="@+id/ok"
-        android:padding="6dp"
-        android:visibility="invisible"
-        android:layout_toStartOf="@+id/to_update"
-        android:src="@drawable/ic_delete"/>
 
     <TextView
         android:id="@+id/toolbar_label"

@@ -6,6 +6,8 @@ import android.location.Address;
 import android.location.Geocoder;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.InflateException;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -47,7 +49,7 @@ public class NewItemMapFragment extends Fragment {
 
     private static View view;
     private GoogleMap googleMap;
-    private ImageView back, ok, toSearch;
+    private ImageView ok;
     private Geocoder geoCoder;
     private PlaceAutocompleteFragment autocompleteFragment;
 
@@ -90,12 +92,16 @@ public class NewItemMapFragment extends Fragment {
         com.google.android.gms.maps.MapFragment mapFragment = (com.google.android.gms.maps.MapFragment) getActivity().getFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(mapReadyCallback);
 
-        back = (ImageView)view.findViewById(R.id.back);
         ok = (ImageView)view.findViewById(R.id.ok);
         changedLatLng = new LatLng(0,0);
 
-        back.setOnClickListener(clickListener);
         ok.setOnClickListener(clickListener);
+
+        Toolbar toolbar = (Toolbar) view.findViewById(R.id.toolbar);
+        toolbar.setTitleTextColor(getResources().getColor(R.color.gray));
+        ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
+        ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayShowTitleEnabled(false);
+        ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         return view;
     }
@@ -107,6 +113,12 @@ public class NewItemMapFragment extends Fragment {
         listener = (FragmentChangeListener) context;
         listener.setStatus(Constant.MAP);
 
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        listener.setStatus(Constant.DETAIL);
     }
 
     @Override
@@ -173,9 +185,6 @@ public class NewItemMapFragment extends Fragment {
         @Override
         public void onClick(View view) {
             switch (view.getId()){
-                case R.id.back: // pop
-                    listener.changeFragment(Constant.MAP, Constant.DETAIL, null);
-                    break;
                 case R.id.ok : // 마커 현재 위도 경도 가지고 주소 받아서 돌아가기
                     item.setLatitude(changedLatLng.latitude);
                     item.setLongitude(changedLatLng.longitude);

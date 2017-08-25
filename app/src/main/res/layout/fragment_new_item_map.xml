@@ -1,48 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <LinearLayout
+    <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
-        android:background="@color/white"
-        android:orientation="horizontal"
-        android:layout_height="47dp"> <!-- 구성이 달라서 따로 생성 -->
+        android:layout_height="wrap_content"
+        android:theme="@style/AppTheme.AppBarOverlay">
 
-        <ImageView
-            android:id="@+id/back"
-            android:layout_width="43dp"
-            android:layout_height="43dp"
-            android:padding="7dp"
-            android:layout_marginStart="7dp"
-            android:src="@drawable/ic_back" />
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="49dp"
+            android:background="@color/white"
+            app:popupTheme="@style/AppTheme.PopupOverlay">
 
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:orientation="horizontal">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingLeft="-10dp">
 
             <fragment
                 android:id="@+id/place_autocomplete_fragment"
+                android:name="com.google.android.gms.location.places.ui.PlaceAutocompleteFragment"
                 android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+            </LinearLayout>
+
+
+            <ImageView
+                android:id="@+id/ok"
+                android:layout_width="40dp"
                 android:layout_height="match_parent"
-                android:layout_gravity="center"
-                android:name="com.google.android.gms.location.places.ui.PlaceAutocompleteFragment" />
+                android:layout_gravity="end"
+                android:layout_marginEnd="10dp"
+                android:padding="10dp"
+                android:src="@drawable/selector_check" />
 
-        </LinearLayout>
-
-        <ImageView
-            android:id="@+id/ok"
-            android:layout_width="40dp"
-            android:layout_height="match_parent"
-            android:padding="10dp"
-            android:layout_gravity="center"
-            android:layout_marginEnd="10dp"
-            android:src="@drawable/selector_check" />
-
-    </LinearLayout>
+        </android.support.v7.widget.Toolbar>
+    </android.support.design.widget.AppBarLayout>
 
 
     <fragment

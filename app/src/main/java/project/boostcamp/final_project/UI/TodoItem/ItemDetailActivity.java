@@ -7,7 +7,9 @@ import android.renderscript.Byte2;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.view.KeyEvent;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -22,6 +24,7 @@ import project.boostcamp.final_project.UI.Setting.BaseActivity;
 import project.boostcamp.final_project.Util.BindingService;
 import project.boostcamp.final_project.Util.RealmHelper;
 
+import static project.boostcamp.final_project.R.id.back;
 import static project.boostcamp.final_project.R.id.btn_completed;
 
 public class ItemDetailActivity extends BaseActivity {
@@ -32,7 +35,7 @@ public class ItemDetailActivity extends BaseActivity {
     private AlertDialog.Builder dialog;
 
     private TextView todo, address, folder;
-    private ImageView back, ok, update, ic_delete;
+    private ImageView update, ic_delete;
     private Button on, off, btnCompleted;
 
     private int position;
@@ -53,20 +56,19 @@ public class ItemDetailActivity extends BaseActivity {
         todo = (TextView)findViewById(R.id.todo);
         address = (TextView)findViewById(R.id.address);
         folder = (TextView)findViewById(R.id.folder);
-        back = (ImageView)findViewById(R.id.back);
-        ok = (ImageView)findViewById(R.id.ok);
         btnCompleted = (Button)findViewById(btn_completed);
         update = (ImageView)findViewById(R.id.to_update);
         on = (Button) findViewById(R.id.on);
         off = (Button)findViewById(R.id.off);
         ic_delete = (ImageView)findViewById(R.id.ic_delete);
 
-        back.setOnClickListener(clickListener);
-        ok.setOnClickListener(clickListener);
         btnCompleted.setOnClickListener(clickListener);
         ic_delete.setOnClickListener(clickListener);
-        TextView toolbar_label = (TextView)findViewById(R.id.toolbar_label);
-        toolbar_label.setText(getResources().getString(R.string.wish));
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar.setTitleTextColor(getResources().getColor(R.color.gray));
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         intent = getIntent();
         dialog = new AlertDialog.Builder(ItemDetailActivity.this);
@@ -86,14 +88,6 @@ public class ItemDetailActivity extends BaseActivity {
         @Override
         public void onClick(View view) {
             switch (view.getId()){
-                case R.id.back :
-                    if(getParentActivityIntent() == null){
-                        intent = new Intent(ItemDetailActivity.this, MainActivity.class);
-                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                        startActivity(intent);
-                    }
-                    finish();
-                    break;
                 case R.id.ic_delete :
                     removeItemDialogBox();
                     break;
@@ -136,7 +130,6 @@ public class ItemDetailActivity extends BaseActivity {
     void setLayout(){
         update.setVisibility(View.VISIBLE);
         ic_delete.setVisibility(View.VISIBLE);
-        ok.setVisibility(View.GONE);
         todo.setText(item.getTodo());
         address.setText(item.getAddress());
         folder.setText(item.getFolder());
@@ -171,7 +164,7 @@ public class ItemDetailActivity extends BaseActivity {
 
     void removeItemDialogBox(){
         dialog = new AlertDialog.Builder(ItemDetailActivity.this);
-        dialog.setTitle(R.string.dialog_title).setMessage( " \n'" +item.getTodo() + "' 를 삭제하시겠습니까")
+        dialog.setMessage( " \n'" +item.getTodo() + "' 를 삭제하시겠습니까")
                 .setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -196,6 +189,19 @@ public class ItemDetailActivity extends BaseActivity {
                         });
         AlertDialog dialogCreate = dialog.create();
         dialogCreate.show();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem menu) {
+
+        if(getParentActivityIntent() == null){
+            intent = new Intent(ItemDetailActivity.this, MainActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);
+        }
+        finish();
+
+        return super.onOptionsItemSelected(menu);
     }
 
 }

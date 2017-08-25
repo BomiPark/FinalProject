@@ -290,7 +290,7 @@ public class MainActivity extends BaseActivity
 
     void removeItemDialogBox(final int position) {
         dialog = new AlertDialog.Builder(MainActivity.this);
-        dialog.setTitle(R.string.dialog_title).setMessage(" \n'" + itemList.get(position).getTodo() + "' 를 삭제하시겠습니까")
+        dialog.setMessage(" \n'" + itemList.get(position).getTodo() + "' 를 삭제하시겠습니까")
                 .setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -319,7 +319,7 @@ public class MainActivity extends BaseActivity
 
     void removeFolderDialogBox(final int position) {
         dialog = new AlertDialog.Builder(MainActivity.this);
-        dialog.setTitle(R.string.dialog_folder).setMessage(" \n'" + folderList.get(position).getFolder() + "' 를 삭제하시겠습니까")
+        dialog.setMessage(" \n'" + folderList.get(position).getFolder() + "' 폴더를 삭제하시겠습니까")
                 .setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {

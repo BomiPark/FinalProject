@@ -4,6 +4,8 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
@@ -20,6 +22,7 @@ import project.boostcamp.final_project.Util.LocationService;
 import project.boostcamp.final_project.Util.RealmHelper;
 
 import static project.boostcamp.final_project.Model.Constant.SAVE;
+import static project.boostcamp.final_project.UI.NewItem.NewItemDetailFragment.view;
 
 public class NewItemActivity extends BaseActivity implements FragmentChangeListener {
 
@@ -105,6 +108,11 @@ public class NewItemActivity extends BaseActivity implements FragmentChangeListe
         return STATUS;
     }
 
+    @Override
+    public int getStatus() {
+        return STATUS;
+    }
+
     void setData(TodoItem item){
 
         realm.beginTransaction();
@@ -127,6 +135,23 @@ public class NewItemActivity extends BaseActivity implements FragmentChangeListe
     @Override
     public LatLng getCurrentLocation() {
         return locationService.getLocation();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch (getStatus()){
+            case Constant.DETAIL :
+                changeFragment(Constant.DETAIL, Constant.END, null);
+                break;
+            case Constant.MAP :
+                changeFragment(Constant.MAP, Constant.DETAIL, null);
+                break;
+            case Constant.SEARCH :
+                changeFragment(Constant.SEARCH, Constant.DETAIL, null);
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
 }

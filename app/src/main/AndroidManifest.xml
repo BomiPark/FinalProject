@@ -23,7 +23,8 @@
         <activity android:name=".UI.Setting.PermissionActivity"/>
         <activity
             android:name=".UI.NewItem.NewItemActivity"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait"
+            android:label="@string/label_new_activity">
         </activity>
         <activity android:name=".UI.Setting.SettingActivity" />
         <activity android:name=".UI.Setting.LicenseActivity" />

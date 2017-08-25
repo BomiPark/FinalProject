@@ -4,6 +4,9 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -22,7 +25,6 @@ public class LicenseActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private List<LicenseItem> itemList = new ArrayList<>();
     private LicenseItemAdapter recycler_adapter;
-    private ImageView btn_back;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,16 +41,10 @@ public class LicenseActivity extends AppCompatActivity {
         recyclerView.setAdapter(recycler_adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        findViewById(R.id.ok).setVisibility(View.GONE);
-        TextView toolbar_label = (TextView)findViewById(R.id.toolbar_label);
-        toolbar_label.setText(getResources().getString(R.string.label_license));
-        btn_back = (ImageView)findViewById(R.id.back);
-        btn_back.setOnClickListener(new ImageView.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar.setTitleTextColor(getResources().getColor(R.color.gray));
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     List<LicenseItem> getData(){
@@ -64,4 +60,6 @@ public class LicenseActivity extends AppCompatActivity {
 
         return itemList;
     }
+
+
 }

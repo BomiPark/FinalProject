@@ -1,10 +1,15 @@
 package project.boostcamp.final_project.UI.NewItem;
 
+import android.app.Application;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
@@ -34,12 +39,14 @@ import project.boostcamp.final_project.Model.TodoItem;
 import project.boostcamp.final_project.R;
 import project.boostcamp.final_project.Util.RealmHelper;
 
+import static project.boostcamp.final_project.R.id.toolbar_label;
+
 public class NewItemDetailFragment extends Fragment {
 
     static View view;
     FragmentChangeListener listener;
-    private TextView subTitleText, toolbar_label;
-    private ImageView back, ok;
+    private TextView subTitleText;
+    private ImageView ok;
     private EditText todo;
     private Button folder, toSearch, toMap, on, off;
 
@@ -60,24 +67,25 @@ public class NewItemDetailFragment extends Fragment {
 
         toMap = (Button) view.findViewById(R.id.to_map);
         toSearch = (Button) view.findViewById(R.id.to_search);
-        back = (ImageView)view.findViewById(R.id.back);
-        ok = (ImageView)view.findViewById(R.id.ok);
+        ok = (ImageView)view.findViewById(R.id.detail_ok);
         subTitleText = (TextView)view.findViewById(R.id.sut_title);
         todo = (EditText)view.findViewById(R.id.todo);
         on = (Button)view.findViewById(R.id.on);
         off = (Button)view.findViewById(R.id.off);
         folder = (Button)view.findViewById(R.id.folder);
-        toolbar_label = (TextView)view.findViewById(R.id.toolbar_label);
-        toolbar_label.setText(getResources().getString(R.string.label_new_activity));
         initData();
 
         toSearch.setOnClickListener(clickListener); // 클릭리스너 연결
         toMap.setOnClickListener(clickListener);
-        back.setOnClickListener(clickListener);
         ok.setOnClickListener(clickListener);
         on.setOnClickListener(clickListener);
         off.setOnClickListener(clickListener);
         folder.setOnClickListener(clickListener);
+
+        Toolbar toolbar = (Toolbar) view.findViewById(R.id.toolbar);
+        toolbar.setTitleTextColor(getResources().getColor(R.color.gray));
+        ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
+        ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         return view;
 
@@ -88,6 +96,13 @@ public class NewItemDetailFragment extends Fragment {
         super.onAttach(context);
 
         listener = (FragmentChangeListener) context;
+        listener.setStatus(Constant.DETAIL);
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        listener.setStatus(Constant.DETAIL);
     }
 
     @Override
@@ -99,8 +114,7 @@ public class NewItemDetailFragment extends Fragment {
         else {
             if(listener.getCurrentItem().getTodo()!= null){ // 이전에 저장한 아이템 수정하는 경우
                 this.item = listener.getCurrentItem();
-                subTitleText.setText(getResources().getString(R.string.sub_title));
-                toolbar_label.setText("MODIFY WISH");
+                subTitleText.setText(getResources().getString(R.string.sub_title)); // todo                 toolbar_label.setText("MODIFY WISH");
                 setView();
             }
             else
@@ -132,10 +146,7 @@ public class NewItemDetailFragment extends Fragment {
                     status = R.id.to_search;
                     listener.changeFragment(Constant.DETAIL, Constant.SEARCH, null);
                     break;
-                case R.id.back :
-                    listener.changeFragment(Constant.DETAIL, Constant.END, null);
-                    break;
-                case R.id.ok :
+                case R.id.detail_ok :
                     item = listener.getCurrentItem();
                     if(!isItemEmpty(item)){
                         saveData();

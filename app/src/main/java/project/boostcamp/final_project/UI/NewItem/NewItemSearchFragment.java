@@ -7,8 +7,10 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.IntegerRes;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -39,11 +41,13 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static project.boostcamp.final_project.R.id.back;
+
 public class NewItemSearchFragment  extends Fragment {
 
     private static View view;
     private EditText editSearch;
-    private ImageView searchIcon, back, ok;
+    private ImageView searchIcon, ok;
     private ArrayList<SearchItem> searchItemList;
 
     private RecyclerView recyclerView;
@@ -66,15 +70,16 @@ public class NewItemSearchFragment  extends Fragment {
         editSearch = (EditText)view.findViewById(R.id.edit_search);
         searchIcon = (ImageView)view.findViewById(R.id.search_icon);
         recyclerView = (RecyclerView)view.findViewById(R.id.search_list);
-        back = (ImageView)view.findViewById(R.id.back);
-        ok = (ImageView)view.findViewById(R.id.ok);
-        TextView toolbar_label = (TextView)view.findViewById(R.id.toolbar_label);
-        toolbar_label.setText(getResources().getString(R.string.label_new_activity));
+        ok = (ImageView)view.findViewById(R.id.search_ok);
         searchIcon.setOnClickListener(clickListener);
-        back.setOnClickListener(clickListener);
         ok.setOnClickListener(clickListener);
         editSearch.setOnKeyListener(keyListener);
         geoCoder = new Geocoder(getContext());
+
+        Toolbar toolbar = (Toolbar) view.findViewById(R.id.toolbar);
+        toolbar.setTitleTextColor(getResources().getColor(R.color.gray));
+        ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
+        ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         naverService = ServiceAdapter.getService();
 
@@ -124,7 +129,7 @@ public class NewItemSearchFragment  extends Fragment {
                 case R.id.search_icon :
                     setSearch();
                     break;
-                case R.id.back :
+                case back :
                     listener.changeFragment(Constant.SEARCH, Constant.DETAIL, null);
                     break;
                 case R.id.ok :
