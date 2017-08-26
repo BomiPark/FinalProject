@@ -83,6 +83,12 @@ public class ItemDetailActivity extends BaseActivity {
         setLayout();
     }
 
+    public void onDestroy(){
+        super.onDestroy();
+        BindingService.getInstance(getApplicationContext()).upDateService();
+
+    }
+
     View.OnClickListener clickListener = new ImageView.OnClickListener(){
 
         @Override
@@ -92,12 +98,15 @@ public class ItemDetailActivity extends BaseActivity {
                     removeItemDialogBox();
                     break;
                 case btn_completed :
+
                     if(!item.isCompleted()){
                         realm.beginTransaction(); // case -> 수행완료
                         item.setCompleted(true);
                         realm.commitTransaction();
 
                         btnCompleted.setText(R.string.completed_ok);
+
+                        BindingService.getInstance(getApplicationContext()).stopService();
                     }
                     else{
                         realm.beginTransaction(); // case -> 수행이전
@@ -106,7 +115,6 @@ public class ItemDetailActivity extends BaseActivity {
 
                         btnCompleted.setText(R.string.completed_no);
                     }
-                    BindingService.getInstance(getApplicationContext()).upDateService();
                     break;
             }
         }
@@ -138,12 +146,12 @@ public class ItemDetailActivity extends BaseActivity {
         else
             btnCompleted.setText(R.string.completed_no);
         if(item.isAlarm()){
-            on.setTextColor(Color.parseColor("#E35757"));
-            off.setTextColor(Color.parseColor("#767676"));
+            on.setTextColor(getResources().getColor(R.color.click_back));
+            off.setTextColor(getResources().getColor(R.color.gray));
         }
         else{
-            on.setTextColor(Color.parseColor("#767676"));
-            off.setTextColor(Color.parseColor("#E35757"));
+            on.setTextColor(getResources().getColor(R.color.gray));
+            off.setTextColor(getResources().getColor(R.color.click_back));
         }
     }
 

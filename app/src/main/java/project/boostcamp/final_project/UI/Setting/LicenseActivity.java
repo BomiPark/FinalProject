@@ -16,6 +16,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import project.boostcamp.final_project.Adapter.LicenseItemAdapter;
+import project.boostcamp.final_project.Model.Constant;
 import project.boostcamp.final_project.Model.LicenseItem;
 import project.boostcamp.final_project.R;
 
@@ -61,5 +62,12 @@ public class LicenseActivity extends AppCompatActivity {
         return itemList;
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        finish();
+
+        return super.onOptionsItemSelected(item);
+    }
 
 }

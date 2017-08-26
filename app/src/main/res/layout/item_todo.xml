@@ -41,19 +41,21 @@
             android:textStyle="bold" />
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:orientation="horizontal">
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:layout_marginStart="19dp"
+            android:layout_marginEnd="19dp">
 
             <ImageView
                 android:id="@+id/item_location_icon"
                 android:layout_width="7dp"
                 android:layout_height="10dp"
                 android:layout_gravity="center"
-                android:layout_weight="1"
                 android:gravity="center"
-                android:layout_marginTop="3dp"
+                android:layout_marginTop="1dp"
                 android:src="@drawable/location_icon" />
 
             <TextView
@@ -62,11 +64,11 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="5dp"
                 android:ellipsize="end"
+                android:layout_marginBottom="5dp"
                 android:maxLines="1"
                 android:paddingLeft="4dp"
                 android:paddingRight="4dp"
-                android:layout_marginTop="8dp"
-                android:layout_weight="10"
+                android:layout_marginTop="7dp"
                 android:gravity="center"
                 android:text="@string/address"
                 android:textSize="11sp" />
@@ -79,7 +81,7 @@
         android:layout_marginEnd="15dp"
         android:orientation="horizontal"
         android:id="@+id/item_check"
-        android:layout_marginTop="30dp">
+        android:layout_marginTop="32dp">
 
         <ImageView
             android:layout_width="17dp"

@@ -109,6 +109,7 @@ public class MainActivity extends BaseActivity
 
         Toasty.Config.getInstance()
                 .setSuccessColor(getResources().getColor(R.color.blue)) // optional
+                .setInfoColor(getResources().getColor(R.color.blue)) // optional
                 .apply(); // required
 
     }

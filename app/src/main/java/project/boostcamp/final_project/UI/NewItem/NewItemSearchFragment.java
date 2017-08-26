@@ -47,7 +47,7 @@ public class NewItemSearchFragment  extends Fragment {
 
     private static View view;
     private EditText editSearch;
-    private ImageView searchIcon, ok;
+    private ImageView searchIcon;
     private ArrayList<SearchItem> searchItemList;
 
     private RecyclerView recyclerView;
@@ -70,14 +70,13 @@ public class NewItemSearchFragment  extends Fragment {
         editSearch = (EditText)view.findViewById(R.id.edit_search);
         searchIcon = (ImageView)view.findViewById(R.id.search_icon);
         recyclerView = (RecyclerView)view.findViewById(R.id.search_list);
-        ok = (ImageView)view.findViewById(R.id.search_ok);
         searchIcon.setOnClickListener(clickListener);
-        ok.setOnClickListener(clickListener);
         editSearch.setOnKeyListener(keyListener);
         geoCoder = new Geocoder(getContext());
 
         Toolbar toolbar = (Toolbar) view.findViewById(R.id.toolbar);
         toolbar.setTitleTextColor(getResources().getColor(R.color.gray));
+
         ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
         ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
@@ -93,10 +92,13 @@ public class NewItemSearchFragment  extends Fragment {
                     searchItemList.get(beforeSelected).setSelected(false);}
                 if(position > -1) {
                     searchItemList.get(position).setSelected(true);
-                    if (beforeSelected != position)
+                    if (beforeSelected != position){
                         adapter.notifyDataSetChanged();
-                    beforeSelected = position;
-                    new BackAsyncTask().execute(item.getAddress());
+                        beforeSelected = position;
+                        new BackAsyncTask().execute(item.getAddress());}
+                    else{
+                        getSelectItem();
+                    }
                 }
             }
 
@@ -131,9 +133,6 @@ public class NewItemSearchFragment  extends Fragment {
                     break;
                 case back :
                     listener.changeFragment(Constant.SEARCH, Constant.DETAIL, null);
-                    break;
-                case R.id.ok :
-                    getSelectItem();
                     break;
             }
         }

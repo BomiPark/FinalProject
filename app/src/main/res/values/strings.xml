@@ -57,9 +57,11 @@
     <string name="menu_delete">삭제</string>
 
     <!-- 액티비티 라벨 이름-->
-    <string name="label_new_activity">NEW WISH</string>
-    <string name="label_setting">SETTING</string>
-    <string name="label_license">LICENSE</string>
+    <string name="label_new_activity">추가하기</string>
+    <string name="label_setting">설정하기</string>
+    <string name="label_license">라이선스</string>
+    <string name="label_detail">상세보기</string>
+    <string name="label_edit">수정하기</string>
 
 
     <!-- 퍼미션 관련 -->

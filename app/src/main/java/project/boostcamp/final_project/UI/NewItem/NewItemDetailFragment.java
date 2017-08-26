@@ -39,8 +39,6 @@ import project.boostcamp.final_project.Model.TodoItem;
 import project.boostcamp.final_project.R;
 import project.boostcamp.final_project.Util.RealmHelper;
 
-import static project.boostcamp.final_project.R.id.toolbar_label;
-
 public class NewItemDetailFragment extends Fragment {
 
     static View view;
@@ -49,6 +47,7 @@ public class NewItemDetailFragment extends Fragment {
     private ImageView ok;
     private EditText todo;
     private Button folder, toSearch, toMap, on, off;
+    private Toolbar toolbar;
 
     private RealmResults<FolderItem> realmResults = null;
     private List<String> folderList = new ArrayList<>();
@@ -82,7 +81,7 @@ public class NewItemDetailFragment extends Fragment {
         off.setOnClickListener(clickListener);
         folder.setOnClickListener(clickListener);
 
-        Toolbar toolbar = (Toolbar) view.findViewById(R.id.toolbar);
+        toolbar = (Toolbar) view.findViewById(R.id.toolbar);
         toolbar.setTitleTextColor(getResources().getColor(R.color.gray));
         ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
         ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -114,7 +113,8 @@ public class NewItemDetailFragment extends Fragment {
         else {
             if(listener.getCurrentItem().getTodo()!= null){ // 이전에 저장한 아이템 수정하는 경우
                 this.item = listener.getCurrentItem();
-                subTitleText.setText(getResources().getString(R.string.sub_title)); // todo                 toolbar_label.setText("MODIFY WISH");
+                subTitleText.setText(getResources().getString(R.string.sub_title));
+                ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle(getResources().getString(R.string.label_edit));
                 setView();
             }
             else

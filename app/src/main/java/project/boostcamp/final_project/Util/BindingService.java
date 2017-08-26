@@ -20,6 +20,7 @@ public class BindingService {
     private Context context;
     private static GeofencingService geofencingService;
     public static boolean isBound;
+    private Realm realm;
 
     public static BindingService getInstance(Context context){
 
@@ -37,6 +38,7 @@ public class BindingService {
         isBound = true;
         intent = new Intent(context, GeofencingService.class);
         SharedPreferencesService.getInstance().load(context);
+        realm = RealmHelper.getInstance(context);
 
         context.bindService(intent, connection, Context.BIND_AUTO_CREATE);
 
@@ -63,7 +65,6 @@ public class BindingService {
             }
 
             isBound = true;
-
         }
 
         @Override
@@ -93,7 +94,6 @@ public class BindingService {
 
     boolean isEmpty(){
 
-        Realm realm = RealmHelper.getInstance(context);
         if(realm.where(TodoItem.class).equalTo("alarm", true).equalTo("isCompleted", false).findAll().size() == 0)
             return true;
         else
