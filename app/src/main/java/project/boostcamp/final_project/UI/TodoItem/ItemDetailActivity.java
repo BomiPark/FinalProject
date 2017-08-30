@@ -72,10 +72,11 @@ public class ItemDetailActivity extends BaseActivity {
 
         intent = getIntent();
         dialog = new AlertDialog.Builder(ItemDetailActivity.this);
-        position = intent.getExtras().getInt("id"); // 아이템 받아와서 세팅하면 될 듯!!
+        position = intent.getExtras().getInt("id");
         item = realm.where(TodoItem.class).equalTo("id", position).findFirst();
         setLayout();
 
+        BindingService.getInstance(getApplicationContext()).stopService();
     }
 
     public void onResume(){
@@ -105,8 +106,6 @@ public class ItemDetailActivity extends BaseActivity {
                         realm.commitTransaction();
 
                         btnCompleted.setText(R.string.completed_ok);
-
-                        BindingService.getInstance(getApplicationContext()).stopService();
                     }
                     else{
                         realm.beginTransaction(); // case -> 수행이전

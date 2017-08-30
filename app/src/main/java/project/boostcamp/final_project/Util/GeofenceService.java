@@ -42,15 +42,15 @@ public class GeofenceService extends IntentService {
         super(name);
     }
 
-    private String getGeofenceTransitionDetails(
-            List<Geofence> triggeringGeofences) { //발생된 지오펜스
+    private String getGeofenceTransitionDetails(List<Geofence> triggeringGeofences) { //발생된 지오펜스 리스트
+
+        if (realm == null)
+            realm = RealmHelper.getInstance(getApplicationContext());
 
         if (triggeringGeofences != null) {
             ArrayList<String> triggeringGeofencesIdsList = new ArrayList<>();
             for (Geofence geofence : triggeringGeofences) {
                 triggeringGeofencesIdsList.add(geofence.getRequestId());
-
-                realm = RealmHelper.getInstance(getApplicationContext());
 
                 if (realm.where(TodoItem.class).equalTo("id", Integer.parseInt(geofence.getRequestId())).equalTo("isCompleted", false).findFirst() != null)
                     return geofence.getRequestId();
@@ -72,7 +72,7 @@ public class GeofenceService extends IntentService {
 
         String geofenceTransitionDetails = getGeofenceTransitionDetails(triggeringGeofences); // 상태 하나의 문자열로 변환
 
-        if(geofenceTransitionDetails != null) {
+        if (geofenceTransitionDetails != null) {
             position = Integer.parseInt(geofenceTransitionDetails);
             sendNotification(position);
         }
@@ -85,9 +85,7 @@ public class GeofenceService extends IntentService {
         notificationIntent.putExtra("id", position);
 
         TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
-
         stackBuilder.addParentStack(ItemDetailActivity.class);
-
         stackBuilder.addNextIntent(notificationIntent);
 
         PendingIntent notificationPendingIntent =
@@ -96,20 +94,18 @@ public class GeofenceService extends IntentService {
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this);
 
         String todo = null;
-        if (realm.where(TodoItem.class).equalTo("id", position).findFirst() != null) {
+        if (realm.where(TodoItem.class).equalTo("id", position).equalTo("isCompleted", false).findFirst() != null) {
             todo = " '" + realm.where(TodoItem.class).equalTo("id", position).findFirst().getTodo() + "'를 수행할 장소입니다. ";
 
-            Log.e(TAG, "알람내용 = " + todo);
+            Log.e(TAG, position + ", 알람내용 = " + todo);
 
-            RemoteViews customView = new RemoteViews((getApplicationContext()).getPackageName(), R.layout.item_notification);
-            customView.setTextViewText(R.id.noti_text, todo);
-            builder.setSmallIcon(R.drawable.app_icon)   // 메시지 내용 동적으로 변경 고려
-                    .setLargeIcon(BitmapFactory.decodeResource(getResources(),
-                            R.drawable.app_icon))
+            builder.setContentTitle(getResources().getString(R.string.app_name))
+                    .setContentText(todo)
+                    .setSmallIcon(R.drawable.app_icon)
+                    .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.app_icon))
                     .setDefaults(Notification.DEFAULT_SOUND)
                     .setVibrate(new long[]{1000, 1000, 200, 200})
                     .setLights(0xff00ff00, 500, 500)
-                    .setContent(customView)
                     .setContentIntent(notificationPendingIntent);
 
             builder.setAutoCancel(true);

@@ -68,10 +68,10 @@ public class NewItemMapFragment extends Fragment {
 
         Toasty.info(getActivity(), getResources().getString(R.string.move_marker), Toast.LENGTH_SHORT).show();
 
-        autocompleteFragment = (PlaceAutocompleteFragment)
+        autocompleteFragment = (PlaceAutocompleteFragment) // Place api
                 getActivity().getFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
 
-        autocompleteFragment.setBoundsBias(new LatLngBounds( //todo 하드코딩
+        autocompleteFragment.setBoundsBias(new LatLngBounds(
                 new LatLng(33.2572573, 126.0331448),
                 new LatLng(38.6084671, 129.3620022)
         ));
@@ -83,7 +83,7 @@ public class NewItemMapFragment extends Fragment {
 
             @Override
             public void onError(Status status) {
-                Toast.makeText(getContext(), "다른 장소를 입력해주세요", Toast.LENGTH_LONG).show();
+                Toast.makeText(getContext(), R.string.different_place, Toast.LENGTH_LONG).show();
             }
         });
 

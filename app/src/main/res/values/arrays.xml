@@ -3,6 +3,7 @@
     <string-array name="license_title">
         <item>Retrofit</item>
         <item>Gson Converter</item>
+        <item>Realm</item>
         <item>OkHttp</item>
         <item>Glide</item>
         <item>Glide Transformations</item>
@@ -18,6 +19,7 @@
     <string-array name="license_address">
         <item>https://github.com/square/retrofit</item>
         <item>https://github.com/square/retrofit/tree/master/retrofit-converters/gson</item>
+        <item>https://github.com/realm/realm-java</item>
         <item>https://github.com/square/okhttp</item>
         <item>https://github.com/bumptech/glide</item>
         <item>https://github.com/wasabeef/glide-transformations</item>
@@ -33,15 +35,16 @@
     <string-array name="license_copyright">
         <item>Copyright 2013 Square, Inc.</item>
         <item>Copyright 2013 Square, Inc.</item>
+        <item>Copyright © Realm 2014_2017, all rights reserved.</item>
         <item>Licensed under the Apache License, Version 2.0</item>
         <item>BSD, part MIT and Apache 2.0.</item>
         <item>Copyright 2017 Wasabeef</item>
-        <item>Copyright (c) 2014_2016 Aidan Michael Follestad</item>
+        <item>Copyright © 2014_2016 Aidan Michael Follestad</item>
         <item>Licensed under the Apache License, Version 2.0</item>
-        <item>Copyright (C) 2007 Free Software Foundation, Inc.</item>
+        <item>Copyright © 2007 Free Software Foundation, Inc.</item>
         <item>Copyright 2014 Google, Inc.</item>
         <item>Apache 2.0 License</item>
         <item>https://github.com/tsengvn/typekit</item>
-        <item>Copyright (c) 2010, NAVER Corporation</item>
+        <item>Copyright © 2010, NAVER Corporation</item>
     </string-array>
 </resources>

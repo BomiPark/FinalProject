@@ -125,18 +125,22 @@ public class TodoItem extends RealmObject{
         this.date = date;
     }
 
+    public void setInfo(TodoItem get){ // 장소 설정
+        this.address = get.address;
+        this.latitude = get.latitude;
+        this.longitude = get.longitude;
+    }
+
     private String getCurrentDate(){
         long now = System.currentTimeMillis();
         Date date = new Date(now);
         SimpleDateFormat format = new SimpleDateFormat("yyyy년 MM월 dd일");
-        String current = format.format(date);
-        return current;
+        return format.format(date);
     }
 
     public static PojoTodoItem toPojo(TodoItem item){
-        PojoTodoItem pojo = new PojoTodoItem(item.id, item.todo, item.address, item.latitude, item.longitude,
-                item.date, item.folder, item.alarm, item.isCompleted);
 
-        return pojo;
+        return new PojoTodoItem(item.id, item.todo, item.address, item.latitude, item.longitude,
+                item.date, item.folder, item.alarm, item.isCompleted);
     }
 }

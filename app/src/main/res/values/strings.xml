@@ -13,7 +13,7 @@
     <string name="todo">WISH\nLIST</string>
     <string name="folder">폴더</string>
     <string name="folder_eng">FOLDER</string>
-    <string name="add_folder">Add folder</string>
+    <string name="add_folder">폴더 이름 입력</string>
     <string name="select_folder">폴더선택</string>
     <string name="input_folder"> 추가할 폴더 이름을 입력해주세요 </string>
     <string name="input_todo"> Wish List를 입력해주세요</string>
@@ -55,6 +55,8 @@
     <string name="input_wish">수행할 wish list의 내용을 입력해주세요</string>
     <string name="menu_edit">수정</string>
     <string name="menu_delete">삭제</string>
+    <string name="different_place">다른 장소를 입력해주세요 </string>
+    <string name="input_search">검색어를 입력해주세요</string>
 
     <!-- 액티비티 라벨 이름-->
     <string name="label_new_activity">추가하기</string>

@@ -72,7 +72,6 @@ public class NewItemDetailFragment extends Fragment {
         on = (Button)view.findViewById(R.id.on);
         off = (Button)view.findViewById(R.id.off);
         folder = (Button)view.findViewById(R.id.folder);
-        initData();
 
         toSearch.setOnClickListener(clickListener); // 클릭리스너 연결
         toMap.setOnClickListener(clickListener);
@@ -80,6 +79,8 @@ public class NewItemDetailFragment extends Fragment {
         on.setOnClickListener(clickListener);
         off.setOnClickListener(clickListener);
         folder.setOnClickListener(clickListener);
+
+        realm = RealmHelper.getInstance(getActivity());
 
         toolbar = (Toolbar) view.findViewById(R.id.toolbar);
         toolbar.setTitleTextColor(getResources().getColor(R.color.gray));
@@ -120,8 +121,6 @@ public class NewItemDetailFragment extends Fragment {
             else
                 item = new TodoItem();
         }
-
-        initData();
 
     }
 
@@ -242,7 +241,7 @@ public class NewItemDetailFragment extends Fragment {
     void getDialog(){
         new MaterialDialog.Builder(getActivity())
                 .title(getResources().getString(R.string.select_folder))
-                .items(folderList)
+                .items(getFolderList())
                 .itemsCallbackSingleChoice(0, new MaterialDialog.ListCallbackSingleChoice() {
                     @Override
                     public boolean onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
@@ -257,9 +256,7 @@ public class NewItemDetailFragment extends Fragment {
                 .show();
     }
 
-    void initData(){
-
-        realm = RealmHelper.getInstance(getActivity());
+    List<String> getFolderList(){
 
         realmResults = realm.where(FolderItem.class).findAll();
 
@@ -270,6 +267,8 @@ public class NewItemDetailFragment extends Fragment {
                 return input.getFolder();
             }
         }));
+
+        return folderList;
     }
 
 

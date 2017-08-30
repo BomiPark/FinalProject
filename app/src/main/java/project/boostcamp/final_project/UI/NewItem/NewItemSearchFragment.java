@@ -82,6 +82,10 @@ public class NewItemSearchFragment  extends Fragment {
 
         naverService = ServiceAdapter.getService();
 
+        editSearch.requestFocus();
+        InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY);
+
         searchItemList = new ArrayList<>();
         adapter = new SearchItemAdapter(getContext(), searchItemList, R.layout.item_search);
         recyclerView.setAdapter(adapter);
@@ -153,13 +157,13 @@ public class NewItemSearchFragment  extends Fragment {
 
         String query = editSearch.getText().toString();
 
-        if(query != null) {
+        if(query.length() > 0) {
             getSearchList(query);
             InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
             imm.hideSoftInputFromWindow(editSearch.getWindowToken(), 0);    //hide keyboard
         }
         else
-            Toasty.info(getActivity(), "검색어를 입력해주세요", Toast.LENGTH_LONG).show();
+            Toasty.info(getActivity(), getResources().getString(R.string.input_search), Toast.LENGTH_LONG).show();
     }
 
     void getSearchList(String query){
@@ -216,7 +220,7 @@ public class NewItemSearchFragment  extends Fragment {
             if(item.getLatitude() == 0)
                 new BackAsyncTask().execute(item.getAddress());
 
-            listener.changeFragment(Constant.SEARCH, Constant.DETAIL,item);}
+            listener.changeFragment(Constant.SEARCH, Constant.DETAIL, item);}
     }
 
     public TodoItem setLatLng(SearchItem searchItem){

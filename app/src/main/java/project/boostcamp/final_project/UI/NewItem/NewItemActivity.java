@@ -22,7 +22,6 @@ import project.boostcamp.final_project.Util.LocationService;
 import project.boostcamp.final_project.Util.RealmHelper;
 
 import static project.boostcamp.final_project.Model.Constant.SAVE;
-import static project.boostcamp.final_project.UI.NewItem.NewItemDetailFragment.view;
 
 public class NewItemActivity extends BaseActivity implements FragmentChangeListener {
 
@@ -89,13 +88,17 @@ public class NewItemActivity extends BaseActivity implements FragmentChangeListe
             getSupportFragmentManager().beginTransaction().replace(R.id.container,newInstance(now, to)).addToBackStack(null).commit(); // detail 저장
         } else if(to == Constant.DETAIL && item == null) {
             getSupportFragmentManager().popBackStack();
-        } else if( to == Constant.DETAIL) {
+        } else if(to == Constant.DETAIL) {
             getSupportFragmentManager().popBackStack();
-            todoItem = item;
+            realm.beginTransaction();
+            todoItem.setInfo(item);
+            realm.commitTransaction();
         } else if(to == Constant.END){ // 아이템 저장안하고 종료하는 경우
             finish();
         } else if(to == SAVE){
-            todoItem = item;
+            realm.beginTransaction();
+            todoItem.setInfo(item);
+            realm.commitTransaction();
             setData(item);
             BindingService.getInstance(getApplicationContext()).upDateService(); //todo set
             finish();
@@ -117,7 +120,7 @@ public class NewItemActivity extends BaseActivity implements FragmentChangeListe
 
         realm.beginTransaction();
 
-        if(item.getId() == -1) {
+        if(item.getId() == -1) { // 아이템을 새로 생성하는 경우 전달된 id는 -1
             item.setId(RealmHelper.getNextTodoId());
             realm.copyToRealm(item);
         }

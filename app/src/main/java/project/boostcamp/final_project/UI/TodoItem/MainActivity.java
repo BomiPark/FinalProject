@@ -351,7 +351,7 @@ public class MainActivity extends BaseActivity
         LayoutInflater layoutInflater = LayoutInflater.from(this);
         View promptView = layoutInflater.inflate(R.layout.dialog_add_folder, null);
         final AlertDialog.Builder alert = new AlertDialog.Builder(this);
-        alert.setTitle("Add New FolderItem");
+        alert.setTitle("새로운 폴더 추가");
         alert.setView(promptView);
 
         final EditText input = (EditText) promptView.findViewById(R.id.add_folder);
