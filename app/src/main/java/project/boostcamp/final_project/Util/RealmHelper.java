@@ -37,7 +37,7 @@ public class RealmHelper {
         return nextID;
     }
 
-    public static int getNextFolderId(){
+    public static int getNextFolderId(Realm realm){
 
         int nextID =0;
 
@@ -47,15 +47,6 @@ public class RealmHelper {
         return nextID;
     }
 
-    public static boolean isSmameName(String folderName){
-
-        FolderItem folderItem = null;
-        folderItem = realm.where(FolderItem.class).equalTo("folder", folderName).findFirst();
-
-        if(folderItem != null)
-            return true;
-        return false;
-    }
 
     public static void setFolder(){
 

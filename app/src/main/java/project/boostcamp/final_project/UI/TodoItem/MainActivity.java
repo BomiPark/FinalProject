@@ -1,5 +1,6 @@
 package project.boostcamp.final_project.UI.TodoItem;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
@@ -15,10 +16,10 @@ import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
@@ -46,10 +47,10 @@ import project.boostcamp.final_project.UI.Setting.ProfileActivity;
 import project.boostcamp.final_project.UI.Setting.SettingActivity;
 import project.boostcamp.final_project.UI.NewItem.NewItemActivity;
 import project.boostcamp.final_project.Util.BindingService;
-import project.boostcamp.final_project.Util.GeofencingService;
 import project.boostcamp.final_project.Util.RealmHelper;
 import project.boostcamp.final_project.Util.SharedPreferencesService;
 
+import static android.R.id.input;
 import static project.boostcamp.final_project.Util.SharedPreferencesService.PROP_IMG;
 import static project.boostcamp.final_project.Util.SharedPreferencesService.PROP_NAME;
 
@@ -122,6 +123,11 @@ public class MainActivity extends BaseActivity
 
     }
 
+    public void onPause(){
+        super.onPause();
+        updateData();
+    }
+
     void init() {
 
         initData();
@@ -156,7 +162,9 @@ public class MainActivity extends BaseActivity
         spinnerList.add(getResources().getString(R.string.completed_ok));
 
         spinnerAdapter = new ArrayAdapter<>(
-                this, android.R.layout.simple_list_item_1, spinnerList);
+               this, android.R.layout.simple_list_item_1, spinnerList);
+
+        spinnerAdapter.setDropDownViewResource(R.layout.item_simple_todo);
 
         spinner.setAdapter(spinnerAdapter);
 
@@ -358,6 +366,8 @@ public class MainActivity extends BaseActivity
 
         input.requestFocus();
         input.setTextColor(Color.BLACK);
+        InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY);
 
         alert.setPositiveButton(R.string.ok_eng, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int whichButton) {
@@ -367,6 +377,8 @@ public class MainActivity extends BaseActivity
                             OpenFolderDialogBox();
                         } else {
                             saveFolder(newFolderText);
+                            InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+                            imm.hideSoftInputFromWindow(input.getWindowToken(), 0);
                         }
                     }
                 }
@@ -388,10 +400,12 @@ public class MainActivity extends BaseActivity
 
     void saveFolder(String folderName) {
 
-        if (!RealmHelper.isSmameName(folderName)) {
+        FolderItem item = realm.where(FolderItem.class).equalTo("folder", folderName).findFirst();
+
+        if (item == null) {
 
             realm.beginTransaction();
-            folder.setId(RealmHelper.getNextFolderId());
+            folder.setId(RealmHelper.getNextFolderId(realm));
             folder.setFolder(folderName);
             realm.copyToRealm(folder);
 
@@ -430,6 +444,8 @@ public class MainActivity extends BaseActivity
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+        ((TextView)parent.getChildAt(0)).setTextColor(getResources().getColor(R.color.gray));
 
         if (position == 0)
             itemList = realm.where(TodoItem.class).findAll().sort("id");

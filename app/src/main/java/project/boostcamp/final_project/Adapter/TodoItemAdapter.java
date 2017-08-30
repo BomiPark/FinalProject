@@ -14,6 +14,9 @@ import project.boostcamp.final_project.Interface.RecyclerItemClickListener;
 import project.boostcamp.final_project.Interface.TodoCheckClickListener;
 import project.boostcamp.final_project.Interface.TodoMainClickListener;
 import project.boostcamp.final_project.Model.TodoItem;
+import project.boostcamp.final_project.R;
+
+import static android.R.id.empty;
 
 
 public class TodoItemAdapter extends RecyclerView.Adapter<TodoItemViewHolder> {
@@ -22,6 +25,8 @@ public class TodoItemAdapter extends RecyclerView.Adapter<TodoItemViewHolder> {
     private List<TodoItem> itemList = new ArrayList<>();
     private int item_layout;
     private TodoItemViewHolder viewHolder;
+    private static final int EMPTY = 0;
+    private static final int NOT_EMPTY = 1;
 
     private TodoMainClickListener itemClickListener;
     private TodoCheckClickListener checkClickListener;
@@ -40,8 +45,11 @@ public class TodoItemAdapter extends RecyclerView.Adapter<TodoItemViewHolder> {
     public TodoItemViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
         View view;
+        if(viewType == NOT_EMPTY)
+            view = LayoutInflater.from(parent.getContext()).inflate(item_layout, parent, false);
+        else
+            view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_empty, parent, false);
 
-        view = LayoutInflater.from(parent.getContext()).inflate(item_layout, parent, false);
         viewHolder = new TodoItemViewHolder(view);
 
         return viewHolder;
@@ -49,11 +57,23 @@ public class TodoItemAdapter extends RecyclerView.Adapter<TodoItemViewHolder> {
 
     @Override
     public void onBindViewHolder(TodoItemViewHolder holder, int position) {
-        ((TodoItemViewHolder) holder).bind(itemList.get(position), itemClickListener, checkClickListener);
+        if(getItemViewType(position) == NOT_EMPTY)
+            ((TodoItemViewHolder) holder).bind(itemList.get(position), itemClickListener, checkClickListener);
     }
 
     @Override
     public int getItemCount() {
-        return itemList.size();
+        if(itemList.size()!=0)
+            return itemList.size();
+        else
+            return 1;
+    }
+
+    @Override
+    public int getItemViewType(int position){
+        if(itemList.isEmpty())
+            return EMPTY;
+        else
+            return NOT_EMPTY;
     }
 }

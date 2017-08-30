@@ -3,6 +3,7 @@ package project.boostcamp.final_project.UI.Setting;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.net.Uri;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
@@ -158,11 +159,18 @@ public class PermissionActivity extends BaseActivity
 
     private void showSnackbar(final int mainTextStringId, final int actionStringId,  //1. 스낵바에뜰텍스트스트링인트값 2. 오른쪽뜨는 글씨 3. 클릭 리스너
                               View.OnClickListener listener) {
-        Snackbar.make(
+        Snackbar snackbar;
+
+        snackbar = Snackbar.make(
                 findViewById(android.R.id.content),
                 getString(mainTextStringId),
                 Snackbar.LENGTH_INDEFINITE) // 뜨는 시간 설정-> 계속 뜸
-                .setAction(getString(actionStringId), listener).show(); // 클릭리스너
+                .setAction(getString(actionStringId), listener); // 클릭리스너
+
+        View snackView = snackbar.getView();
+        snackView.setBackgroundColor(getResources().getColor(R.color.blue));
+
+        snackbar.show();
     }
 
     @Override

@@ -1,6 +1,9 @@
 package project.boostcamp.final_project.Adapter;
 
+import android.graphics.Color;
+import android.graphics.Paint;
 import android.support.v7.widget.RecyclerView;
+import android.text.util.Linkify;
 import android.view.View;
 import android.widget.TextView;
 
@@ -23,6 +26,8 @@ public class LicenseItemViewHolder extends RecyclerView.ViewHolder {
     public void bind(final LicenseItem item){
         txt_title.setText(item.getTitle());
         txt_address.setText(item.getAddress());
+        txt_address.setLinkTextColor(Color.BLUE);
+        Linkify.addLinks(txt_address, Linkify.WEB_URLS);// under Line
         txt_copyright.setText(item.getCopyright());
     }
 }
