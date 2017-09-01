@@ -21,11 +21,11 @@ import static project.boostcamp.final_project.Util.SharedPreferencesService.PROP
 
 public class ProfileActivity extends BaseActivity {
 
-    ImageView prop_img, prop_img1, prop_img2, prop_img3, prop_img4, prop_img5;
-    EditText prop_name;
+    private ImageView prop_img, prop_img1, prop_img2, prop_img3, prop_img4, prop_img5;
+    private EditText prop_name;
 
-    int save_img;
-    int prop_img_value;
+    private int save_img;
+    private int prop_img_value;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

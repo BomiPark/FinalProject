@@ -89,7 +89,7 @@ public class GeofenceService extends IntentService {
         stackBuilder.addNextIntent(notificationIntent);
 
         PendingIntent notificationPendingIntent =
-                stackBuilder.getPendingIntent(0, PendingIntent.FLAG_ONE_SHOT);
+                stackBuilder.getPendingIntent(0, PendingIntent.FLAG_CANCEL_CURRENT);
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this);
 

@@ -18,7 +18,7 @@ import static project.boostcamp.final_project.Util.SharedPreferencesService.IS_S
 
 public class SplashActivity extends BaseActivity {
 
-    public static BindingService bindingService;
+    private BindingService bindingService;
     private Intent intent;
     private boolean isBound, isSetting;
 

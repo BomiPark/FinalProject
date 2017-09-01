@@ -8,10 +8,6 @@ import io.realm.RealmConfiguration;
 import project.boostcamp.final_project.Model.FolderItem;
 import project.boostcamp.final_project.Model.TodoItem;
 
-/**
- * Created by qkrqh on 2017-08-14.
- */
-
 public class RealmHelper {
 
     private static Realm realm;

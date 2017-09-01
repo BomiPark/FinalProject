@@ -42,7 +42,7 @@ import project.boostcamp.final_project.Util.RealmHelper;
 public class NewItemDetailFragment extends Fragment {
 
     static View view;
-    FragmentChangeListener listener;
+    private FragmentChangeListener listener;
     private TextView subTitleText;
     private ImageView ok;
     private EditText todo;
