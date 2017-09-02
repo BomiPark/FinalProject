@@ -1,15 +1,9 @@
 package project.boostcamp.final_project.UI.NewItem;
 
-import android.app.Application;
 import android.content.Context;
-import android.graphics.Color;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
@@ -39,21 +33,16 @@ import project.boostcamp.final_project.Model.TodoItem;
 import project.boostcamp.final_project.R;
 import project.boostcamp.final_project.Util.RealmHelper;
 
-public class NewItemDetailFragment extends Fragment {
+public class NewItemDetailFragment extends NewItemBaseFragment {
 
-    static View view;
-    private FragmentChangeListener listener;
     private TextView subTitleText;
-    private ImageView ok;
     private EditText todo;
     private Button folder, toSearch, toMap, on, off;
-    private Toolbar toolbar;
 
     private RealmResults<FolderItem> realmResults = null;
     private List<String> folderList = new ArrayList<>();
 
     private Realm realm;
-    private TodoItem item;
 
     private int status;
     private boolean isAlarm = true;
@@ -64,9 +53,11 @@ public class NewItemDetailFragment extends Fragment {
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_new_item_detail, container, false);
 
+        setToolbar(view, Constant.DETAIL);
+
         toMap = (Button) view.findViewById(R.id.to_map);
         toSearch = (Button) view.findViewById(R.id.to_search);
-        ok = (ImageView)view.findViewById(R.id.detail_ok);
+        btn_ok = (ImageView)view.findViewById(R.id.detail_ok);
         subTitleText = (TextView)view.findViewById(R.id.sut_title);
         todo = (EditText)view.findViewById(R.id.todo);
         on = (Button)view.findViewById(R.id.on);
@@ -75,20 +66,12 @@ public class NewItemDetailFragment extends Fragment {
 
         toSearch.setOnClickListener(clickListener); // 클릭리스너 연결
         toMap.setOnClickListener(clickListener);
-        ok.setOnClickListener(clickListener);
+        btn_ok.setOnClickListener(clickListener);
         on.setOnClickListener(clickListener);
         off.setOnClickListener(clickListener);
         folder.setOnClickListener(clickListener);
 
         realm = RealmHelper.getInstance(getActivity());
-
-        toolbar = (Toolbar) view.findViewById(R.id.toolbar);
-        toolbar.setTitleTextColor(getResources().getColor(R.color.gray));
-        ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
-        ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-        InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.hideSoftInputFromWindow(todo.getWindowToken(), 0);
 
         return view;
 
@@ -125,6 +108,10 @@ public class NewItemDetailFragment extends Fragment {
                 item = new TodoItem();
         }
 
+        if(todo.getText().toString().equals("")) // wish를 입력하지 않은 경우 키보드 세팅
+            imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY);
+        else
+            imm.hideSoftInputFromWindow(todo.getWindowToken(), 0);
     }
 
     @Override
@@ -177,7 +164,6 @@ public class NewItemDetailFragment extends Fragment {
         if (item.getAddress() == null) {
             Toasty.info(getContext(),  getResources().getString(R.string.input_where), Toast.LENGTH_SHORT).show();
 
-            InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
             imm.hideSoftInputFromWindow(todo.getWindowToken(), 0);
             return true;
         }

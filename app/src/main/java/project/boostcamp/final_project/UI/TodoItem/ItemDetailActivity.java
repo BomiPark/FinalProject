@@ -2,10 +2,7 @@ package project.boostcamp.final_project.UI.TodoItem;
 
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Color;
-import android.renderscript.Byte2;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.KeyEvent;
@@ -14,7 +11,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import io.realm.Realm;
 import project.boostcamp.final_project.Model.TodoItem;
@@ -24,7 +20,6 @@ import project.boostcamp.final_project.UI.Setting.BaseActivity;
 import project.boostcamp.final_project.Util.BindingService;
 import project.boostcamp.final_project.Util.RealmHelper;
 
-import static project.boostcamp.final_project.R.id.back;
 import static project.boostcamp.final_project.R.id.btn_completed;
 
 public class ItemDetailActivity extends BaseActivity {

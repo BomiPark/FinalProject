@@ -41,7 +41,6 @@ import project.boostcamp.final_project.Util.BindingService;
 import project.boostcamp.final_project.Util.RealmHelper;
 import project.boostcamp.final_project.Util.SharedPreferencesService;
 
-import static project.boostcamp.final_project.R.id.back;
 import static project.boostcamp.final_project.Util.SharedPreferencesService.EMAIL;
 import static project.boostcamp.final_project.Util.SharedPreferencesService.IS_ALARM;
 import static project.boostcamp.final_project.Util.SharedPreferencesService.RADIUS;
@@ -124,10 +123,6 @@ public class SettingActivity extends BaseActivity {
                     break;
                 case R.id.off :
                     setAlarmOn(false);
-                    break;
-                case back :
-                    saveStatus();
-                    finish();
                     break;
                 case R.id.btn_license :
                     startActivity(new Intent(SettingActivity.this, LicenseActivity.class));
@@ -358,6 +353,7 @@ public class SettingActivity extends BaseActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
+        saveStatus();
         finish();
 
         return super.onOptionsItemSelected(item);

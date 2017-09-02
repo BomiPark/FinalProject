@@ -5,7 +5,6 @@ import android.location.Address;
 import android.location.Geocoder;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.annotation.IntegerRes;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -20,7 +19,6 @@ import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -41,11 +39,10 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-import static project.boostcamp.final_project.R.id.back;
+import static project.boostcamp.final_project.UI.NewItem.NewItemBaseFragment.view;
 
-public class NewItemSearchFragment  extends Fragment {
+public class NewItemSearchFragment extends NewItemBaseFragment {
 
-    private static View view;
     private EditText editSearch;
     private ImageView searchIcon;
     private ArrayList<SearchItem> searchItemList;
@@ -55,7 +52,6 @@ public class NewItemSearchFragment  extends Fragment {
     private SearchItemAdapter adapter;
 
     private NaverService naverService;
-    private FragmentChangeListener listener;
 
     private TodoItem item = new TodoItem();
     private int beforeSelected = -1;
@@ -67,6 +63,8 @@ public class NewItemSearchFragment  extends Fragment {
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_new_item_search, container, false);
 
+        setToolbar(view, Constant.SEARCH);
+
         editSearch = (EditText)view.findViewById(R.id.edit_search);
         searchIcon = (ImageView)view.findViewById(R.id.search_icon);
         recyclerView = (RecyclerView)view.findViewById(R.id.search_list);
@@ -74,16 +72,10 @@ public class NewItemSearchFragment  extends Fragment {
         editSearch.setOnKeyListener(keyListener);
         geoCoder = new Geocoder(getContext());
 
-        Toolbar toolbar = (Toolbar) view.findViewById(R.id.toolbar);
-        toolbar.setTitleTextColor(getResources().getColor(R.color.gray));
-
-        ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
-        ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
         naverService = ServiceAdapter.getService();
 
         editSearch.requestFocus();
-        InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+
         imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY);
 
         searchItemList = new ArrayList<>();
@@ -135,9 +127,6 @@ public class NewItemSearchFragment  extends Fragment {
                 case R.id.search_icon :
                     setSearch();
                     break;
-                case back :
-                    listener.changeFragment(Constant.SEARCH, Constant.DETAIL, null);
-                    break;
             }
         }
     };
@@ -159,7 +148,7 @@ public class NewItemSearchFragment  extends Fragment {
 
         if(query.length() > 0) {
             getSearchList(query);
-            InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
             imm.hideSoftInputFromWindow(editSearch.getWindowToken(), 0);    //hide keyboard
         }
         else

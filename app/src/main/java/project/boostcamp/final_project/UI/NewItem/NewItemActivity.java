@@ -19,6 +19,7 @@ import project.boostcamp.final_project.Util.LocationService;
 import project.boostcamp.final_project.Util.RealmHelper;
 
 import static project.boostcamp.final_project.Model.Constant.SAVE;
+import static project.boostcamp.final_project.UI.NewItem.NewItemBaseFragment.newInstance;
 
 public class NewItemActivity extends BaseActivity implements FragmentChangeListener {
 
@@ -38,19 +39,6 @@ public class NewItemActivity extends BaseActivity implements FragmentChangeListe
         setContentView(R.layout.activity_new_item);
 
         init();
-    }
-
-    public static Fragment newInstance(int now, int to){
-
-        Fragment fragment = null;
-
-        if(now == Constant.DETAIL && to == Constant.SEARCH) {
-            fragment = new NewItemSearchFragment();
-        }
-        else if(now == Constant.DETAIL && to == Constant.MAP) {
-            fragment = new NewItemMapFragment();
-        }
-        return fragment;
     }
 
     void init(){
@@ -82,7 +70,7 @@ public class NewItemActivity extends BaseActivity implements FragmentChangeListe
     public void changeFragment(int now, int to, TodoItem item) {
 
         if(now == Constant.DETAIL && to != Constant.END && to != Constant.SAVE){
-            getSupportFragmentManager().beginTransaction().replace(R.id.container,newInstance(now, to)).addToBackStack(null).commit(); // detail 저장
+            getSupportFragmentManager().beginTransaction().replace(R.id.container, NewItemBaseFragment.newInstance(now, to)).addToBackStack(null).commit(); // detail 저장
         } else if(to == Constant.DETAIL && item == null) {
             getSupportFragmentManager().popBackStack();
         } else if(to == Constant.DETAIL) {

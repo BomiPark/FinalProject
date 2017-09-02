@@ -53,6 +53,7 @@ import static project.boostcamp.final_project.Util.SharedPreferencesService.RADI
 public class PermissionActivity extends BaseActivity
         implements GoogleApiClient.OnConnectionFailedListener {
 
+    private static final int RC_GOOGLE_SIGN_IN = 9001;
     private static final int REQUEST_PERMISSIONS_REQUEST_CODE = 34;
     private Realm realm;
     private List<String> folderList;
@@ -65,7 +66,6 @@ public class PermissionActivity extends BaseActivity
     private FirebaseAuth.AuthStateListener mAuthListener;
     private GoogleApiClient mGoogleApiClient;
     private ProgressBar login_progress;
-    public static final int RC_GOOGLE_SIGN_IN = 9001;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

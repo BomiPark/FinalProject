@@ -1,22 +1,14 @@
 package project.boostcamp.final_project.UI.NewItem;
 
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.location.Address;
 import android.location.Geocoder;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.InflateException;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
-import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.common.api.Status;
@@ -26,7 +18,6 @@ import com.google.android.gms.location.places.ui.PlaceSelectionListener;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
@@ -45,15 +36,12 @@ import project.boostcamp.final_project.Util.LocationService;
 
 import static com.google.android.gms.maps.model.BitmapDescriptorFactory.fromResource;
 
-public class NewItemMapFragment extends Fragment {
+public class NewItemMapFragment extends NewItemBaseFragment {
 
-    private static View view;
     private GoogleMap googleMap;
-    private ImageView ok;
     private Geocoder geoCoder;
     private PlaceAutocompleteFragment autocompleteFragment;
 
-    private TodoItem item;
     private Marker marker;
     private MarkerOptions options;
 
@@ -67,6 +55,8 @@ public class NewItemMapFragment extends Fragment {
         } catch (InflateException e) {}
 
         Toasty.info(getActivity(), getResources().getString(R.string.move_marker), Toast.LENGTH_SHORT).show();
+
+        setToolbar(view, Constant.MAP);
 
         autocompleteFragment = (PlaceAutocompleteFragment) // Place api
                 getActivity().getFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
@@ -92,16 +82,10 @@ public class NewItemMapFragment extends Fragment {
         com.google.android.gms.maps.MapFragment mapFragment = (com.google.android.gms.maps.MapFragment) getActivity().getFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(mapReadyCallback);
 
-        ok = (ImageView)view.findViewById(R.id.ok);
+        btn_ok = (ImageView)view.findViewById(R.id.ok);
         changedLatLng = new LatLng(0,0);
 
-        ok.setOnClickListener(clickListener);
-
-        Toolbar toolbar = (Toolbar) view.findViewById(R.id.toolbar);
-        toolbar.setTitleTextColor(getResources().getColor(R.color.gray));
-        ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
-        ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayShowTitleEnabled(false);
-        ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        btn_ok.setOnClickListener(clickListener);
 
         return view;
     }

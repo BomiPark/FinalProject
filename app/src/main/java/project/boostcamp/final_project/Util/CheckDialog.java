@@ -10,7 +10,6 @@ import android.widget.TextView;
 
 import project.boostcamp.final_project.R;
 
-
 public class CheckDialog extends Dialog {
 
     private TextView mTitleView;
