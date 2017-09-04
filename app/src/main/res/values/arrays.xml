@@ -2,7 +2,7 @@
 <resources>
     <string-array name="license_title">
         <item>Retrofit</item>
-        <item>Gson Converter</item>
+        <item>Gson</item>
         <item>Realm</item>
         <item>OkHttp</item>
         <item>Glide</item>

@@ -92,7 +92,7 @@ public class BindingService {
             geofencingService.updateGeofence();
     }
 
-    boolean isEmpty(){
+    private boolean isEmpty(){
 
         if(realm.where(TodoItem.class).equalTo("alarm", true).equalTo("isCompleted", false).findAll().size() == 0)
             return true;

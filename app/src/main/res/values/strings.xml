@@ -59,6 +59,8 @@
     <string name="input_search">검색어를 입력해주세요</string>
     <string name="is_empty"> 할 일을 새로 입력해주세요!</string>
     <string name="new_folder">새로운 폴더 추가</string>
+    <string name="backup_message">\n현재 데이터를 서버에 저장하시겠습니까</string>
+    <string name="restore_message">복구하시겠습니까 \n이전의 데이터는 지워집니다.</string>
 
     <!-- 액티비티 라벨 이름-->
     <string name="label_new_activity">추가하기</string>

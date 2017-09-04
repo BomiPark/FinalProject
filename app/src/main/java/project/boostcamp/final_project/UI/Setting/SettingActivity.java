@@ -174,7 +174,7 @@ public class SettingActivity extends BaseActivity {
 
     void backupDialogBox(){
         dialog = new AlertDialog.Builder(SettingActivity.this);
-        dialog.setTitle("Backup Dialog").setMessage( "\n현재 데이터를 서버에 저장하시겠습니까 ")
+        dialog.setMessage(R.string.backup_message)
                 .setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -196,7 +196,7 @@ public class SettingActivity extends BaseActivity {
 
     void restoreDialogBox(){
         dialog = new AlertDialog.Builder(SettingActivity.this);
-        dialog.setTitle("Restore Dialog").setMessage( "복구하시겠습니까 \n이전의 데이터는 지워집니다. ")
+        dialog.setMessage(R.string.restore_message)
                 .setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
