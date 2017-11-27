@@ -6,7 +6,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:background="@color/background"
-    tools:context="project.boostcamp.final_project.UI.TodoItem.ItemDetailActivity">
+    tools:context="project.boostcamp.final_project.view.TodoItem.ItemDetailActivity">
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"

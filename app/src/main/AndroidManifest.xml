@@ -11,7 +11,7 @@
         android:icon="@drawable/app_icon"
         android:label="위시의 위치"
         android:supportsRtl="true"
-        android:name=".Util.FontApplication"
+        android:name=".util.FontApplication"
         android:theme="@style/AppTheme">
         <meta-data
             android:name="com.google.android.geo.API_KEY"
@@ -20,38 +20,38 @@
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
 
-        <activity android:name=".UI.Setting.PermissionActivity"
+        <activity android:name=".view.Setting.PermissionActivity"
             android:label="@string/label_setting"/>
         <activity
-            android:name=".UI.NewItem.NewItemActivity"
+            android:name=".view.NewItem.NewItemActivity"
             android:screenOrientation="portrait"
             android:label="@string/label_new_activity">
         </activity>
-        <activity android:name=".UI.Setting.SettingActivity" />
-        <activity android:name=".UI.Setting.LicenseActivity" />
+        <activity android:name=".view.Setting.SettingActivity" />
+        <activity android:name=".view.Setting.LicenseActivity" />
         <activity
-            android:name=".UI.TodoItem.MainActivity"
+            android:name=".view.TodoItem.MainActivity"
             android:label="위시의위치"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
-        <activity android:name=".UI.TodoItem.ItemDetailActivity"
+        <activity android:name=".view.TodoItem.ItemDetailActivity"
             android:label="@string/label_license"/>
 
-        <activity android:name=".UI.Setting.SplashActivity">
+        <activity android:name=".view.Setting.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".UI.Setting.ProfileActivity"/>
+        <activity android:name=".view.Setting.ProfileActivity"/>
 
         <service
-            android:name=".Util.GeofenceService"
+            android:name=".util.GeofenceService"
             android:enabled="true"
             android:exported="true" />
 
         <service
-            android:name=".Util.GeofencingService"
+            android:name=".util.GeofencingService"
             android:enabled="true"
             android:exported="true"/>
     </application>

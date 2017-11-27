@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/background"
-    tools:context="project.boostcamp.final_project.UI.Setting.SplashActivity">
+    tools:context="project.boostcamp.final_project.view.Setting.SplashActivity">
 
     <ImageView
         android:layout_width="110dp"
