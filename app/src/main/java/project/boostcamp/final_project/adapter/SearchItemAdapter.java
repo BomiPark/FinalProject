@@ -11,19 +11,18 @@ import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import project.boostcamp.final_project.model.SearchItem;
 import project.boostcamp.final_project.R;
 
-public class SearchItemAdapter extends RecyclerView.Adapter<SearchItemViewHolder>{
+public class SearchItemAdapter extends RecyclerView.Adapter<SearchItemViewHolder> {
 
     private Context context;
     private List<SearchItem> searchItemList = new ArrayList<>();
     private int item_layout;
     private SearchItemViewHolder viewHolder;
 
-    private int selectedPosition = -1;
-
-    public SearchItemAdapter(Context context, ArrayList<SearchItem> searchItemList, int item_layout){
+    public SearchItemAdapter(Context context, ArrayList<SearchItem> searchItemList, int item_layout) {
         this.context = context;
         this.searchItemList = searchItemList;
         this.item_layout = item_layout;
@@ -43,8 +42,8 @@ public class SearchItemAdapter extends RecyclerView.Adapter<SearchItemViewHolder
     @Override
     public void onBindViewHolder(SearchItemViewHolder holder, int position) {
 
-        if(searchItemList.get(position).isSelected() == true ){
-            ((SearchItemViewHolder) holder).bind(searchItemList.get(position));
+        if (searchItemList.get(position).isSelected()) {
+            holder.bind(searchItemList.get(position));
             holder.background.setBackgroundResource(R.color.click_back);
             holder.title.setTextColor(Color.WHITE);
             holder.address.setTextColor(Color.WHITE);
@@ -52,9 +51,8 @@ public class SearchItemAdapter extends RecyclerView.Adapter<SearchItemViewHolder
             Glide.with(context).load(R.drawable.search_item_line_click).into(holder.line);
             Glide.with(context).load(R.drawable.check_white).into(holder.check);
 
-        }
-        else {
-            ((SearchItemViewHolder) holder).bind(searchItemList.get(position));
+        } else {
+            holder.bind(searchItemList.get(position));
             holder.background.setBackgroundResource(R.color.white);
             holder.title.setTextColor(Color.BLACK);
             holder.address.setTextColor(Color.BLACK);
@@ -72,15 +70,8 @@ public class SearchItemAdapter extends RecyclerView.Adapter<SearchItemViewHolder
         return searchItemList.size();
     }
 
-    public void setSearchItemList(ArrayList<SearchItem> searchItemList){
+    public void setSearchItemList(ArrayList<SearchItem> searchItemList) {
         this.searchItemList = searchItemList;
-    }
-
-
-    public SearchItem getSelectItem() {
-        SearchItem item = new SearchItem();
-        item.setTitle("test");
-        return item;
     }
 
 }

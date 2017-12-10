@@ -464,6 +464,10 @@ public class MainActivity extends BaseActivity
 
         itemList = realm.where(TodoItem.class).findAll();
         todoItemAdapter.notifyDataSetChanged();
+    }
 
+    public void onDestroy(){
+        super.onDestroy();
+        RealmHelper.getInstance(this).close();
     }
 }

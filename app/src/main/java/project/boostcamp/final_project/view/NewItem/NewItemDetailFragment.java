@@ -260,6 +260,11 @@ public class NewItemDetailFragment extends NewItemBaseFragment {
         return folderList;
     }
 
+    @Override
+    public void onDestroy(){
+        super.onDestroy();
+        RealmHelper.getInstance(getContext()).close();
+    }
 
 }
 

@@ -61,6 +61,7 @@ public class NewItemActivity extends BaseActivity implements FragmentChangeListe
     @Override
     public void onDestroy(){
         super.onDestroy();
+        RealmHelper.getInstance(this).close();
         locationService.stopLocationService();
     }
 

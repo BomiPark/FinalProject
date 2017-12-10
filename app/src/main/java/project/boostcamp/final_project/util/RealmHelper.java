@@ -42,4 +42,8 @@ public class RealmHelper {
         return nextID;
     }
 
+    public static void close(){
+        realm.close();
+    }
+
 }

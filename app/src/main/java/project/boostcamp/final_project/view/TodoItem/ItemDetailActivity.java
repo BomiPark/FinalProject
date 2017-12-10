@@ -82,7 +82,7 @@ public class ItemDetailActivity extends BaseActivity {
     public void onDestroy(){
         super.onDestroy();
         BindingService.getInstance(getApplicationContext()).upDateService();
-
+        RealmHelper.getInstance(this).close();
     }
 
     View.OnClickListener clickListener = new ImageView.OnClickListener(){
@@ -205,5 +205,6 @@ public class ItemDetailActivity extends BaseActivity {
 
         return super.onOptionsItemSelected(menu);
     }
+
 
 }
